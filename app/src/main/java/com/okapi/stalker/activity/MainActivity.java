@@ -3,6 +3,7 @@ package com.okapi.stalker.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -56,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         programFragment.setKey(user_student_key);
         stalkerFragment = new StalkerFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(programFragment, "PROGRAMIM");
-        adapter.addFragment(new FriendsFragment(), "ARKADAŞLARIM");
-        adapter.addFragment(stalkerFragment, "STALK");
+        adapter.addFragment(programFragment, getString(R.string.title_program));
+        adapter.addFragment(new FriendsFragment(), getString(R.string.title_friends));
+        adapter.addFragment(stalkerFragment, getString(R.string.title_stalker));
         viewPager.setAdapter(adapter);
     }
     @Override
@@ -86,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if( id == R.id.action_exit){
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+            editor.remove("id");
+            editor.commit();
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

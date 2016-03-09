@@ -32,10 +32,10 @@ public class Stash {
 	private Map<String, Interval> intervalMap;
 	private Set<String> departmentSet;
 
-	public static void set(InputStream is, String source, int size, int size2) {
+	public static void set(InputStream is, String source, int size) {
 		if (stash != null)
 			stash.writeBack();
-		stash = new Stash(is, source, size, size2);
+		stash = new Stash(is, source, size);
 	}
 
 	public static Stash get() {
@@ -44,12 +44,12 @@ public class Stash {
 		return stash;
 	}
 
-	private Stash(InputStream is, String source, int size, int size2) {
+	private Stash(InputStream is, String source, int size) {
 		this.is = is;
 		try {
 			load(is);
 		} catch (FileNotFoundException e) {
-			read(source, size, size2);
+			read(source, size);
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -69,9 +69,9 @@ public class Stash {
 		stash.close();
 	}
 
-	private void read(String source, int size, int size2) {
+	private void read(String source, int size) {
 		Stacker stacker = Stacker.call();
-		stacker.readFrom(source, size, size2);
+		stacker.readFrom(source, size);
 		courseMap = stacker.courseMap;
 		sectionMap = stacker.sectionMap;
 		studentMap = stacker.studentMap;
@@ -142,7 +142,7 @@ public class Stash {
 	// test
 	public static void main(String[] args) throws FileNotFoundException {
 		long s = System.nanoTime();
-		Stash.set(new FileInputStream("res/stash.bin"), "res/htmls/spring2016", 595, 603);
+		Stash.set(new FileInputStream("res/stash.bin"), "res/htmls/spring2016", 600);
 		Stash stash = Stash.get();
 
 		System.out.println(stash.classRoomMap.size());

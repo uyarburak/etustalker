@@ -4,6 +4,12 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+    <string name="action_exit">Exit</string>
+
+    <string name="title_profile">PROFILE</string>
+    <string name="title_program">PROGRAM</string>
+    <string name="title_stalker">STALKER</string>
+    <string name="title_friends">FRIENDS</string>
 
     <!-- Strings related to login -->
     <string name="prompt_password">ID</string>

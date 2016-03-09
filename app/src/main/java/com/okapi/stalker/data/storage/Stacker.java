@@ -41,7 +41,7 @@ public class Stacker {
 		return stacker;
 	}
 
-	public void readFrom(String source, int size, int size2) {
+	public void readFrom(String source, int size) {
 		courseMap = new HashMap<>();
 		sectionMap = new HashMap<>();
 		studentMap = new HashMap<>();
@@ -53,7 +53,7 @@ public class Stacker {
 		for (int i = 1; i < size; i++)
 			parseCoursePage(source + "/student_lists/" + i + ".html");
 
-		for (int i = 1; i < size2; i++)
+		for (int i = 1; i < size; i++)
 			parseProgramPage(source + "/interval_lists/" + i + ".html");
 
 	}
