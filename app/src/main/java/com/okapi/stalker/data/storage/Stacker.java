@@ -168,44 +168,43 @@ public class Stacker {
 		course.code = codeAndTitle.substring(0, index - 1);
 		course.title = codeAndTitle.substring(index + 2);
 
-		for (int i = 0; i < sections.size(); i = i + 2) {
+		for (int i = 0; i < sections.size(); i++) {
 			Section section = new Section();
-			section.course = course.key(); // changed: section.course = course.code();
+			section.course = course.code;
 
 			String numberAndInstructor = sections.get(i);
 			index = numberAndInstructor.indexOf(' ');
 			section.number = numberAndInstructor.substring(5, 7).trim();
 			section.instructor = numberAndInstructor.substring(index + 2);
-			while(!intervals.isEmpty()){
-				section = sectionMap.get(section.key());
-				String[] split;
-				for (int j = 1; j < 13; j++) {
-					split = intervals.get(j).split("<td>");
-					for (int j2 = 1; j2 < 7; j2++) {
-						String classRoom = split[j2];
-						if(classRoom.equals("-")){
-							continue;
-						}
 
-						Interval interval = new Interval();
-						interval.time = Time.values()[j-1];
-						interval.day = Day.values()[j2-1];
-						ClassRoom mClassRoom = new ClassRoom(classRoom.substring(9).trim());
-						if(!classRoomMap.containsKey(mClassRoom.key())){
-							classRoomMap.put(mClassRoom.key(), mClassRoom);
-						}
-						mClassRoom = classRoomMap.get(mClassRoom.key());
-						interval.classRoom = mClassRoom;
-						mClassRoom.addInterval(interval);
-						intervalMap.put(interval.key(), interval);
-						section.addInterval(interval);
+			section = sectionMap.get(section.key());
+
+			String[] split;
+			for (int j = 1; j < 13; j++) {
+				split = intervals.get(j).split("<td>");
+				for (int j2 = 1; j2 < 7; j2++) {
+					String classRoom = split[j2];
+					if(classRoom.equals("-")){
+						continue;
 					}
+
+					Interval interval = new Interval();
+					interval.time = Time.values()[j-1];
+					interval.day = Day.values()[j2-1];
+					ClassRoom mClassRoom = new ClassRoom(classRoom.substring(9).trim());
+					if(!classRoomMap.containsKey(mClassRoom.key())){
+						classRoomMap.put(mClassRoom.key(), mClassRoom);
+					}
+					mClassRoom = classRoomMap.get(mClassRoom.key());
+					interval.classRoom = mClassRoom;
+					mClassRoom.addInterval(interval);
+					intervalMap.put(interval.key(), interval);
+					section.addInterval(interval);
 				}
-				
-				for (int k = 0; k < 13; k++)
-					intervals.remove(0);
 			}
+
+			for (int k = 0; k < 13; k++)
+				intervals.remove(0);
 		}
-		courseMap.put(course.key(), course);
 	}
 }
