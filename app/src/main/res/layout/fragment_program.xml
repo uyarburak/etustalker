@@ -1,0 +1,1304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp" >
+
+    <LinearLayout
+        android:id="@+id/dayLabelsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" >
+
+        <RelativeLayout
+            android:id="@+id/currentMonthRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/currentMonthTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text=""
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/currentYearTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:text=""
+                android:textSize="13dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/mondayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/mondayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mondayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                android:text="@string/monday"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tuesdayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/tuesdayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tuesdayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:text="@string/tuesday"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/wednesdayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/wednesdayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/wednesdayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:text="@string/wednesday"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/thursdayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/thursdayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/thursdayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:text="@string/thursday"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fridayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/fridayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fridayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:text="@string/friday"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/saturdayHeaderRelativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/saturdayDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/saturdayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                android:text="@string/saturday"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dayLabelsLinearLayout"
+        android:background="@color/colorPrimary" />
+
+    <ScrollView
+        android:id="@+id/calendarScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/dividerView"
+        android:layout_alignParentBottom="true"
+        android:overScrollMode="never"
+        android:padding="0dp"
+        android:scrollbars="none"
+        android:fadingEdge="none" >
+
+        <RelativeLayout
+            android:id="@+id/calendarRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp" >
+
+            <LinearLayout
+                android:id="@+id/calendarSplitterRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:padding="0dp" >
+
+                <RelativeLayout
+                    android:id="@+id/hoursRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="0dp" >
+
+
+                    <TextView
+                        android:id="@+id/time0TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center"
+                        android:text="08:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time1TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="60dp"
+                        android:gravity="center"
+                        android:text="09:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time2TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="120dp"
+                        android:gravity="center"
+                        android:text="10:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time3TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="180dp"
+                        android:gravity="center"
+                        android:text="11:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time4TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="240dp"
+                        android:gravity="center"
+                        android:text="12:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time5TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="300dp"
+                        android:gravity="center"
+                        android:text="13:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time6TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="360dp"
+                        android:gravity="center"
+                        android:text="14:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time7TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="420dp"
+                        android:gravity="center"
+                        android:text="15:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time8TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="480dp"
+                        android:gravity="center"
+                        android:text="16:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time9TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="540dp"
+                        android:gravity="center"
+                        android:text="17:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time10TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="600dp"
+                        android:gravity="center"
+                        android:text="18:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time11TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="660dp"
+                        android:gravity="center"
+                        android:text="19:30"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/time12TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="720dp"
+                        android:gravity="center"
+                        android:text="20:30"
+                        android:textSize="15dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mondayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/MONDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/MONDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/tuesdayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/TUESDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/TUESDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wednesdayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/WEDNESDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/WEDNESDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/thursdayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/THURSDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/THURSDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fridayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/FRIDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/FRIDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/saturdayRelativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY0"
+                        android:textAlignment="center"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY1"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY0"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY2"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY1"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY3"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY2"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY4"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY3"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY5"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY4"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY6"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY5"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY7"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY6"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY8"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY7"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY9"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY8"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY10"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY9"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY11"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY10"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/SATURDAY12"
+                        android:textAlignment="center"
+                        android:layout_below="@+id/SATURDAY11"
+                        android:height="60dp"
+                        android:textSize="10dp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/currentTimeMarkerLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="100dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="0dp" >
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:id="@+id/currentTimeLineView"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="14"
+                    android:background="@color/colorAccent" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/refreshView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorPrimary"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/refreshLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/refreshProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleLarge" />
+
+        <TextView
+            android:id="@+id/updatingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="24dp"
+            android:layout_marginRight="5dp"
+            android:text="updating" />
+
+    </LinearLayout>
+
+</RelativeLayout>
