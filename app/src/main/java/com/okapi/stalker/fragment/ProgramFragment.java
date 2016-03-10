@@ -79,7 +79,7 @@ public class ProgramFragment extends Fragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        // TODO
                     }
                 });
 
@@ -90,17 +90,6 @@ public class ProgramFragment extends Fragment {
                 relativeLayout.addView(button);
                 buttons[i] = button;
             }
-
-            // Time line initializing
-            Time time = new Time();
-            time.setToNow();
-            int minutes = (time.hour * 60) + time.minute - 510;
-            LinearLayout currentTimeLine = (LinearLayout)rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
-            RelativeLayout.LayoutParams params =
-                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                                                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
-            currentTimeLine.setLayoutParams(params);
 
             // Intervals are coming...
             Student student = stash.getStudent(key);
@@ -121,6 +110,16 @@ public class ProgramFragment extends Fragment {
             if(getActivity() instanceof MainActivity)
                 ((ObservableScrollView)(rootView.findViewById(R.id.calendarScrollView))).setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
         }
+        // Time line initializing
+        Time time = new Time();
+        time.setToNow();
+        int minutes = (time.hour * 60) + time.minute - 510;
+        LinearLayout currentTimeLine = (LinearLayout)rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+        RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
+        currentTimeLine.setLayoutParams(params);
         return rootView;
     }
 
@@ -129,6 +128,7 @@ public class ProgramFragment extends Fragment {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
+
     public void setKey(String key){
         this.key = key;
     }

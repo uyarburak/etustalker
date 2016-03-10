@@ -1,15 +1,18 @@
 package com.okapi.stalker.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -30,6 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
     private String user_student_key;
+    private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -41,19 +45,52 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         user_student_key = getIntent().getExtras().getString("key");
-        //SharedPreferences sharedPreferences = getSharedPreferences("", Context.MODE_PRIVATE);
-        //user_student_key = sharedPreferences.getString("id", "");
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setDisplayHomeAsUpEnabled(true);
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+
+        NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
+        if (navView != null){
+            setupDrawerContent(navView);
+        }
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
     }
+    private void setupDrawerContent(NavigationView navigationView){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
 
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_first:
+                        viewPager.setCurrentItem(0);
+                        break;
+                    case R.id.nav_second:
+                        viewPager.setCurrentItem(1);
+                        break;
+                    case R.id.nav_third:
+                        viewPager.setCurrentItem(2);
+                        break;
+                    case R.id.nav_forth:
+                        viewPager.setCurrentItem(3);
+                        break;
+                }
+
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
     private void setupViewPager(ViewPager viewPager) {
 
         programFragment = new ProgramFragment();
@@ -94,7 +131,20 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
             editor.remove("id");
             editor.commit();
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
             finish();
+        }
+
+        switch (id){
+            case android.R.id.home:
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

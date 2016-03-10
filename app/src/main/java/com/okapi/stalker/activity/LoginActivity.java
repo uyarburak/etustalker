@@ -47,18 +47,20 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        if(sharedPreferences.contains("id")){
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            intent.putExtra("key", sharedPreferences.getString("id", ""));
+            startActivity(intent);
+            finish();
+        }
         AssetManager am = getAssets();
         try {
             Stash.set(am.open("stash.bin"), "res/htmls/spring2016", 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if(sharedPreferences.contains("id")){
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            intent.putExtra("key", sharedPreferences.getString("id", ""));
-            startActivity(intent);
-        }
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
@@ -209,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("key", key);
                 startActivity(intent);
+                finish();
             } else {
                 mIDView.setError(getString(R.string.error_incorrect_password));
                 mIDView.requestFocus();

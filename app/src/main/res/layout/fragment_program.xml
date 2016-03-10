@@ -272,7 +272,6 @@
 
 
                     <TextView
-                        android:id="@+id/time0TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -283,7 +282,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time1TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -294,7 +292,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time2TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -305,7 +302,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time3TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -316,7 +312,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time4TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -327,7 +322,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time5TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -338,7 +332,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time6TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -349,7 +342,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time7TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -360,7 +352,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time8TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -371,7 +362,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time9TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -382,7 +372,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time10TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -393,7 +382,6 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time11TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -404,22 +392,11 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/time12TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="6dp"
                         android:layout_marginTop="720dp"
-                        android:gravity="center"
-                        android:text="20:30"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginTop="780dp"
                         android:gravity="center"
                         android:text="20:30"
                         android:textSize="15dp" />
@@ -457,7 +434,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/colorPrimary"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/refreshLinearLayout"
