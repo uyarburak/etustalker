@@ -9,7 +9,7 @@ public class FragmentarySearch {
 
 	public enum Heuristic {
 		CONSECUTIVE_DISTANCE
-	};
+	}
 
 	public class SearchResult implements Comparable<SearchResult> {
 		public final String key;
@@ -39,7 +39,7 @@ public class FragmentarySearch {
 
 	public FragmentarySearch(String input, Heuristic heuristic,
 			Iterable<String> space) {
-		this.input = input;
+		this.input = input.replaceAll("i", "İ").toUpperCase();
 		this.space = space;
 		this.heuristic = heuristic;
 
