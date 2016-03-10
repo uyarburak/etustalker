@@ -1,5 +1,7 @@
 package com.okapi.stalker.search;
 
+import java.text.Collator;
+import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -24,7 +26,7 @@ public class FragmentarySearch {
 		public int compareTo(SearchResult other) {
 			int comparePriority = other.precedence.compareTo(precedence);
 			if (comparePriority == 0)
-				return key.compareTo(other.key);
+				return trCollator.compare(key, other.key);
 			else
 				return comparePriority;
 		}
@@ -34,15 +36,16 @@ public class FragmentarySearch {
 	private String input;
 	private Heuristic heuristic;
 	private Iterable<String> space;
-
+	protected Collator trCollator;
 	private SortedSet<SearchResult> searchResults = new TreeSet<>();
 
 	public FragmentarySearch(String input, Heuristic heuristic,
 			Iterable<String> space) {
-		this.input = input.replaceAll("i", "İ").toUpperCase();
+		this.input = input.toUpperCase(new Locale("tr", "TR"));
 		this.space = space;
 		this.heuristic = heuristic;
-
+		this.trCollator = Collator.getInstance(new Locale("tr", "TR"));
+		trCollator.setStrength(Collator.PRIMARY);
 		fragmentarySearch();
 	}
 
