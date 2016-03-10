@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Interval;
 import com.okapi.stalker.data.storage.type.Section;
@@ -117,7 +118,8 @@ public class ProgramFragment extends Fragment {
 
             rootView.findViewById(R.id.refreshLinearLayout).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.refreshView).setVisibility(View.INVISIBLE);
-            ((ObservableScrollView)(rootView.findViewById(R.id.calendarScrollView))).setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
+            if(getActivity() instanceof MainActivity)
+                ((ObservableScrollView)(rootView.findViewById(R.id.calendarScrollView))).setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
         }
         return rootView;
     }
