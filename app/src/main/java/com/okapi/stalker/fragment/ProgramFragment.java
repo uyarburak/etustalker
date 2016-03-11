@@ -1,18 +1,22 @@
 package com.okapi.stalker.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -46,23 +50,27 @@ public class ProgramFragment extends Fragment {
         if(rootView == null){
             rootView = inflater.inflate(R.layout.fragment_program, container, false);
 
-            int pixels = dpToPx(getContext(), 60);
+            int pixels = dpToPx(getContext(), 50);
+            int pixels10 = dpToPx(getContext(), 10);
+            int pixels2 = dpToPx(getContext(), 2);
 
-            Button[] buttons = new Button[78];
+            TextView[] buttons = new TextView[78];
             LinearLayout linearLayout =
                     (LinearLayout)rootView.findViewById(R.id.calendarSplitterRelativeLayout);
 
             LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.MATCH_PARENT, 2);
+            prm.setMargins(pixels2,0,0,0);
 
             RelativeLayout relativeLayout = null;
             for (int i = 0; i< buttons.length; i++){
-                Button button = new Button(getActivity());
+                TextView button = new TextView(getActivity());
 
 
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(0, 0, 0, pixels10);
                 if(i % 13 != 0) {
                     params.addRule(RelativeLayout.BELOW, i);
                 }else{
@@ -72,9 +80,9 @@ public class ProgramFragment extends Fragment {
                 }
 
                 button.setLayoutParams(params);
-                button.setTextSize(10);
                 button.setHeight(pixels);
-                button.setText("-");
+                button.setGravity(Gravity.CENTER);
+                button.setBackgroundColor(Color.LTGRAY);
                 button.setId(i + 1);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -94,14 +102,21 @@ public class ProgramFragment extends Fragment {
             // Intervals are coming...
             Student student = stash.getStudent(key);
             Set<String> sectionKeys = student.sectionKeys;
+            String[] colors = {"#a5de5b", "#009AE3", "#f584d4", "#f74448", "#c3903f", "#63b526"};
+            int colorIndex = 0;
             for (String sectionKey: sectionKeys){
                 Section section = stash.getSection(sectionKey);
                 Set<String> intervalKeys = section.getIntervalKeys();
+                int color = Color.parseColor(colors[colorIndex % colors.length]);
                 for (String intervalKey: intervalKeys){
                     Interval interval = stash.getInterval(intervalKey);
                     int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
-                    buttons[indeks].setText(section.course + " - " + interval.classRoom.name);
+                    buttons[indeks].setText(section.course + " (" + interval.classRoom.name+ ")");
+                    buttons[indeks].setBackgroundColor(color);
+                    buttons[indeks].setTextSize(13);
+                    buttons[indeks].setTextColor(Color.WHITE);
                 }
+                colorIndex++;
             }
 
 

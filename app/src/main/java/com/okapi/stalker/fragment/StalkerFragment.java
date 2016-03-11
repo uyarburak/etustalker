@@ -14,6 +14,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
 public class StalkerFragment extends Fragment
@@ -36,6 +37,7 @@ public class StalkerFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myStalkerAdapter = new MyStalkerAdapter(getActivity());
     }
 
     @Override
@@ -46,9 +48,7 @@ public class StalkerFragment extends Fragment
 
         ObservableListView liste = (ObservableListView )rootView.findViewById(R.id.listStalk);
         liste.setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
-        myStalkerAdapter = new MyStalkerAdapter(getActivity());
         liste.setAdapter(myStalkerAdapter);
-
         return rootView;
     }
 }

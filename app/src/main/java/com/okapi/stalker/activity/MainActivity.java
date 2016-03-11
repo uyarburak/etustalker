@@ -113,7 +113,20 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         getMenuInflater().inflate(R.menu.main, menu);
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setOnQueryTextListener(stalkerFragment);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(!newText.isEmpty() && viewPager.getCurrentItem() != 2)
+                    viewPager.setCurrentItem(2);
+                stalkerFragment.onQueryTextChange(newText);
+                return false;
+            }
+        });
         return true;
     }
 

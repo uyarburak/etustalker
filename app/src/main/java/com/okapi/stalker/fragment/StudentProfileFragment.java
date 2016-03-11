@@ -30,15 +30,15 @@ public class StudentProfileFragment
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_student_profile, container, false);
         Student student = ((StudentActivity)getActivity()).getStudent();
-        ImageView image = (ImageView) rootView.findViewById(R.id.imageView2);
-        image.setImageResource(R.drawable.app_icon);
-        TextView textAd = (TextView) rootView.findViewById(R.id.textAdSoyad);
+        //ImageView image = (ImageView) rootView.findViewById(R.id.imageView2);
+        //image.setImageResource(R.drawable.app_icon);
+        TextView textAd = (TextView) rootView.findViewById(R.id.profile_name);
         textAd.setText(student.name);
-        TextView textNo = (TextView) rootView.findViewById(R.id.textNumara);
+        TextView textNo = (TextView) rootView.findViewById(R.id.profile_id);
         textNo.setText("" + student.id);
-        TextView textMail = (TextView) rootView.findViewById(R.id.textMail);
+        TextView textMail = (TextView) rootView.findViewById(R.id.profile_email);
         textMail.setText(student.mail);
-        TextView textMajor = (TextView) rootView.findViewById(R.id.textBolum);
+        TextView textMajor = (TextView) rootView.findViewById(R.id.profile_major);
         textMajor.setText(student.major);
 
         return rootView;
