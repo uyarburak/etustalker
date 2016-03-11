@@ -2,19 +2,13 @@ package com.okapi.stalker.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
 public class StalkerFragment extends Fragment
@@ -46,8 +40,7 @@ public class StalkerFragment extends Fragment
 
         View rootView = inflater.inflate(R.layout.fragment_stalker, container, false);
 
-        ObservableListView liste = (ObservableListView )rootView.findViewById(R.id.listStalk);
-        liste.setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
+        ListView liste = (ListView )rootView.findViewById(R.id.listStalk);
         liste.setAdapter(myStalkerAdapter);
         return rootView;
     }

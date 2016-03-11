@@ -5,15 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.okapi.stalker.R;
 import com.okapi.stalker.data.DataBaseHandler;
 import com.okapi.stalker.fragment.adapters.MyFriendsAdapter;
-import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
-
-import java.util.List;
 
 
 public class FriendsFragment extends Fragment {
@@ -34,8 +30,7 @@ public class FriendsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
 
         myFriendsAdapter = new MyFriendsAdapter(getActivity());
-        ObservableListView liste = (ObservableListView )rootView.findViewById(R.id.list_friends);
-        liste.setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
+        ListView liste = (ListView )rootView.findViewById(R.id.list_friends);
         liste.setAdapter(myFriendsAdapter);
         DataBaseHandler.myFriendsAdapter = myFriendsAdapter;
         return rootView;

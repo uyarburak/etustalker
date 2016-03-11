@@ -13,15 +13,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Interval;
 import com.okapi.stalker.data.storage.type.Section;
@@ -31,7 +27,7 @@ import java.util.Set;
 
 
 public class ProgramFragment extends Fragment {
-    View rootView;
+    private View rootView;
     private String key;
     public ProgramFragment() {
     }
@@ -122,8 +118,6 @@ public class ProgramFragment extends Fragment {
 
             rootView.findViewById(R.id.refreshLinearLayout).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.refreshView).setVisibility(View.INVISIBLE);
-            if(getActivity() instanceof MainActivity)
-                ((ObservableScrollView)(rootView.findViewById(R.id.calendarScrollView))).setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
         }
         // Time line initializing
         Time time = new Time();

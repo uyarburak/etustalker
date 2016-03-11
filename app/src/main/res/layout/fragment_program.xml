@@ -239,7 +239,7 @@
         android:layout_below="@+id/dayLabelsLinearLayout"
         android:background="@color/colorPrimary" />
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+    <ScrollView
         android:id="@+id/calendarScrollView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -427,7 +427,7 @@
                     android:background="@color/colorAccent" />
             </LinearLayout>
         </RelativeLayout>
-    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+    </ScrollView>
 
     <View
         android:id="@+id/refreshView"
