@@ -47,14 +47,16 @@ public class MyFriendsAdapter extends BaseAdapter {
 
     }
 
-    public void init(){
+    public void init() {
 
         DataBaseHandler db = new DataBaseHandler(context);
         list = new ArrayList<>();
-        for (String key: db.getAllFriends()){
+        for (String key : db.getAllFriends()) {
             list.add(stash.getStudent(key));
         }
+        notifyDataSetChanged();
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -83,14 +85,6 @@ public class MyFriendsAdapter extends BaseAdapter {
 
         final Student student = getItem(position);
         textView.setText(student.name);
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, StudentActivity.class);
-                intent.putExtra("student", (Serializable) student);
-                context.startActivity(intent);
-            }
-        });
         imageView.setImageResource(R.drawable.app_icon);
 
         return rowView;

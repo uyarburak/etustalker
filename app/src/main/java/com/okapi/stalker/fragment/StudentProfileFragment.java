@@ -14,6 +14,8 @@ import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.DataBaseHandler;
 import com.okapi.stalker.data.storage.type.Student;
 
+import java.util.List;
+
 
 public class StudentProfileFragment
         extends Fragment {
@@ -31,7 +33,7 @@ public class StudentProfileFragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_student_profile, container, false);
-        final Student student = ((StudentActivity)getActivity()).getStudent();
+        final Student student = ((StudentActivity) getActivity()).getStudent();
         //ImageView image = (ImageView) rootView.findViewById(R.id.imageView2);
         //image.setImageResource(R.drawable.app_icon);
         TextView textAd = (TextView) rootView.findViewById(R.id.profile_name);
@@ -42,17 +44,32 @@ public class StudentProfileFragment
         textMail.setText(student.mail);
         TextView textMajor = (TextView) rootView.findViewById(R.id.profile_major);
         textMajor.setText(student.major);
-        final Button button = (Button)rootView.findViewById(R.id.profile_add_friend_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataBaseHandler db = new DataBaseHandler(getActivity());
-                db.addFriend(student.key());
-                button.setEnabled(false);
-                DataBaseHandler.myFriendsAdapter.init();
-            }
-        });
 
+        final Button button = (Button) rootView.findViewById(R.id.profile_add_friend_button);
+
+        final DataBaseHandler db = new DataBaseHandler(getActivity());
+        List<String> friendsList = db.getAllFriends();
+        if(friendsList.contains(student.key())){
+            button.setText("Remove friend");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.deleteFriend(student.key());
+                    button.setEnabled(false);
+                    DataBaseHandler.myFriendsAdapter.init();
+                }
+            });
+        }
+        else{
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.addFriend(student.key());
+                    button.setEnabled(false);
+                    DataBaseHandler.myFriendsAdapter.init();
+                }
+            });
+        }
         return rootView;
     }
 

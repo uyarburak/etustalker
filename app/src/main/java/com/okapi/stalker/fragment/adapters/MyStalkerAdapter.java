@@ -33,16 +33,14 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
     private Stash stash;
     private List<Student> arrayListFilter;
-    private Context context;
 
     public MyStalkerAdapter(Activity activity) {
-        context = activity;
         mInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         stash = Stash.get();
         arrayListFilter = new ArrayList<>();
-        for(String key: stash.getStudentKeys()){
+        for (String key : stash.getStudentKeys()) {
             arrayListFilter.add(stash.getStudent(key));
         }
         System.out.println("zaaaaa: " + arrayListFilter.size());
@@ -78,14 +76,6 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
         final Student student = getItem(position);
         textView.setText(student.name);
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, StudentActivity.class);
-                intent.putExtra("student", (Serializable) student);
-                context.startActivity(intent);
-            }
-        });
         imageView.setImageResource(R.drawable.app_icon);
 
         return rowView;
@@ -99,7 +89,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                arrayListFilter = (List<Student>)results.values;
+                arrayListFilter = (List<Student>) results.values;
                 notifyDataSetChanged();
             }
 
@@ -110,16 +100,15 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
                 List<Student> filteredArrayNames = new ArrayList<>();
                 String searchKey = constraint.toString().trim();
-                if(searchKey == null){
-                    for(String key: stash.getStudentKeys()){
+                if (searchKey == null) {
+                    for (String key : stash.getStudentKeys()) {
                         filteredArrayNames.add(stash.getStudent(key));
                     }
-                }
-                else{
+                } else {
                     System.out.println(searchKey);
                     FragmentarySearch frag = new FragmentarySearch(searchKey
                             , Heuristic.CONSECUTIVE_DISTANCE, stash.getStudentKeys());
-                    for(FragmentarySearch.SearchResult s: frag.getSearchResults()) {
+                    for (FragmentarySearch.SearchResult s : frag.getSearchResults()) {
                         filteredArrayNames.add(stash.getStudent(s.key));
                     }
                 }

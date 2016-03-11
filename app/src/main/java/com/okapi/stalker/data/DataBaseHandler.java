@@ -12,18 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
-    public static MyFriendsAdapter myFriendsAdapter;
     private static final int DATABASE_VERSION = 1;
-
     // Database Name
     private static final String DATABASE_NAME = "friendsDB";
-
     // Contacts table name
     private static final String TABLE_FRIENDS = "friends";
-
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String FRIEND_KEY = "key";
+    public static MyFriendsAdapter myFriendsAdapter;
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,12 +53,12 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting single friend
-    public String getFriend(int id) {
+    public String getFriend(String key) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_FRIENDS, new String[]{KEY_ID,
-                        FRIEND_KEY}, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
+                        FRIEND_KEY}, FRIEND_KEY + "=?",
+                new String[]{key}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -111,13 +108,12 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteAllFriends(){
+    public void deleteAllFriends() {
         List<String> list = getAllFriends();
-        for (String key: list) {
+        for (String key : list) {
             deleteFriend(key);
         }
     }
-
 
 
 }

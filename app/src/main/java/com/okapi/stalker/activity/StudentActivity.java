@@ -43,7 +43,8 @@ public class StudentActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         getSupportActionBar().setTitle(student.name);
-        getSupportActionBar().setHomeButtonEnabled(true);;
+        getSupportActionBar().setHomeButtonEnabled(true);
+        ;
 
     }
 
@@ -57,6 +58,7 @@ public class StudentActivity extends AppCompatActivity {
         adapter.addFragment(programFragment, getString(R.string.title_program));
         viewPager.setAdapter(adapter);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -29,6 +29,7 @@ import java.util.Set;
 public class ProgramFragment extends Fragment {
     private View rootView;
     private String key;
+
     public ProgramFragment() {
     }
 
@@ -43,7 +44,7 @@ public class ProgramFragment extends Fragment {
 
         Stash stash = Stash.get();
 
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_program, container, false);
 
             int pixels = dpToPx(getContext(), 50);
@@ -52,14 +53,14 @@ public class ProgramFragment extends Fragment {
 
             TextView[] buttons = new TextView[78];
             LinearLayout linearLayout =
-                    (LinearLayout)rootView.findViewById(R.id.calendarSplitterRelativeLayout);
+                    (LinearLayout) rootView.findViewById(R.id.calendarSplitterRelativeLayout);
 
             LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.MATCH_PARENT, 2);
-            prm.setMargins(pixels2,0,0,0);
+            prm.setMargins(pixels2, 0, 0, 0);
 
             RelativeLayout relativeLayout = null;
-            for (int i = 0; i< buttons.length; i++){
+            for (int i = 0; i < buttons.length; i++) {
                 TextView button = new TextView(getActivity());
 
 
@@ -67,9 +68,9 @@ public class ProgramFragment extends Fragment {
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(0, 0, 0, pixels10);
-                if(i % 13 != 0) {
+                if (i % 13 != 0) {
                     params.addRule(RelativeLayout.BELOW, i);
-                }else{
+                } else {
                     relativeLayout = new RelativeLayout(getActivity());
                     relativeLayout.setLayoutParams(prm);
                     linearLayout.addView(relativeLayout);
@@ -100,14 +101,14 @@ public class ProgramFragment extends Fragment {
             Set<String> sectionKeys = student.sectionKeys;
             String[] colors = {"#a5de5b", "#009AE3", "#f584d4", "#f74448", "#c3903f", "#63b526"};
             int colorIndex = 0;
-            for (String sectionKey: sectionKeys){
+            for (String sectionKey : sectionKeys) {
                 Section section = stash.getSection(sectionKey);
                 Set<String> intervalKeys = section.getIntervalKeys();
                 int color = Color.parseColor(colors[colorIndex % colors.length]);
-                for (String intervalKey: intervalKeys){
+                for (String intervalKey : intervalKeys) {
                     Interval interval = stash.getInterval(intervalKey);
                     int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
-                    buttons[indeks].setText(section.course + " (" + interval.classRoom.name+ ")");
+                    buttons[indeks].setText(section.course + " (" + interval.classRoom.name + ")");
                     buttons[indeks].setBackgroundColor(color);
                     buttons[indeks].setTextSize(13);
                     buttons[indeks].setTextColor(Color.WHITE);
@@ -123,7 +124,7 @@ public class ProgramFragment extends Fragment {
         Time time = new Time();
         time.setToNow();
         int minutes = (time.hour * 60) + time.minute - 510;
-        LinearLayout currentTimeLine = (LinearLayout)rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+        LinearLayout currentTimeLine = (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
         RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -138,7 +139,7 @@ public class ProgramFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
-    public void setKey(String key){
+    public void setKey(String key) {
         this.key = key;
     }
 }

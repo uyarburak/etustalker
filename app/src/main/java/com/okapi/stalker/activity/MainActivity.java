@@ -17,10 +17,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.data.storage.Stash;
+import com.okapi.stalker.data.storage.type.Student;
 import com.okapi.stalker.fragment.FriendsFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
@@ -52,18 +57,27 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
-        if (navView != null){
+        if (navView != null) {
             setupDrawerContent(navView);
         }
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        {
+            Stash stash = Stash.get();
+            Student me = stash.getStudent(user_student_key);
+            View headerView = navView.getHeaderView(0);
+            ((TextView) headerView.findViewById(R.id.header_user_name)).setText(me.name);
+            ((TextView) headerView.findViewById(R.id.header_user_id)).setText(me.id);
+        }
+
     }
-    private void setupDrawerContent(NavigationView navigationView){
+
+    private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -89,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupViewPager(ViewPager viewPager) {
 
         programFragment = new ProgramFragment();
@@ -100,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(stalkerFragment, getString(R.string.title_stalker));
         viewPager.setAdapter(adapter);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -119,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(!newText.isEmpty() && viewPager.getCurrentItem() != 2)
+                if (!newText.isEmpty() && viewPager.getCurrentItem() != 2)
                     viewPager.setCurrentItem(2);
                 stalkerFragment.onQueryTextChange(newText);
                 return false;
@@ -138,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if( id == R.id.action_exit){
+        } else if (id == R.id.action_exit) {
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
             editor.remove("id");
             editor.commit();
@@ -147,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        switch (id){
+        switch (id) {
             case android.R.id.home:
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
                     drawerLayout.openDrawer(GravityCompat.START);

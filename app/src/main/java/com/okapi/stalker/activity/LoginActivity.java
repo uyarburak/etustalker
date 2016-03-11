@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,34 +34,40 @@ import java.io.Serializable;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private EditText mIDView;
     private View mProgressView;
     private View mLoginFormView;
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if(sharedPreferences.contains("id")){
+        if (sharedPreferences.contains("id")) {
             Intent intent = new Intent(getBaseContext(), MainActivity.class);
             intent.putExtra("key", sharedPreferences.getString("id", ""));
             startActivity(intent);
             finish();
         }
+
         AssetManager am = getAssets();
         try {
-            Stash.set(am.open("stash.bin"), "res/htmls/spring2016", 600);
-        } catch (IOException e) {
-            e.printStackTrace();
+            Stash.get();
+        }catch (IllegalStateException e1){
+            try {
+                Stash.set(am.open("stash.bin"), "res/htmls/spring2016", 600);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
+        Log.d("set", "set bitti");
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
@@ -177,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
 
         private final String mID;
         private String key;
+
         UserLoginTask(String id) {
             mID = id;
         }
@@ -185,13 +193,13 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             Stash stash = Stash.get();
             Student user = null;
-            for (String string: stash.getStudentKeys()) {
-                if(string.endsWith(mID)){
+            for (String string : stash.getStudentKeys()) {
+                if (string.endsWith(mID)) {
                     user = stash.getStudent(string);
                     break;
                 }
             }
-            if(user == null){
+            if (user == null) {
                 return false;
             }
             key = user.key();
