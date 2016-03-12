@@ -2,7 +2,6 @@ package com.okapi.stalker.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,13 +19,11 @@ import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.SectionActivity;
-import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Interval;
 import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.data.storage.type.Student;
 
-import java.io.Serializable;
 import java.util.Set;
 
 
@@ -83,14 +80,8 @@ public class ProgramFragment extends Fragment {
                 button.setLayoutParams(params);
                 button.setHeight(pixels);
                 button.setGravity(Gravity.CENTER);
-                button.setBackgroundColor(Color.LTGRAY);
+                button.setBackgroundColor(Color.parseColor("#ececec"));
                 button.setId(i + 1);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO
-                    }
-                });
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -103,11 +94,14 @@ public class ProgramFragment extends Fragment {
             // Intervals are coming...
             Student student = stash.getStudent(key);
             Set<String> sectionKeys = student.sectionKeys;
-            String[] colors = {"#a5de5b", "#009AE3", "#f584d4", "#f74448", "#c3903f", "#63b526"};
+            String[] colors = {"#63b526", "#009AE3", "#f584d4", "#ff7800",
+                    "#f74448", "#c3903f", "#a5de5b", "black"};
             int colorIndex = 0;
             for (String sectionKey : sectionKeys) {
                 final Section section = stash.getSection(sectionKey);
                 Set<String> intervalKeys = section.getIntervalKeys();
+                if(intervalKeys.isEmpty())
+                    continue;
                 int color = Color.parseColor(colors[colorIndex % colors.length]);
                 for (String intervalKey : intervalKeys) {
                     Interval interval = stash.getInterval(intervalKey);
@@ -120,7 +114,7 @@ public class ProgramFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getActivity(), SectionActivity.class);
-                            intent.putExtra("section", (Serializable) section);
+                            intent.putExtra("section", section);
                             getActivity().startActivity(intent);
                         }
                     });
@@ -136,7 +130,9 @@ public class ProgramFragment extends Fragment {
         Time time = new Time();
         time.setToNow();
         int minutes = (time.hour * 60) + time.minute - 510;
-        LinearLayout currentTimeLine = (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+        LinearLayout currentTimeLine =
+                (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+
         RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
