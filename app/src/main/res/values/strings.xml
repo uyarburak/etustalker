@@ -10,6 +10,8 @@
     <string name="title_program">PROGRAM</string>
     <string name="title_stalker">STALKER</string>
     <string name="title_friends">FRIENDS</string>
+    <string name="title_overview">OVERVIEW</string>
+    <string name="title_students">STUDENTS</string>
 
     <!-- Strings related to login -->
     <string name="prompt_password">ID</string>

@@ -13,27 +13,31 @@ import android.view.MenuItem;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
+import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.data.storage.type.Student;
 import com.okapi.stalker.fragment.ProgramFragment;
+import com.okapi.stalker.fragment.SectionProfileFragment;
+import com.okapi.stalker.fragment.SectionProgramFragment;
+import com.okapi.stalker.fragment.StalkerFragment;
 import com.okapi.stalker.fragment.StudentProfileFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentActivity extends AppCompatActivity {
+public class SectionActivity extends AppCompatActivity {
 
-    private Student student;
+    private Section section;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private StudentProfileFragment studentProfileFragment;
-    private ProgramFragment programFragment;
+    private SectionProfileFragment sectionProfileFragment;
+    private SectionProgramFragment programFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        student = (Student) getIntent().getExtras().getSerializable("student");
+        section = (Section) getIntent().getExtras().getSerializable("section");
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -43,19 +47,20 @@ public class StudentActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        getSupportActionBar().setTitle(student.name);
+        getSupportActionBar().setTitle(section.course + " - "  + section.number);
         getSupportActionBar().setHomeButtonEnabled(true);
-        ;
 
     }
 
     private void setupViewPager(ViewPager viewPager) {
 
-        programFragment = new ProgramFragment();
-        programFragment.setKey(student.key());
-        studentProfileFragment = new StudentProfileFragment();
+        programFragment = new SectionProgramFragment();
+        programFragment.setSection(section);
+        sectionProfileFragment = new SectionProfileFragment();
+        sectionProfileFragment.setCourse(section);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(studentProfileFragment, getString(R.string.title_profile));
+        adapter.addFragment(sectionProfileFragment, getString(R.string.title_overview));
+        adapter.addFragment(new StalkerFragment(), getString(R.string.title_students));
         adapter.addFragment(programFragment, getString(R.string.title_program));
         viewPager.setAdapter(adapter);
     }
@@ -88,7 +93,9 @@ public class StudentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Student getStudent() {
-        return student;
+    public Section getSection() {
+        return section;
     }
+
+
 }

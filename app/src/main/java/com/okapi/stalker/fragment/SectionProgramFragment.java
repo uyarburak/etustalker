@@ -30,11 +30,11 @@ import java.io.Serializable;
 import java.util.Set;
 
 
-public class ProgramFragment extends Fragment {
+public class SectionProgramFragment extends Fragment {
     private View rootView;
-    private String key;
+    private Section section;
 
-    public ProgramFragment() {
+    public SectionProgramFragment() {
     }
 
     @Override
@@ -101,31 +101,16 @@ public class ProgramFragment extends Fragment {
             }
 
             // Intervals are coming...
-            Student student = stash.getStudent(key);
-            Set<String> sectionKeys = student.sectionKeys;
             String[] colors = {"#a5de5b", "#009AE3", "#f584d4", "#f74448", "#c3903f", "#63b526"};
-            int colorIndex = 0;
-            for (String sectionKey : sectionKeys) {
-                final Section section = stash.getSection(sectionKey);
-                Set<String> intervalKeys = section.getIntervalKeys();
-                int color = Color.parseColor(colors[colorIndex % colors.length]);
-                for (String intervalKey : intervalKeys) {
+            int color = Color.parseColor(colors[((int)(Math.random() * colors.length))]);
+            Set<String> intervalKeys = section.getIntervalKeys();
+            for (String intervalKey : intervalKeys) {
                     Interval interval = stash.getInterval(intervalKey);
                     int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
-                    buttons[indeks].setText(section.course + " (" + interval.classRoom.name + ")");
+                    buttons[indeks].setText(interval.classRoom.name);
                     buttons[indeks].setBackgroundColor(color);
                     buttons[indeks].setTextSize(13);
                     buttons[indeks].setTextColor(Color.WHITE);
-                    buttons[indeks].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), SectionActivity.class);
-                            intent.putExtra("section", (Serializable) section);
-                            getActivity().startActivity(intent);
-                        }
-                    });
-                }
-                colorIndex++;
             }
 
 
@@ -151,7 +136,7 @@ public class ProgramFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSection(Section section) {
+        this.section = section;
     }
 }

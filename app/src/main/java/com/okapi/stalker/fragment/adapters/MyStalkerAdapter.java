@@ -23,7 +23,9 @@ import com.okapi.stalker.search.SearchAssist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,13 +36,13 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
     private Stash stash;
     private List<Student> arrayListFilter;
 
-    public MyStalkerAdapter(Activity activity) {
+    public MyStalkerAdapter(Activity activity, Set<String> studentKeys) {
         mInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         stash = Stash.get();
         arrayListFilter = new ArrayList<>();
-        for (String key : stash.getStudentKeys()) {
+        for (String key : studentKeys) {
             arrayListFilter.add(stash.getStudent(key));
         }
         System.out.println("zaaaaa: " + arrayListFilter.size());

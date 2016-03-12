@@ -11,14 +11,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.MainActivity;
+import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
+import com.okapi.stalker.data.storage.Stash;
+import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
 import java.io.Serializable;
 
 public class StalkerFragment extends Fragment
         implements SearchView.OnQueryTextListener {
-
     MyStalkerAdapter myStalkerAdapter;
 
     public StalkerFragment() {
@@ -38,7 +41,11 @@ public class StalkerFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myStalkerAdapter = new MyStalkerAdapter(getActivity());
+        if(getActivity() instanceof MainActivity){
+            myStalkerAdapter = new MyStalkerAdapter(getActivity(), Stash.get().getStudentKeys());
+        }else if(getActivity() instanceof SectionActivity){
+            myStalkerAdapter = new MyStalkerAdapter(getActivity(), ((SectionActivity)getActivity()).getSection().getStudentKeys());
+        }
     }
 
     @Override

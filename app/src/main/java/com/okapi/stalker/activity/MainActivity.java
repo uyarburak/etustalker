@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Student;
 import com.okapi.stalker.fragment.FriendsFragment;
@@ -175,35 +176,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
     }
 }
