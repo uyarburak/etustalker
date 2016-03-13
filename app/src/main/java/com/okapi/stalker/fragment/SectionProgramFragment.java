@@ -116,23 +116,25 @@ public class SectionProgramFragment extends Fragment {
             TimerTask updateClock = new TimerTask() {
                 @Override
                 public void run() {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Time line initializing
-                            Time time = new Time();
-                            time.setToNow();
-                            if(time.hour < 21){
-                                currentTimeLine.setVisibility(View.VISIBLE);
-                                int minutes = (time.hour * 60) + time.minute - 510;
-                                System.out.println(time.second);
-                                params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
-                                currentTimeLine.setLayoutParams(params);
-                            }else{
-                                currentTimeLine.setVisibility(View.INVISIBLE);
+                    if(getActivity() != null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Time line initializing
+                                Time time = new Time();
+                                time.setToNow();
+                                if(time.hour < 21){
+                                    currentTimeLine.setVisibility(View.VISIBLE);
+                                    int minutes = (time.hour * 60) + time.minute - 510;
+                                    System.out.println(time.second);
+                                    params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
+                                    currentTimeLine.setLayoutParams(params);
+                                }else{
+                                    currentTimeLine.setVisibility(View.INVISIBLE);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             };
             timer.scheduleAtFixedRate(updateClock, 0, 60000);
