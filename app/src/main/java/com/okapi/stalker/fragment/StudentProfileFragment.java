@@ -1,6 +1,9 @@
 package com.okapi.stalker.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,13 +53,12 @@ public class StudentProfileFragment
         final DataBaseHandler db = new DataBaseHandler(getActivity());
         List<String> friendsList = db.getAllFriends();
         if(friendsList.contains(student.key())){
-            button.setText("Remove friend");
+            button.setText(getString(R.string.remove_friend));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     db.deleteFriend(student.key());
                     button.setEnabled(false);
-                    DataBaseHandler.myFriendsAdapter.init();
                 }
             });
         }
@@ -66,10 +68,21 @@ public class StudentProfileFragment
                 public void onClick(View v) {
                     db.addFriend(student.key());
                     button.setEnabled(false);
-                    DataBaseHandler.myFriendsAdapter.init();
                 }
             });
         }
+
+        FloatingActionButton floatingActionButton =
+                (FloatingActionButton)rootView.findViewById(R.id.fab_email);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:" + student.mail));
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+            }
+        });
         return rootView;
     }
 

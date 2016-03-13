@@ -50,6 +50,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_FRIENDS, null, values);
         db.close(); // Closing database connection
+        myFriendsAdapter.init();
     }
 
     // Getting single friend
@@ -63,6 +64,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         String friend = cursor.getString(1);
+        myFriendsAdapter.init();
         // return friend
         return friend;
     }
@@ -106,6 +108,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.delete(TABLE_FRIENDS, FRIEND_KEY + " = ?",
                 new String[]{String.valueOf(friend)});
         db.close();
+        myFriendsAdapter.init();
     }
 
     public void deleteAllFriends() {
@@ -113,6 +116,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         for (String key : list) {
             deleteFriend(key);
         }
+        myFriendsAdapter.init();
     }
 
 

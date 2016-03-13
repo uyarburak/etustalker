@@ -21,10 +21,19 @@
     <string name="error_field_required">This field is required</string>
     <string name="welcome_message">Welcome to Stalker APP. Enter your id number and start to stalk your crush :P</string>
 
+    <!-- Strings related to program -->
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
     <string name="wednesday">Wen</string>
     <string name="thursday">Thu</string>
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
+
+    <!-- Strings related to friends -->
+    <string name="add_friend">Add Friend</string>
+    <string name="remove_friend">Remove Friend</string>
+    <string name="xxx_has_removed"> has removed.</string>
+    <string name="all_friends_removed">All your friends removed.</string>
+    <string name="remove_all">Remove all</string>
+    <string name="send_mail">Send mail</string>
 </resources>

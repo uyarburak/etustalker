@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("set", "set bitti");
         setContentView(R.layout.activity_login);
         // Set up the login form.
 

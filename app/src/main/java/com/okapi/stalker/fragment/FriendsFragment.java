@@ -31,7 +31,8 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        myFriendsAdapter = new MyFriendsAdapter(getActivity());
+        DataBaseHandler.myFriendsAdapter = myFriendsAdapter;
     }
 
     @Override
@@ -39,10 +40,8 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        myFriendsAdapter = new MyFriendsAdapter(getActivity());
         ListView listView = (ListView) rootView.findViewById(R.id.list_friends);
         listView.setAdapter(myFriendsAdapter);
-        DataBaseHandler.myFriendsAdapter = myFriendsAdapter;
         registerForContextMenu(listView);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
@@ -60,25 +59,23 @@ public class FriendsFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, v.getId(), 0, "Remove from friends");
-        menu.add(0, v.getId(), 0, "Remove all");
+        menu.add(0, v.getId(), 0, getString(R.string.remove_friend));
+        menu.add(0, v.getId(), 0, getString(R.string.remove_all));
     }
     @Override
     public boolean onContextItemSelected(MenuItem item){
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        if(item.getTitle()=="Remove from friends"){
+        if(item.getTitle()==getString(R.string.remove_friend)){
             Student student = (Student)myFriendsAdapter.getItem(info.position);
             DataBaseHandler db = new DataBaseHandler(getActivity());
             db.deleteFriend(student.key());
-            Toast.makeText(getContext(),student.name + " has removed.",Toast.LENGTH_LONG).show();
-            myFriendsAdapter.init();
+            Toast.makeText(getContext(), student.name + getString(R.string.xxx_has_removed), Toast.LENGTH_LONG).show();
         }
-        else if(item.getTitle()=="Remove all"){
+        else if(item.getTitle()==getString(R.string.remove_all)){
             DataBaseHandler db = new DataBaseHandler(getActivity());
             db.deleteAllFriends();
-            Toast.makeText(getContext(),"All your friends has removed.",Toast.LENGTH_LONG).show();
-            myFriendsAdapter.init();
+            Toast.makeText(getContext(), getString(R.string.all_friends_removed), Toast.LENGTH_LONG).show();
         }else{
             return false;
         }

@@ -25,9 +25,11 @@ import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.data.storage.type.Student;
 
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class ProgramFragment extends Fragment {
+public class ProgramFragment extends Fragment{
     private View rootView;
     private String key;
 
@@ -125,19 +127,40 @@ public class ProgramFragment extends Fragment {
 
             rootView.findViewById(R.id.refreshLinearLayout).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.refreshView).setVisibility(View.INVISIBLE);
-        }
-        // Time line initializing
-        Time time = new Time();
-        time.setToNow();
-        int minutes = (time.hour * 60) + time.minute - 510;
-        LinearLayout currentTimeLine =
-                (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
 
-        RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
-        currentTimeLine.setLayoutParams(params);
+
+            final LinearLayout currentTimeLine =
+                    (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+
+            final RelativeLayout.LayoutParams params =
+                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+            Timer timer = new Timer();
+            TimerTask updateClock = new TimerTask() {
+                @Override
+                public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Time line initializing
+                            Time time = new Time();
+                            time.setToNow();
+                            if(time.hour < 21){
+                                currentTimeLine.setVisibility(View.VISIBLE);
+                                int minutes = (time.hour * 60) + time.minute - 510;
+                                System.out.println(time.second);
+                                params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
+                                currentTimeLine.setLayoutParams(params);
+                            }else{
+                                currentTimeLine.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
+                }
+            };
+            timer.scheduleAtFixedRate(updateClock, 0, 60000);
+        }
+
         return rootView;
     }
 
