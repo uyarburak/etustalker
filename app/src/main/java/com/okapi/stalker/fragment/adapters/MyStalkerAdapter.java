@@ -2,8 +2,6 @@ package com.okapi.stalker.fragment.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Student;
 import com.okapi.stalker.search.FragmentarySearch;
-import com.okapi.stalker.search.FragmentarySearch.Heuristic;
-import com.okapi.stalker.search.SearchAssist;
+import com.okapi.stalker.search.SearchParser;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
@@ -108,10 +100,10 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
                     }
                 } else {
                     System.out.println(searchKey);
-                    FragmentarySearch frag = new FragmentarySearch(searchKey
-                            , Heuristic.CONSECUTIVE_DISTANCE, stash.getStudentKeys());
-                    for (FragmentarySearch.SearchResult s : frag.getSearchResults()) {
-                        filteredArrayNames.add(stash.getStudent(s.key));
+                    SearchParser parser = new SearchParser();
+                    parser.giveInput(searchKey);
+                    for (String k: parser.getResults()) {
+                        filteredArrayNames.add(stash.getStudent(k));
                     }
                 }
 

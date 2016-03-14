@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             Stash.get();
         }catch (IllegalStateException e1){
             try {
-                Stash.set(am.open("stash.bin"), "res/htmls/spring2016", 600);
+                Stash.set(am.open("stash.bin"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

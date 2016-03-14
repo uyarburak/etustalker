@@ -34,6 +34,7 @@ public class Stacker {
     Set<String> departmentSet;
 
     private Stacker() {
+
     }
 
     static Stacker call() {
@@ -206,5 +207,11 @@ public class Stacker {
             for (int k = 0; k < 13; k++)
                 intervals.remove(0);
         }
+    }
+
+    public static void main(String args[]) {
+        Stacker stacker = Stacker.call();
+        stacker.readFrom("assets/htmls/spring2016", 599);
+        stacker.writeTo("assets/stash.bin");
     }
 }

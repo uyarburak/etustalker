@@ -21,9 +21,6 @@ public class Stash {
 
     private static Stash stash;
 
-    private boolean writeBack;
-    private InputStream is;
-
     private Map<String, Course> courseMap;
     private Map<String, Section> sectionMap;
     private Map<String, Student> studentMap;
@@ -32,58 +29,22 @@ public class Stash {
     private Map<String, Interval> intervalMap;
     private Set<String> departmentSet;
 
-    private Stash(InputStream is, String source, int size) {
-        this.is = is;
+    private Stash(InputStream stream) {
         try {
-            load(is);
-        } catch (FileNotFoundException e) {
-            read(source, size);
+            load(stream);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static void set(InputStream is, String source, int size) {
-        if (stash != null)
-            stash.writeBack();
-        stash = new Stash(is, source, size);
+    public static void set(InputStream stream) {
+        stash = new Stash(stream);
     }
 
     public static Stash get() {
         if (stash == null)
             throw new IllegalStateException("Stash is not set!");
         return stash;
-    }
-
-    // test
-    public static void main(String[] args) throws FileNotFoundException {
-        long s = System.nanoTime();
-        Stash.set(new FileInputStream("res/stash.bin"), "res/htmls/spring2016", 600);
-        Stash stash = Stash.get();
-
-        System.out.println(stash.classRoomMap.size());
-        System.out.println((System.nanoTime() - s) / 1E9);
-        for (Map.Entry<String, ClassRoom> entry : stash.classRoomMap.entrySet()) {
-            for (String string : entry.getValue().getIntervalKeys()) {
-                System.out.println(stash.intervalMap.get(string));
-            }
-        }
-//		for (Map.Entry<String, Section> entry : stash.sectionMap.entrySet()) {
-//			System.out.println(entry.getValue());
-//			for (String string : entry.getValue().getIntervalKeys()) {
-//				System.out.println(stash.intervalMap.get(string));
-//			}
-//		}
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            if (scanner.nextLine().equals("q")) {
-                stash.writeBack();
-                break;
-            }
-        }
-        scanner.close();
-        System.out.println("Done");
-
     }
 
     private void load(InputStream is) throws IOException, ClassNotFoundException {
@@ -96,27 +57,7 @@ public class Stash {
         classRoomMap = (Map<String, ClassRoom>) stash.readObject();
         intervalMap = (Map<String, Interval>) stash.readObject();
         departmentSet = (Set<String>) stash.readObject();
-
         stash.close();
-    }
-
-    private void read(String source, int size) {
-        Stacker stacker = Stacker.call();
-        stacker.readFrom(source, size);
-        courseMap = stacker.courseMap;
-        sectionMap = stacker.sectionMap;
-        studentMap = stacker.studentMap;
-        instructortMap = stacker.instructorMap;
-        classRoomMap = stacker.classRoomMap;
-        intervalMap = stacker.intervalMap;
-        departmentSet = stacker.departmentSet;
-
-        writeBack = true;
-    }
-
-    public void writeBack() {
-        //if (writeBack)
-        //Stacker.call().writeTo(destionation);
     }
 
     public Set<String> getCourseKeys() {
@@ -170,4 +111,5 @@ public class Stash {
     public Set<String> getDepartments() {
         return departmentSet;
     }
+
 }

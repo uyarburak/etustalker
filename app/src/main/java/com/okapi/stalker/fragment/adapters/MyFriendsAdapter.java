@@ -2,31 +2,20 @@ package com.okapi.stalker.fragment.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.DataBaseHandler;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Student;
-import com.okapi.stalker.search.FragmentarySearch;
-import com.okapi.stalker.search.FragmentarySearch.Heuristic;
-import com.okapi.stalker.search.SearchAssist;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class MyFriendsAdapter extends BaseAdapter {
     public static MyFriendsAdapter myFriendsAdapter;
