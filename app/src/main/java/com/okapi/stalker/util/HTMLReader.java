@@ -13,17 +13,19 @@ public class HTMLReader {
     private String html;
 
     public HTMLReader(File file, String charSet) {
-        /*
-		try (Scanner scanner = new Scanner(file, charSet)) {
-			StringBuilder stringBuilder = new StringBuilder();
+		Scanner scanner;
+        try {
+            scanner = new Scanner(file, charSet);
+            StringBuilder stringBuilder = new StringBuilder();
 			while (scanner.hasNextLine())
 				stringBuilder.append(scanner.nextLine() + "\n");
 			html = stringBuilder.toString();
-			html = html.replaceAll(" <td>Evet", " </td><td>Evet").replaceAll("p<td>Devams�z",  "p</td><td>Devams�z").replaceAll("<center>", "");
-		} catch (FileNotFoundException e) {
+			html = html.replaceAll(" <td>Evet", " </td><td>Evet").replaceAll("p<td>Devamsiz",  "p</td><td>Devamsiz").replaceAll("<center>", "");
+		    scanner.close();
+        } catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		*/
+
     }
 
     public HTMLReader(File file) {

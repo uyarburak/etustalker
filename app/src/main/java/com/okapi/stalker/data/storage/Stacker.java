@@ -211,7 +211,7 @@ public class Stacker {
 
     public static void main(String args[]) {
         Stacker stacker = Stacker.call();
-        stacker.readFrom("assets/htmls/spring2016", 599);
+        stacker.readFrom("assets/htmls/spring2016", 600);
         stacker.writeTo("assets/stash.bin");
     }
 }
