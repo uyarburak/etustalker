@@ -60,10 +60,14 @@ public class SectionActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
 
+        Bundle args = new Bundle();
+        args.putSerializable("section", section);
         programFragment = new SectionProgramFragment();
-        programFragment.setSection(section);
+        programFragment.setArguments(args);
+
         sectionProfileFragment = new SectionProfileFragment();
-        sectionProfileFragment.setCourse(section);
+        sectionProfileFragment.setArguments(args);
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(sectionProfileFragment, getString(R.string.title_overview));
         adapter.addFragment(new StalkerFragment(), getString(R.string.title_students));

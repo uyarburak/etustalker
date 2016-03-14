@@ -5,21 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.SectionActivity;
-import com.okapi.stalker.activity.StudentActivity;
-import com.okapi.stalker.data.DataBaseHandler;
-import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Course;
 import com.okapi.stalker.data.storage.type.Section;
-import com.okapi.stalker.data.storage.type.Student;
-
-import java.util.List;
-
 
 public class SectionProfileFragment
         extends Fragment {
@@ -51,7 +41,10 @@ public class SectionProfileFragment
 
         return rootView;
     }
-    public void setCourse(Section section){
-        this.section = section;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.section = (Section)args.getSerializable("section");
     }
 }

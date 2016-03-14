@@ -143,13 +143,14 @@ public class SectionProgramFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.section = (Section)args.getSerializable("section");
+    }
 
     private int dpToPx(Context context, int dp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
-    }
-
-    public void setSection(Section section) {
-        this.section = section;
     }
 }

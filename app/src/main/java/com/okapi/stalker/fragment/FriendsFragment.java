@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 public class FriendsFragment extends Fragment {
 
-    MyFriendsAdapter myFriendsAdapter;
+    private MyFriendsAdapter myFriendsAdapter;
 
     public FriendsFragment() {
     }
