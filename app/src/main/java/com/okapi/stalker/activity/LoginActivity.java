@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
@@ -34,7 +36,7 @@ import java.io.Serializable;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -48,27 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (sharedPreferences.contains("id")) {
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            intent.putExtra("key", sharedPreferences.getString("id", ""));
-            startActivity(intent);
-            finish();
-        }
-
-        AssetManager am = getAssets();
-        try {
-            Stash.get();
-        }catch (IllegalStateException e1){
-            try {
-                Stash.set(am.open("stash.bin"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         setContentView(R.layout.activity_login);
-        // Set up the login form.
 
         mIDView = (EditText) findViewById(R.id.password);
         mIDView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -202,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
             key = user.key();
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("id", user.key());
             editor.commit();
