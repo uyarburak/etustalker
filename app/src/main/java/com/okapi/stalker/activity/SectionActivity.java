@@ -2,9 +2,6 @@ package com.okapi.stalker.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +12,9 @@ import android.view.MenuItem;
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
 import com.okapi.stalker.data.storage.type.Section;
-import com.okapi.stalker.data.storage.type.Student;
-import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.SectionProfileFragment;
 import com.okapi.stalker.fragment.SectionProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
-import com.okapi.stalker.fragment.StudentProfileFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SectionActivity extends AppCompatActivity {
 

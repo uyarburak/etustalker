@@ -1,5 +1,6 @@
 package com.okapi.stalker.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.InstructorActivity;
+import com.okapi.stalker.activity.SectionActivity;
+import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Course;
+import com.okapi.stalker.data.storage.type.Instructor;
 import com.okapi.stalker.data.storage.type.Section;
 
 public class SectionProfileFragment
@@ -34,10 +39,24 @@ public class SectionProfileFragment
         //courseName.setText(course.title);
         TextView sectionCode = (TextView) rootView.findViewById(R.id.section_code);
         sectionCode.setText(section.course + " - " + section.number);
+
         TextView lecturer = (TextView) rootView.findViewById(R.id.section_lecturer_name);
         lecturer.setText(section.instructor);
+
         TextView size = (TextView) rootView.findViewById(R.id.section_size);
         size.setText(section.size+"");
+
+        lecturer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Stash stash = Stash.get();
+                Instructor instructor = stash.getInstructor(section.instructor);
+                System.out.println(instructor);
+                Intent intent = new Intent(getActivity(), InstructorActivity.class);
+                intent.putExtra("instructor", instructor);
+                getActivity().startActivity(intent);
+            }
+        });
 
         return rootView;
     }

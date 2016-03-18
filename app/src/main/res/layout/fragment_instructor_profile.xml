@@ -6,31 +6,18 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="5"
-        >
-
-        <RelativeLayout
-            android:id="@+id/profile_header"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_weight="1.6"
-            android:background="@color/colorAccent"
-            android:gravity="center_horizontal|center_vertical"
-            >
-        </RelativeLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_weight="3.4"
+            android:layout_weight="3.45"
             android:orientation="vertical"
             android:padding="16dp"
             android:weightSum="10"
-            >
+            android:id="@+id/linearLayout">
 
             <LinearLayout
                 android:layout_height="0dp"
@@ -62,40 +49,6 @@
                     android:background="#abdef4" />
 
             </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_height="0dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:weightSum="4"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="ID:"
-                    android:textSize="20dp"
-                    android:textColor="@android:color/black"
-                    android:padding="3dp"
-                    android:background="#e28bfa" />
-
-                <TextView
-                    android:id="@+id/profile_id"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:text="8283001122"
-                    android:textSize="18dp"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"
-                    android:padding="3dp"
-                    android:background="#e5f554" />
-
-            </LinearLayout>
-
 
 
             <LinearLayout
@@ -161,17 +114,18 @@
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_friend"
-                android:id="@+id/profile_add_friend_button"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1" />
-
         </LinearLayout>
 
-    </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/sections_list"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="3.4"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_email"

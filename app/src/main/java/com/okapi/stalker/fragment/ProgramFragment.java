@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.data.storage.Stash;
+import com.okapi.stalker.data.storage.type.Instructor;
 import com.okapi.stalker.data.storage.type.Interval;
 import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.data.storage.type.Student;
@@ -32,7 +33,7 @@ import java.util.TimerTask;
 public class ProgramFragment extends Fragment{
 
     private View rootView;
-    private String key;
+    private Set<String> keys;
 
     public ProgramFragment() {
     }
@@ -95,12 +96,11 @@ public class ProgramFragment extends Fragment{
             }
 
             // Intervals are coming...
-            Student student = stash.getStudent(key);
-            Set<String> sectionKeys = student.sectionKeys;
+
             String[] colors = {"#63b526", "#009AE3", "#f584d4", "#ff7800",
                     "#f74448", "#c3903f", "#a5de5b", "black"};
             int colorIndex = 0;
-            for (String sectionKey : sectionKeys) {
+            for (String sectionKey : keys) {
                 final Section section = stash.getSection(sectionKey);
                 Set<String> intervalKeys = section.getIntervalKeys();
                 if(intervalKeys.isEmpty())
@@ -174,7 +174,7 @@ public class ProgramFragment extends Fragment{
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSectionKeys(Set<String> keys) {
+        this.keys = keys;
     }
 }

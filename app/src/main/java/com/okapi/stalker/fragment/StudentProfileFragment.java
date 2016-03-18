@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,17 @@ public class StudentProfileFragment extends Fragment {
         final Student student = ((StudentActivity) getActivity()).getStudent();
         //ImageView image = (ImageView) rootView.findViewById(R.id.imageView2);
         //image.setImageResource(R.drawable.app_icon);
-        TextView textAd = (TextView) rootView.findViewById(R.id.profile_name);
-        textAd.setText(student.name);
+        TextView textName = (TextView) rootView.findViewById(R.id.profile_name);
+        textName.setText(student.name);
+        if(student.name.length() > 23)
+            textName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com.tr/search?q="+student.name));
+                startActivity(browserIntent);
+            }
+        });
         TextView textNo = (TextView) rootView.findViewById(R.id.profile_id);
         textNo.setText("" + student.id);
         TextView textMail = (TextView) rootView.findViewById(R.id.profile_email);

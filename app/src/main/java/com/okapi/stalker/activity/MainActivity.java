@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -17,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +27,9 @@ import com.okapi.stalker.fragment.FriendsFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
+    private Student student;
     private String user_student_key;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
@@ -70,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         {
             Stash stash = Stash.get();
-            Student me = stash.getStudent(user_student_key);
+            student = stash.getStudent(user_student_key);
             View headerView = navView.getHeaderView(0);
-            ((TextView) headerView.findViewById(R.id.header_user_name)).setText(me.name);
-            ((TextView) headerView.findViewById(R.id.header_user_id)).setText(me.id);
+            ((TextView) headerView.findViewById(R.id.header_user_name)).setText(student.name);
+            ((TextView) headerView.findViewById(R.id.header_user_id)).setText(student.id);
         }
 
     }
@@ -106,9 +100,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-
+        Stash stash = Stash.get();
+        student = stash.getStudent(user_student_key);
         programFragment = new ProgramFragment();
-        programFragment.setKey(user_student_key);
+        programFragment.setSectionKeys(student.sectionKeys);
         stalkerFragment = new StalkerFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(programFragment, getString(R.string.title_program));

@@ -36,4 +36,7 @@
     <string name="all_friends_removed">All your friends removed.</string>
     <string name="remove_all">Remove all</string>
     <string name="send_mail">Send mail</string>
+
+
+    <string name="no_mail_found">No mail found...</string>
 </resources>

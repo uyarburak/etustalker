@@ -10,7 +10,7 @@ public class Instructor implements Comparable<Instructor>, Serializable {
     public String name;
     public String department;
     public String mail;
-    private Set<String> sectionKeys;
+    public Set<String> sectionKeys;
 
     public Instructor() {
         sectionKeys = new HashSet<>();
