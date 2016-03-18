@@ -76,7 +76,10 @@ public class SearchParser {
             if (list.get(i).param == SearchParam.NAME)
                 inter = new ArrayList<>(list.get(i).results);
         if (inter == null)
-            inter = new ArrayList<>(list.get(0).results);
+            if (!list.isEmpty())
+                inter = new ArrayList<>(list.get(0).results);
+            else
+                inter = new ArrayList<>();
         for (int i = 0; i < list.size(); i++)
             inter.retainAll(list.get(i).results);
         return inter;

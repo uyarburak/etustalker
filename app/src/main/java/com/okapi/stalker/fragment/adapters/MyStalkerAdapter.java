@@ -99,14 +99,12 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
                         filteredArrayNames.add(stash.getStudent(key));
                     }
                 } else {
-                    System.out.println(searchKey);
                     SearchParser parser = new SearchParser();
                     parser.giveInput(searchKey);
                     for (String k: parser.getResults()) {
                         filteredArrayNames.add(stash.getStudent(k));
                     }
                 }
-
 
                 results.count = filteredArrayNames.size();
                 results.values = filteredArrayNames;

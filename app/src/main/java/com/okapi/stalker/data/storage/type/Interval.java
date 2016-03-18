@@ -6,12 +6,10 @@ public class Interval implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    ;
     public Time time;
-
-    ;
     public Day day;
     public ClassRoom classRoom;
+
     public Interval() {
     }
 
