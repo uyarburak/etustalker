@@ -67,13 +67,16 @@ public class MyFriendsAdapter extends BaseAdapter {
 
         rowView = mInflater.inflate(R.layout.fragment_stalker_list, null);
 
-        TextView textView =
+        TextView textName =
                 (TextView) rowView.findViewById(R.id.name);
+        TextView textMajor =
+                (TextView) rowView.findViewById(R.id.department);
         ImageView imageView =
                 (ImageView) rowView.findViewById(R.id.thumb);
 
         final Student student = getItem(position);
-        textView.setText(student.name);
+        textName.setText(student.name);
+        textMajor.setText(student.major);
         imageView.setImageResource(R.drawable.app_icon);
 
         return rowView;

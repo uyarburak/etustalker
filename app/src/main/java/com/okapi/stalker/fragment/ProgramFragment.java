@@ -1,6 +1,8 @@
 package com.okapi.stalker.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,12 +21,19 @@ import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.SectionActivity;
+import com.okapi.stalker.activity.StudentActivity;
+import com.okapi.stalker.data.DataBaseHandler;
 import com.okapi.stalker.data.storage.Stash;
 import com.okapi.stalker.data.storage.type.Instructor;
 import com.okapi.stalker.data.storage.type.Interval;
 import com.okapi.stalker.data.storage.type.Section;
 import com.okapi.stalker.data.storage.type.Student;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,6 +75,7 @@ public class ProgramFragment extends Fragment{
 
             RelativeLayout relativeLayout = null;
             for (int i = 0; i < buttons.length; i++) {
+                final int index = i;
                 TextView button = new TextView(getActivity());
 
 
@@ -86,7 +96,12 @@ public class ProgramFragment extends Fragment{
                 button.setGravity(Gravity.CENTER);
                 button.setBackgroundColor(Color.parseColor("#ececec"));
                 button.setId(i + 1);
-
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        freeFriendsDialog(index);
+                    }
+                });
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 }
@@ -174,6 +189,45 @@ public class ProgramFragment extends Fragment{
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
+    private void freeFriendsDialog(int index){
+        final HashMap<String, Student> freeGuys = new HashMap<>();
+        Stash stash = Stash.get();
+        DataBaseHandler db = new DataBaseHandler(getActivity());
+        List<String> friends = db.getAllFriends();
+        etiket:
+        for (String key: friends){
+            Student friend = stash.getStudent(key);
+            Set<String> sectionKeys = friend.sectionKeys;
+            for(String sectionKey: sectionKeys){
+                Section section = stash.getSection(sectionKey);
+                Set<String> intervalKeys = section.getIntervalKeys();
+                for (String intervalKey: intervalKeys){
+                    Interval interval = stash.getInterval(intervalKey);
+                    int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
+                    if(indeks == index)
+                        continue etiket;
+                }
+            }
+            freeGuys.put(friend.name, friend);
+        }
+
+        //Create sequence of items
+        final CharSequence[] freeGuyNames = freeGuys.keySet().toArray(new String[freeGuys.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("Free Friends");
+        dialogBuilder.setItems(freeGuyNames, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Student friend = freeGuys.get(freeGuyNames[item].toString());  //Selected item in listview
+                Intent intent = new Intent(getActivity(), StudentActivity.class);
+                intent.putExtra("student", (Serializable) friend);
+                getActivity().startActivity(intent);
+            }
+        });
+        //Create alert dialog object via builder
+        AlertDialog alertDialogObject = dialogBuilder.create();
+        //Show the dialog
+        alertDialogObject.show();
+    }
     public void setSectionKeys(Set<String> keys) {
         this.keys = keys;
     }

@@ -1,8 +1,10 @@
 package com.okapi.stalker.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -73,13 +75,43 @@ public class FriendsFragment extends Fragment {
             Toast.makeText(getContext(), student.name + getString(R.string.xxx_has_removed), Toast.LENGTH_LONG).show();
         }
         else if(item.getTitle()==getString(R.string.remove_all)){
-            DataBaseHandler db = new DataBaseHandler(getActivity());
-            db.deleteAllFriends();
-            Toast.makeText(getContext(), getString(R.string.all_friends_removed), Toast.LENGTH_LONG).show();
+            dialogRemoveAll();
         }else{
             return false;
         }
         return true;
+    }
+
+    private void dialogRemoveAll(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Delete...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Are you sure you want delete all your friends?");
+
+        // Setting Icon to Dialog
+        // alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                DataBaseHandler db = new DataBaseHandler(getActivity());
+                db.deleteAllFriends();
+                Toast.makeText(getContext(), getString(R.string.all_friends_removed), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
 
