@@ -1,7 +1,9 @@
 package com.okapi.stalker.fragment.adapters;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.okapi.stalker.search.FragmentarySearch;
 import com.okapi.stalker.search.SearchParser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +30,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
     private Stash stash;
     private List<Student> arrayListFilter;
+    private HashSet<String> discoveredStudents;
 
     public MyStalkerAdapter(Activity activity, Set<String> studentKeys) {
         mInflater = (LayoutInflater) activity.getSystemService(
@@ -37,6 +41,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         for (String key : studentKeys) {
             arrayListFilter.add(stash.getStudent(key));
         }
+        discoveredStudents = new HashSet<>();
         System.out.println("zaaaaa: " + arrayListFilter.size());
 
     }
@@ -74,10 +79,18 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         textName.setText(student.name);
         textMajor.setText(student.major);
         imageView.setImageResource(R.drawable.app_icon);
-
+        if(discoveredStudents.contains(student.key()))
+            textName.setTextColor(Color.RED);
         return rowView;
     }
 
+    public void changeColor(int position, View view){
+        TextView textName =
+                (TextView) view.findViewById(R.id.name);
+        textName.setTextColor(Color.RED);
+        Student student = getItem(position);
+        discoveredStudents.add(student.key());
+    }
     @Override
     public Filter getFilter() {
 
