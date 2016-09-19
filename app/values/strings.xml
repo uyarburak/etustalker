@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Stalker</string>
+    <string name="title_activity_main">Stalker</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="action_exit">Exit</string>
+
+    <string name="title_profile">PROFILE</string>
+    <string name="title_program">PROGRAM</string>
+    <string name="title_stalker">STALKER</string>
+    <string name="title_friends">FRIENDS</string>
+    <string name="title_overview">OVERVIEW</string>
+    <string name="title_students">STUDENTS</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_password">ID</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="error_invalid_id">This ID is too short</string>
+    <string name="error_incorrect_password">This ID is not found</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="welcome_message">Welcome to Stalker APP. Enter your id number and start to stalk your crush :P</string>
+
+    <!-- Strings related to program -->
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wen</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+
+    <!-- Strings related to friends -->
+    <string name="add_friend">Add Friend</string>
+    <string name="remove_friend">Remove Friend</string>
+    <string name="xxx_has_removed"> has removed.</string>
+    <string name="all_friends_removed">All your friends removed.</string>
+    <string name="remove_all">Remove all</string>
+    <string name="send_mail">Send mail</string>
+
+
+    <string name="no_mail_found">No mail found...</string>
+</resources>
