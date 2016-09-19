@@ -82,6 +82,36 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Office:"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#f2ee07" />
+
+                <TextView
+                    android:id="@+id/profile_office"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:text="Panchkula"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:padding="3dp"
+                    android:background="#f48d56" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_height="0dp"
@@ -110,8 +140,101 @@
                     android:textColor="@android:color/black"
                     android:singleLine="true"
                     android:padding="3dp"
-                    android:background="#d48383" />
+                    android:background="#d1a7df" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Website:"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#d5ecf4" />
+
+                <TextView
+                    android:id="@+id/profile_website"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:text="Panchkula"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:padding="3dp"
+                    android:background="#d75454" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="LAB:"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#d6ffa8" />
+
+                <TextView
+                    android:id="@+id/profile_lab_url"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:text="Panchkula"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:padding="3dp"
+                    android:background="#ea4d99" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Image:"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#c7f668" />
+
+                <TextView
+                    android:id="@+id/profile_image"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:text="Panchkula"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:padding="3dp"
+                    android:background="#69b7fb" />
             </LinearLayout>
 
         </LinearLayout>

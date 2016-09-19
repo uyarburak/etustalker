@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Stalker</string>
     <string name="title_activity_main">Stalker</string>
+    <string name="title_activity_preferences">Preferences</string>
 
+    <string name="action_sort">Sort by</string>
+        <string name="action_sort_by_name">Sort by Name</string>
+        <string name="action_sort_by_id">Sort by ID</string>
+        <string name="action_sort_by_sex">Sort by Sex</string>
+        <string name="action_sort_by_department">Sort by Department</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_exit">Exit</string>
@@ -13,10 +19,12 @@
     <string name="title_overview">OVERVIEW</string>
     <string name="title_students">STUDENTS</string>
 
+
+
     <!-- Strings related to login -->
     <string name="prompt_password">ID</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="error_invalid_id">This ID is too short</string>
+    <string name="error_invalid_id">This ID is invalid</string>
     <string name="error_incorrect_password">This ID is not found</string>
     <string name="error_field_required">This field is required</string>
     <string name="welcome_message">Welcome to Stalker APP. Enter your id number and start to stalk your crush :P</string>
@@ -39,4 +47,27 @@
 
 
     <string name="no_mail_found">No mail found...</string>
+
+
+    <!-- Preferences Strings -->
+    <string name="notification_preferences">Notifications</string>
+    <string name="notification_allow">Allow the notifications</string>
+    <string name="notification_x_minute">Send notification x minutes before the class</string>
+    <string name="notification_alert_type">Alert type</string>
+
+    <string name="update_preferences">Updates</string>
+    <string name="auto_update_check_allow">Allow auto update checking</string>
+    <string name="auto_update_check_cycle">Update checking time cyle</string>
+    <string name="title_activity_web_browser">WebBrowserActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="feedback_types">
+        <item>Bug Report</item>
+        <item>Question</item>
+        <item>Thanks</item>
+    </string-array>
+
+
 </resources>

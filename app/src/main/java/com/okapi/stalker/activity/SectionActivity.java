@@ -11,7 +11,8 @@ import android.view.MenuItem;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
-import com.okapi.stalker.data.storage.type.Section;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.fragment.SectionProfileFragment;
 import com.okapi.stalker.fragment.SectionProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
@@ -28,8 +29,10 @@ public class SectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainDataBaseHandler db = new MainDataBaseHandler(this);
         setContentView(R.layout.activity_main);
-        section = (Section) getIntent().getExtras().getSerializable("section");
+        Integer sectionId = getIntent().getExtras().getInt("section");
+        section = db.getSectionFull(sectionId);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -44,7 +47,7 @@ public class SectionActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        getSupportActionBar().setTitle(section.course + " - "  + section.number);
+        getSupportActionBar().setTitle(section.getCourse().getCode() + " - "  + section.getSectionNo());
         getSupportActionBar().setHomeButtonEnabled(true);
 
     }
@@ -74,7 +77,7 @@ public class SectionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_student, menu);
+        getMenuInflater().inflate(R.menu.menu_section, menu);
 
         return true;
     }

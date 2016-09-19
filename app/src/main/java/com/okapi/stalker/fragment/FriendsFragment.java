@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.StudentActivity;
-import com.okapi.stalker.data.DataBaseHandler;
-import com.okapi.stalker.data.storage.type.Student;
+import com.okapi.stalker.data.FriendsDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MyFriendsAdapter;
 
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myFriendsAdapter = new MyFriendsAdapter(getActivity());
-        DataBaseHandler.myFriendsAdapter = myFriendsAdapter;
+        FriendsDataBaseHandler.myFriendsAdapter = myFriendsAdapter;
     }
 
     @Override
@@ -70,9 +70,9 @@ public class FriendsFragment extends Fragment {
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         if(item.getTitle()==getString(R.string.remove_friend)){
             Student student = (Student)myFriendsAdapter.getItem(info.position);
-            DataBaseHandler db = new DataBaseHandler(getActivity());
-            db.deleteFriend(student.key());
-            Toast.makeText(getContext(), student.name + getString(R.string.xxx_has_removed), Toast.LENGTH_LONG).show();
+            FriendsDataBaseHandler db = new FriendsDataBaseHandler(getActivity());
+            db.deleteFriend(student.getId());
+            Toast.makeText(getContext(), student.getName() + getString(R.string.xxx_has_removed), Toast.LENGTH_LONG).show();
         }
         else if(item.getTitle()==getString(R.string.remove_all)){
             dialogRemoveAll();
@@ -97,7 +97,7 @@ public class FriendsFragment extends Fragment {
         // Setting Positive "Yes" Button
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
-                DataBaseHandler db = new DataBaseHandler(getActivity());
+                FriendsDataBaseHandler db = new FriendsDataBaseHandler(getActivity());
                 db.deleteAllFriends();
                 Toast.makeText(getContext(), getString(R.string.all_friends_removed), Toast.LENGTH_LONG).show();
             }

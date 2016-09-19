@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="@string/notification_preferences">
+
+        <CheckBoxPreference
+            android:key="checkbox_notification_allow"
+            android:title="@string/notification_allow"
+            android:summary="@string/notification_allow"
+            android:defaultValue="true"/>
+        <EditTextPreference
+            android:key="edittext_notification_x_minute"
+            android:title="@string/notification_x_minute"
+            android:summary="@string/notification_x_minute"
+            android:dialogTitle="@string/notification_x_minute"
+            android:inputType="number"
+            android:dependency="checkbox_notification_allow"
+            android:defaultValue="10"/>
+
+        <ListPreference
+            android:key="list_notification_alert_type"
+            android:title="@string/notification_alert_type"
+            android:summary="@string/notification_alert_type"
+            android:entries="@array/entries_list_notification_alert_type"
+            android:entryValues="@array/entryvalues_list_notification_alert_type"
+            android:dialogTitle="@string/notification_alert_type"
+            android:dependency="checkbox_notification_allow"
+            android:defaultValue="2"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/update_preferences">
+
+        <CheckBoxPreference
+            android:key="checkbox_auto_update_check_allow"
+            android:title="@string/auto_update_check_allow"
+            android:summary="@string/auto_update_check_allow"
+            android:defaultValue="true"/>
+
+        <ListPreference
+            android:key="list_auto_update_check_cycle"
+            android:title="@string/auto_update_check_cycle"
+            android:summary="@string/auto_update_check_cycle"
+            android:entries="@array/entries_list_auto_update_check_cycle"
+            android:entryValues="@array/entryvalues_list_auto_update_check_cycle"
+            android:dialogTitle="@string/auto_update_check_cycle"
+            android:dependency="checkbox_auto_update_check_allow"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+
+    </PreferenceScreen>

@@ -1,24 +1,24 @@
 package com.okapi.stalker.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.LoginActivity;
 import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
-import com.okapi.stalker.data.storage.Stash;
+import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
 import java.io.Serializable;
@@ -44,12 +44,15 @@ public class StalkerFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainDataBaseHandler db = new MainDataBaseHandler(getActivity());
+
         if(getActivity() instanceof MainActivity){
-            myStalkerAdapter = new MyStalkerAdapter(getActivity(), Stash.get().getStudentKeys());
+            myStalkerAdapter = new MyStalkerAdapter(getActivity(), db.getAllStudents());
         }else if(getActivity() instanceof SectionActivity){
             myStalkerAdapter = new MyStalkerAdapter(getActivity(),
-                    ((SectionActivity)getActivity()).getSection().getStudentKeys());
+                    ((SectionActivity)getActivity()).getSection().getStudents());
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -74,5 +77,27 @@ public class StalkerFragment extends Fragment implements SearchView.OnQueryTextL
 
         }
         return rootView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_sort_by_name:
+                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.NAME);
+                break;
+            case R.id.action_sort_by_id:
+                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.ID);
+                break;
+            case R.id.action_sort_by_sex:
+                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.SEX);
+                break;
+            case R.id.action_sort_by_department:
+                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.DEPARTMENT);
+                break;
+        }
+        return true;
+
     }
 }

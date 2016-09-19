@@ -15,34 +15,40 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
-import com.okapi.stalker.data.DataBaseHandler;
-import com.okapi.stalker.data.storage.Stash;
-import com.okapi.stalker.data.storage.type.Instructor;
-import com.okapi.stalker.data.storage.type.Interval;
-import com.okapi.stalker.data.storage.type.Section;
-import com.okapi.stalker.data.storage.type.Student;
+import com.okapi.stalker.data.FriendsDataBaseHandler;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Interval;
+import com.okapi.stalker.data.storage.model.Person;
+import com.okapi.stalker.data.storage.model.Section;
+import com.okapi.stalker.data.storage.model.Student;
+import com.okapi.stalker.fragment.adapters.MySectionAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class ProgramFragment extends Fragment{
-
+    private MainDataBaseHandler db;
     private View rootView;
-    private Set<String> keys;
+    private Person owner;
 
     public ProgramFragment() {
     }
@@ -55,91 +61,137 @@ public class ProgramFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Stash stash = Stash.get();
-
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_program, container, false);
-
+            db = new MainDataBaseHandler(getActivity());
             int pixels = dpToPx(getContext(), 50);
             int pixels10 = dpToPx(getContext(), 10);
             int pixels2 = dpToPx(getContext(), 2);
 
-            TextView[] buttons = new TextView[78];
-            LinearLayout linearLayout =
-                    (LinearLayout) rootView.findViewById(R.id.calendarSplitterRelativeLayout);
-
-            LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.MATCH_PARENT, 2);
-            prm.setMargins(pixels2, 0, 0, 0);
-
-            RelativeLayout relativeLayout = null;
-            for (int i = 0; i < buttons.length; i++) {
-                final int index = i;
-                TextView button = new TextView(getActivity());
-
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0, 0, 0, pixels10);
-                if (i % 13 != 0) {
-                    params.addRule(RelativeLayout.BELOW, i);
-                } else {
-                    relativeLayout = new RelativeLayout(getActivity());
-                    relativeLayout.setLayoutParams(prm);
-                    linearLayout.addView(relativeLayout);
-                }
-
-                button.setLayoutParams(params);
-                button.setHeight(pixels);
-                button.setGravity(Gravity.CENTER);
-                button.setBackgroundColor(Color.parseColor("#ececec"));
-                button.setId(i + 1);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        freeFriendsDialog(index);
-                    }
-                });
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                }
-
-                relativeLayout.addView(button);
-                buttons[i] = button;
-            }
-
-            // Intervals are coming...
-
+            List<MyButton> buttons = new ArrayList<MyButton>(20);
             String[] colors = {"#63b526", "#009AE3", "#f584d4", "#ff7800",
                     "#f74448", "#c3903f", "#a5de5b", "black"};
             int colorIndex = 0;
-            for (String sectionKey : keys) {
-                final Section section = stash.getSection(sectionKey);
-                Set<String> intervalKeys = section.getIntervalKeys();
-                if(intervalKeys.isEmpty())
-                    continue;
-                int color = Color.parseColor(colors[colorIndex % colors.length]);
-                for (String intervalKey : intervalKeys) {
-                    Interval interval = stash.getInterval(intervalKey);
-                    int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
-                    buttons[indeks].setText(section.course + " (" + interval.classRoom.name + ")");
-                    buttons[indeks].setBackgroundColor(color);
-                    buttons[indeks].setTextSize(13);
-                    buttons[indeks].setTextColor(Color.WHITE);
-                    buttons[indeks].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), SectionActivity.class);
-                            intent.putExtra("section", section);
-                            getActivity().startActivity(intent);
-                        }
-                    });
+            Boolean hasInterval = null;
+            for (Section sectionOnlyId : owner.getSections()) {
+                final Section section = db.getSection(sectionOnlyId.getId());
+                Set<Interval> intervals = db.getIntervalsOfSection(section.getId());
+                for (Interval interval: intervals) {
+                    hasInterval = true;
+                    MyButton button = new MyButton(
+                            interval.getDay() * 13 + interval.getHour(),
+                            section.getId(),
+                            String.format("%s (%s)", section.getCourse().getCode(), interval.getRoom()),
+                            colors[colorIndex]
+                    );
+                    buttons.add(button);
                 }
-                colorIndex++;
+                if(++colorIndex == colors.length){
+                    colorIndex = 0;
+                }
+                if(intervals.isEmpty() && owner instanceof Student && section.getCourse().getCode().matches("OEG.+00")){
+                    rootView.findViewById(R.id.blockView).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.blockView).bringToFront();
+                    rootView.findViewById(R.id.internImage).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.internImage).bringToFront();
+                    System.out.println("yeterrr : " + ((Student) owner).getName() + " xd " + section.getCourse().getCode());
+                    return rootView;
+                }
             }
+            if(hasInterval == null){
+                Set<Section> detailedSections = new HashSet<Section>();
+                for (Section sectionOnlyId : owner.getSections()) {
+                    detailedSections.add(db.getSectionWithoutStudents(sectionOnlyId.getId()));
+                }
 
+                rootView.findViewById(R.id.blockView).setVisibility(View.VISIBLE);
+                rootView.findViewById(R.id.blockView).bringToFront();
+                ListView sectionList = (ListView) rootView.findViewById(R.id.noIntervalSectionList);
+                sectionList.setVisibility(View.VISIBLE);
+                sectionList.bringToFront();
+                sectionList.setAdapter(new MySectionAdapter(getActivity(), detailedSections));
+                sectionList.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> a, View v, int position, long l) {
+                                Intent intent = new Intent(getActivity(), SectionActivity.class);
+                                intent.putExtra("section", ((Section)a.getAdapter().getItem(position)).getId());
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                rootView.findViewById(R.id.noIntervalSectionList).bringToFront();
+
+            }else{
+                Map<Integer, MyButton> buttonMap =  new HashMap<Integer, MyButton>();
+                for (MyButton button : buttons){
+                    if(buttonMap.containsKey(button.index)){
+                        MyButton button1 = buttonMap.get(button.index);
+                        button1.title.concat(" and ").concat(button.title);
+                        button1.color = "red";
+                    }else{
+                        buttonMap.put(button.index, button);
+                    }
+                }
+                MyButton defaultButton = new MyButton();
+
+                LinearLayout linearLayout =
+                        (LinearLayout) rootView.findViewById(R.id.calendarSplitterRelativeLayout);
+
+                LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.MATCH_PARENT, 2);
+                prm.setMargins(pixels2, 0, 0, 0);
+
+                RelativeLayout relativeLayout = null;
+                for (int i = 0; i < 78; i++) {
+                    final MyButton myButton = buttonMap.containsKey(i) ? buttonMap.get(i) : defaultButton;
+                    TextView button = new TextView(getActivity());
+
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0, 0, 0, pixels10);
+                    if (i % 13 != 0) {
+                        params.addRule(RelativeLayout.BELOW, i);
+                    } else {
+                        relativeLayout = new RelativeLayout(getActivity());
+                        relativeLayout.setLayoutParams(prm);
+                        linearLayout.addView(relativeLayout);
+                    }
+
+                    button.setLayoutParams(params);
+                    button.setHeight(pixels);
+                    button.setGravity(Gravity.CENTER);
+                    button.setId(i + 1);
+                    button.setBackgroundColor(Color.parseColor(myButton.color));
+                    final int index = i;
+                    if(myButton.title == null){
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                freeFriendsDialog(index);
+                            }
+                        });
+                    }else{
+                        button.setText(myButton.title);
+                        button.setTextSize(13);
+                        button.setTextColor(Color.WHITE);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), SectionActivity.class);
+                                intent.putExtra("section", myButton.sectionId);
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                    }
+                    //button.setId(i + 1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    }
+
+                    relativeLayout.addView(button);
+                }
+            }
 
             rootView.findViewById(R.id.refreshLinearLayout).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.refreshView).setVisibility(View.INVISIBLE);
@@ -191,24 +243,20 @@ public class ProgramFragment extends Fragment{
 
     private void freeFriendsDialog(int index){
         final HashMap<String, Student> freeGuys = new HashMap<>();
-        Stash stash = Stash.get();
-        DataBaseHandler db = new DataBaseHandler(getActivity());
-        List<String> friends = db.getAllFriends();
+        FriendsDataBaseHandler dbFriends = new FriendsDataBaseHandler(getActivity());
+        List<String> friends = dbFriends.getAllFriends();
         etiket:
         for (String key: friends){
-            Student friend = stash.getStudent(key);
-            Set<String> sectionKeys = friend.sectionKeys;
-            for(String sectionKey: sectionKeys){
-                Section section = stash.getSection(sectionKey);
-                Set<String> intervalKeys = section.getIntervalKeys();
-                for (String intervalKey: intervalKeys){
-                    Interval interval = stash.getInterval(intervalKey);
-                    int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
+            Student friend = db.getStudent(key);
+            for(Section section: friend.getSections()){
+                Set<Interval> intervals = db.getIntervalsOfSection(section.getId());
+                for (Interval interval: intervals){
+                    int indeks = (interval.getDay() * 13) + interval.getHour();
                     if(indeks == index)
                         continue etiket;
                 }
             }
-            freeGuys.put(friend.name, friend);
+            freeGuys.put(friend.getName(), friend);
         }
 
         //Create sequence of items
@@ -228,7 +276,25 @@ public class ProgramFragment extends Fragment{
         //Show the dialog
         alertDialogObject.show();
     }
-    public void setSectionKeys(Set<String> keys) {
-        this.keys = keys;
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+}
+class MyButton{
+    Integer index;
+    Integer sectionId;
+    String title;
+    String color;
+
+    public MyButton() {
+        super();
+        color = "#ececec";
+    }
+    public MyButton(Integer index, Integer sectionId, String title, String color) {
+        super();
+        this.index = index;
+        this.sectionId = sectionId;
+        this.title = title;
+        this.color = color;
     }
 }

@@ -4,6 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="0dp" >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/internImage"
+        android:background="@drawable/intern"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/abc_action_bar_content_inset_material"
+        android:layout_marginRight="@dimen/abc_action_bar_content_inset_material"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noIntervalSectionList"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffff"
+        android:id="@+id/blockView"
+        android:visibility="gone"></FrameLayout>
 
     <LinearLayout
         android:id="@+id/dayLabelsLinearLayout"
@@ -79,7 +103,7 @@
             android:id="@+id/tuesdayHeaderRelativeLayout"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_weight="2" >
+            android:layout_weight="2">
 
             <TextView
                 android:id="@+id/tuesdayDateTextView"
@@ -289,7 +313,8 @@
                         android:layout_marginTop="60dp"
                         android:gravity="center"
                         android:text="09:30"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:id="@+id/textView3" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -400,6 +425,12 @@
                         android:gravity="center"
                         android:text="20:30"
                         android:textSize="15dp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/textView3"
+                        android:layout_centerHorizontal="true"></FrameLayout>
 
                 </RelativeLayout>
             </LinearLayout>

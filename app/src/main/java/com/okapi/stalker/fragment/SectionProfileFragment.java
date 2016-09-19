@@ -10,11 +10,8 @@ import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.InstructorActivity;
-import com.okapi.stalker.activity.SectionActivity;
-import com.okapi.stalker.data.storage.Stash;
-import com.okapi.stalker.data.storage.type.Course;
-import com.okapi.stalker.data.storage.type.Instructor;
-import com.okapi.stalker.data.storage.type.Section;
+import com.okapi.stalker.data.storage.model.Course;
+import com.okapi.stalker.data.storage.model.Section;
 
 public class SectionProfileFragment
         extends Fragment {
@@ -35,25 +32,22 @@ public class SectionProfileFragment
         View rootView = inflater.inflate(R.layout.fragment_section_profile, container, false);
         //ImageView image = (ImageView) rootView.findViewById(R.id.imageView2);
         //image.setImageResource(R.drawable.app_icon);
-        //TextView courseName = (TextView) rootView.findViewById(R.id.section_course_name);
-        //courseName.setText(course.title);
+        TextView courseName = (TextView) rootView.findViewById(R.id.section_course_name);
+        courseName.setText(section.getCourse().getTitle());
         TextView sectionCode = (TextView) rootView.findViewById(R.id.section_code);
-        sectionCode.setText(section.course + " - " + section.number);
+        sectionCode.setText(section.getCourse().getCode() + " - " + section.getSectionNo());
 
         TextView lecturer = (TextView) rootView.findViewById(R.id.section_lecturer_name);
-        lecturer.setText(section.instructor);
+        lecturer.setText(section.getInstructor().getName());
 
         TextView size = (TextView) rootView.findViewById(R.id.section_size);
-        size.setText(section.size+"");
+        size.setText(section.getSize().toString());
 
         lecturer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Stash stash = Stash.get();
-                Instructor instructor = stash.getInstructor(section.instructor);
-                System.out.println(instructor);
                 Intent intent = new Intent(getActivity(), InstructorActivity.class);
-                intent.putExtra("instructor", instructor);
+                intent.putExtra("instructor", section.getInstructor().getId());
                 getActivity().startActivity(intent);
             }
         });

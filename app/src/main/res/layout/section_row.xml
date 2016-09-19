@@ -3,14 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:focusable="false">
+    android:focusable="false"
+    android:paddingLeft="@dimen/abc_action_bar_content_inset_material">
 
-    <ImageView
-        android:id="@+id/thumb"
+    <TextView
+        android:id="@+id/section_no"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="#b42424"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        android:text="12"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:textColor="@color/abc_search_url_text" />
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -22,14 +27,15 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="5dp"
             android:textStyle="bold"
-            android:text="Text"/>
+            android:text="Text"
+            android:maxLines="1" />
 
         <TextView
-            android:id="@+id/department"
+            android:id="@+id/instructor_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="Department"
+            android:text="Instructor"
             android:textSize="12sp"
             android:layout_below="@+id/name"
             android:layout_alignParentRight="true"

@@ -11,7 +11,7 @@ import com.okapi.stalker.fragment.adapters.MyFriendsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataBaseHandler extends SQLiteOpenHelper {
+public class FriendsDataBaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "friendsDB";
@@ -22,7 +22,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String FRIEND_KEY = "key";
     public static MyFriendsAdapter myFriendsAdapter;
 
-    public DataBaseHandler(Context context) {
+    public FriendsDataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -97,7 +97,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
-
         // return count
         return cursor.getCount();
     }

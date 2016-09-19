@@ -11,7 +11,8 @@ import android.view.MenuItem;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
-import com.okapi.stalker.data.storage.type.Student;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StudentProfileFragment;
 
@@ -29,6 +30,8 @@ public class StudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         student = (Student) getIntent().getExtras().getSerializable("student");
+        MainDataBaseHandler db = new MainDataBaseHandler(this);
+        student = db.getStudent(student.getId());
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -43,16 +46,15 @@ public class StudentActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        getSupportActionBar().setTitle(student.name);
+        getSupportActionBar().setTitle(student.getName());
         getSupportActionBar().setHomeButtonEnabled(true);
-        ;
 
     }
 
     private void setupViewPager(ViewPager viewPager) {
 
         programFragment = new ProgramFragment();
-        programFragment.setSectionKeys(student.sectionKeys);
+        programFragment.setOwner(student);
         studentProfileFragment = new StudentProfileFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(studentProfileFragment, getString(R.string.title_profile));

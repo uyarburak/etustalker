@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.data.DataBaseHandler;
-import com.okapi.stalker.data.storage.Stash;
-import com.okapi.stalker.data.storage.type.Student;
+import com.okapi.stalker.data.FriendsDataBaseHandler;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +21,11 @@ public class MyFriendsAdapter extends BaseAdapter {
     public static MyFriendsAdapter myFriendsAdapter;
     private LayoutInflater mInflater;
 
-    private Stash stash;
     private List<Student> list;
     private Context context;
 
     public MyFriendsAdapter(Activity activity) {
         context = activity;
-        stash = Stash.get();
         mInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
@@ -38,10 +36,11 @@ public class MyFriendsAdapter extends BaseAdapter {
 
     public void init() {
 
-        DataBaseHandler db = new DataBaseHandler(context);
+        FriendsDataBaseHandler db = new FriendsDataBaseHandler(context);
+        MainDataBaseHandler dbMain = new MainDataBaseHandler(context);
         list = new ArrayList<>();
         for (String key : db.getAllFriends()) {
-            list.add(stash.getStudent(key));
+            list.add(dbMain.getStudent(key));
         }
         notifyDataSetChanged();
     }
@@ -75,8 +74,12 @@ public class MyFriendsAdapter extends BaseAdapter {
                 (ImageView) rowView.findViewById(R.id.thumb);
 
         final Student student = getItem(position);
-        textName.setText(student.name);
-        textMajor.setText(student.major);
+        textName.setText(student.getName());
+        if(student.getDepartment2() != null){
+            textMajor.setText(student.getDepartment().getName() + " - " + student.getDepartment2().getName());
+        }else{
+            textMajor.setText(student.getDepartment().getName());
+        }
         imageView.setImageResource(R.drawable.app_icon);
 
         return rowView;

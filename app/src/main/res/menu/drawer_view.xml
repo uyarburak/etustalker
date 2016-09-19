@@ -19,7 +19,7 @@
             <item
                 android:id="@+id/nav_forth"
                 android:icon="@drawable/ic_one"
-                android:title="Sub item 2" />
+                android:title="Help Page" />
         </menu>
     </item>
 </menu>

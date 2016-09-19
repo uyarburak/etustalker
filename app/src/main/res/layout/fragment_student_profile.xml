@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,7 +30,7 @@
             android:orientation="vertical"
             android:padding="16dp"
             android:weightSum="10"
-            >
+            android:id="@+id/linearLayout2">
 
             <LinearLayout
                 android:layout_height="0dp"
@@ -161,17 +161,61 @@
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
                 android:layout_height="wrap_content"
-                android:text="@string/add_friend"
-                android:id="@+id/profile_add_friend_button"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_width="match_parent"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="2nd Major:"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="@color/design_fab_stroke_end_outer_color"
+                    android:visibility="invisible"
+                    android:id="@+id/profile_major_2_title" />
+
+                <TextView
+                    android:id="@+id/profile_major_2"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:padding="3dp"
+                    android:background="@color/design_fab_stroke_end_outer_color"
+                    android:visibility="invisible" />
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_friend"
+            android:id="@+id/profile_add_friend_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_centerHorizontal="true" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:scrollbars="vertical"
+            android:id="@+id/sectionsOfStudent"
+            android:layout_weight="3.15"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/profile_add_friend_button" />
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_email"

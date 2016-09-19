@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
-import com.okapi.stalker.data.storage.Stash;
-import com.okapi.stalker.data.storage.type.Student;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.FriendsFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         {
-            Stash stash = Stash.get();
-            student = stash.getStudent(user_student_key);
+            MainDataBaseHandler db = new MainDataBaseHandler(this);
+            student = db.getStudent(user_student_key);
             View headerView = navView.getHeaderView(0);
-            ((TextView) headerView.findViewById(R.id.header_user_name)).setText(student.name);
-            ((TextView) headerView.findViewById(R.id.header_user_id)).setText(student.id);
+            ((TextView) headerView.findViewById(R.id.header_user_name)).setText(student.getName());
+            ((TextView) headerView.findViewById(R.id.header_user_id)).setText(student.getId());
         }
 
     }
@@ -89,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(2);
                         break;
                     case R.id.nav_forth:
-                        viewPager.setCurrentItem(3);
+                        Intent intent = new Intent(getBaseContext(), WebBrowserActivity.class);
+                        intent.putExtra("url", "http://etustalk.club/help");
+                        intent.putExtra("title", "Help Page");
+                        startActivity(intent);
                         break;
                 }
 
@@ -100,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Stash stash = Stash.get();
-        student = stash.getStudent(user_student_key);
+        MainDataBaseHandler db = new MainDataBaseHandler(this);
+        student = db.getStudent(user_student_key);
         programFragment = new ProgramFragment();
-        programFragment.setSectionKeys(student.sectionKeys);
+        programFragment.setOwner(student);
         stalkerFragment = new StalkerFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(programFragment, getString(R.string.title_program));
@@ -144,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, PrefsActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.action_exit) {
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
@@ -164,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

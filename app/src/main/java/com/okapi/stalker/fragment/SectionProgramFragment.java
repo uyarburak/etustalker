@@ -17,11 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.data.storage.Stash;
-import com.okapi.stalker.data.storage.type.Interval;
-import com.okapi.stalker.data.storage.type.Section;
+import com.okapi.stalker.data.storage.model.Interval;
+import com.okapi.stalker.data.storage.model.Section;
 
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,8 +39,6 @@ public class SectionProgramFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Stash stash = Stash.get();
 
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_program, container, false);
@@ -92,11 +88,9 @@ public class SectionProgramFragment extends Fragment {
             // Intervals are coming...
             String[] colors = {"#a5de5b", "#009AE3", "#f584d4", "#f74448", "#c3903f", "#63b526"};
             int color = Color.parseColor(colors[((int)(Math.random() * colors.length))]);
-            Set<String> intervalKeys = section.getIntervalKeys();
-            for (String intervalKey : intervalKeys) {
-                    Interval interval = stash.getInterval(intervalKey);
-                    int indeks = (interval.day.ordinal() * 13) + interval.time.ordinal();
-                    buttons[indeks].setText(interval.classRoom.name);
+            for (Interval interval : section.getIntervals()) {
+                    int indeks = (interval.getDay() * 13) + interval.getHour();
+                    buttons[indeks].setText(interval.getRoom());
                     buttons[indeks].setBackgroundColor(color);
                     buttons[indeks].setTextSize(13);
                     buttons[indeks].setTextColor(Color.WHITE);

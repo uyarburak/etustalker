@@ -11,7 +11,8 @@ import android.view.MenuItem;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
-import com.okapi.stalker.data.storage.type.Instructor;
+import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Instructor;
 import com.okapi.stalker.fragment.InstructorProfileFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 
@@ -27,8 +28,11 @@ public class InstructorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        instructor = (Instructor) getIntent().getExtras().getSerializable("instructor");
+        Integer instructorId = getIntent().getExtras().getInt("instructor");
+        MainDataBaseHandler db = new MainDataBaseHandler(this);
+        instructor = db.getInstructorFull(instructorId);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -43,16 +47,15 @@ public class InstructorActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        getSupportActionBar().setTitle(instructor.name);
+        getSupportActionBar().setTitle(instructor.getName());
         getSupportActionBar().setHomeButtonEnabled(true);
-        ;
 
     }
 
     private void setupViewPager(ViewPager viewPager) {
 
         programFragment = new ProgramFragment();
-        programFragment.setSectionKeys(instructor.sectionKeys);
+        programFragment.setOwner(instructor);
         instructorProfileFragment = new InstructorProfileFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(instructorProfileFragment, getString(R.string.title_profile));
