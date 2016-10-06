@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingLeft="16dp"
+android:paddingRight="16dp"
+    android:padding="@dimen/abc_action_bar_content_inset_material">
+<EditText
+    android:id="@+id/course_name"
+    android:text="Course Name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+<Spinner
+    android:id="@+id/numberPicker"
+    android:entries="@array/credits"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/course_name"
+    android:layout_alignParentLeft="true"
+    android:layout_toLeftOf="@+id/gradePicker"
+    android:layout_marginTop="@dimen/abc_action_bar_content_inset_material" />
+<Spinner
+    android:id="@+id/gradePicker"
+    android:entries="@array/grades"
+    android:layout_width="76dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/course_name"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="@dimen/abc_action_bar_content_inset_material" />
+
+</RelativeLayout>

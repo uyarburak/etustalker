@@ -7,12 +7,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,20 +77,40 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
 
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_first:
-                        viewPager.setCurrentItem(0);
-                        break;
-                    case R.id.nav_second:
-                        viewPager.setCurrentItem(1);
-                        break;
-                    case R.id.nav_third:
-                        viewPager.setCurrentItem(2);
-                        break;
-                    case R.id.nav_forth:
+                    case R.id.nav_help:
                         Intent intent = new Intent(getBaseContext(), WebBrowserActivity.class);
                         intent.putExtra("url", "http://etustalk.club/help");
                         intent.putExtra("title", "Help Page");
                         startActivity(intent);
+                        break;
+                    case R.id.nav_bus_program:
+                        Intent intent2 = new Intent(getBaseContext(), WebBrowserActivity.class);
+                        intent2.putExtra("url", "https://www.etu.edu.tr/tr/ulasim");
+                        intent2.putExtra("title", "Bus Schedule");
+                        startActivity(intent2);
+                        break;
+                    case R.id.nav_gpa_calculator:
+                        Intent intent3 = new Intent(getBaseContext(), GPAActivity.class);
+                        intent3.putExtra("studentId", user_student_key);
+                        startActivity(intent3);
+                        break;
+                    case R.id.nav_instructors:
+                        Intent intent4 = new Intent(getBaseContext(), ListActivity.class);
+                        intent4.putExtra("listType", ListActivity.INSTRUCTOR_LIST);
+                        startActivity(intent4);
+                        break;
+                    case R.id.nav_courses:
+                        Intent intent5 = new Intent(getBaseContext(), ListActivity.class);
+                        intent5.putExtra("listType", ListActivity.COURSE_LIST);
+                        startActivity(intent5);
+                        break;
+                    case R.id.nav_program_scheduler:
+                        Intent intent6 = new Intent(getBaseContext(), ProgramSchedulerActivity.class);
+                        startActivity(intent6);
+                        break;
+                    case R.id.nav_about_us:
+                        Intent intent7 = new Intent(getBaseContext(), AboutActivity.class);
+                        startActivity(intent7);
                         break;
                 }
 
@@ -120,21 +138,6 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!newText.isEmpty() && viewPager.getCurrentItem() != 2)
-                    viewPager.setCurrentItem(2);
-                stalkerFragment.onQueryTextChange(newText);
-                return false;
-            }
-        });
         return true;
     }
 

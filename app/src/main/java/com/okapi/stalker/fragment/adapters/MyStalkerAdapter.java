@@ -13,13 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Student;
 
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.TreeSet;
 
 public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
-    public enum OrderBy{NAME, ID, SEX, DEPARTMENT};
+    public enum OrderBy{NONE, NAME, ID, SEX, DEPARTMENT};
     private OrderBy orderBy;
 
     private String lastSearch;
@@ -46,7 +45,8 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         arrayListFilter.addAll(students);
         discoveredStudents = new HashSet<>();
         allStudents = students;
-        orderBy = OrderBy.NAME;
+        orderBy = OrderBy.NONE;
+        sort(OrderBy.NAME);
         System.out.println("zaaaaa: " + arrayListFilter.size());
 
     }
@@ -143,7 +143,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
             tmp.addAll(allStudents);
         }else{
             for (Student student: allStudents){
-                if(student.getName().contains(lastSearch.toUpperCase(new Locale("tr", "TR")))){
+                if(student.getName().toUpperCase().contains(lastSearch.toUpperCase(new Locale("tr", "TR")))){
                     tmp.add(student);
                 }
             }
@@ -177,7 +177,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         orderBy = order;
     }
 }
-abstract class AbstractComparator implements Comparator<Student>, Serializable {
+abstract class AbstractComparator implements Comparator<Person>, Serializable {
     private static final long serialVersionUID = 1L;
     protected transient Collator coll;
     public static int carpan;
@@ -187,13 +187,13 @@ abstract class AbstractComparator implements Comparator<Student>, Serializable {
         coll.setStrength(Collator.PRIMARY);
     }
 
-    public abstract int compare(Student lhs, Student rhs);
+    public abstract int compare(Person lhs, Person rhs);
 }
 
 class NameComparator extends AbstractComparator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Override
-    public int compare(Student lhs, Student rhs) {
+    public int compare(Person lhs, Person rhs) {
         int comp = carpan * coll.compare(lhs.getName(), rhs.getName());
         if(comp != 0)
             return comp;
@@ -206,14 +206,14 @@ class NameComparator extends AbstractComparator implements Serializable {
 class IdComparator extends AbstractComparator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Override
-    public int compare(Student lhs, Student rhs) {
+    public int compare(Person lhs, Person rhs) {
         return carpan * coll.compare(lhs.getId(), rhs.getId());
     }
 }
 class SexComparator extends AbstractComparator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Override
-    public int compare(Student lhs, Student rhs) {
+    public int compare(Person lhs, Person rhs) {
         int comp = carpan * lhs.getGender().compareTo(rhs.getGender());
         if(comp != 0)
             return comp;
@@ -229,7 +229,7 @@ class SexComparator extends AbstractComparator implements Serializable {
 class DepartmentComparator extends AbstractComparator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Override
-    public int compare(Student lhs, Student rhs) {
+    public int compare(Person lhs, Person rhs) {
         int comp = carpan * coll.compare(lhs.getDepartment().getName(), rhs.getDepartment().getName());
         if(comp != 0)
             return comp;

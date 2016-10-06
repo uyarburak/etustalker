@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/lib-auto"
+    android:orientation="horizontal"
+    android:focusable="false">
+
+    <com.github.pavlospt.roundedletterview.RoundedLetterView
+        android:id="@+id/rlv_name_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="3dp"
+        app:titleColor="@android:color/white"
+        app:titleSize="100dp"
+        app:titleText="A" />
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"
+        android:text="Text"/>
+
+    <TextView
+        android:id="@+id/course_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Department"
+        android:textSize="12sp"
+        android:layout_below="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
+
+</LinearLayout>

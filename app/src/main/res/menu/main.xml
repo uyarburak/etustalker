@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        android:title="@string/action_search"
-        app:showAsAction="always" />
-        <item android:id="@+id/action_sort"
-            android:title="@string/action_sort"
-            android:icon="@drawable/ic_sort_descending"
-            android:orderInCategory="100">
-            <menu>
-                <item android:id="@+id/action_sort_by_name"
-                    android:title="@string/action_sort_by_name"
-                    android:icon="@drawable/ic_account_box"
-                    android:orderInCategory="100"
-                    app:showAsAction="never" />
-                <item android:id="@+id/action_sort_by_id"
-                    android:title="@string/action_sort_by_id"
-                    android:icon="@drawable/ic_sort_numeric"
-                    android:orderInCategory="100"
-                    app:showAsAction="never" />
-                <item android:id="@+id/action_sort_by_sex"
-                    android:title="@string/action_sort_by_sex"
-                    android:icon="@drawable/ic_gender_male_female"
-                    android:orderInCategory="100"
-                    app:showAsAction="never" />
-                <item android:id="@+id/action_sort_by_department"
-                    android:title="@string/action_sort_by_department"
-                    android:icon="@drawable/ic_school"
-                    android:orderInCategory="100"
-                    app:showAsAction="never" />
-            </menu>
-
-        </item>
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"

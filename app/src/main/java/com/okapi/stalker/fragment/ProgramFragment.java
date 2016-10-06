@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MySectionAdapter;
+import com.okapi.stalker.util.ColorGenerator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -62,6 +65,7 @@ public class ProgramFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (rootView == null) {
+            ColorGenerator colorGenerator = ColorGenerator.MATERIAL;
             rootView = inflater.inflate(R.layout.fragment_program, container, false);
             db = new MainDataBaseHandler(getActivity());
             int pixels = dpToPx(getContext(), 50);
@@ -70,7 +74,7 @@ public class ProgramFragment extends Fragment{
 
             List<MyButton> buttons = new ArrayList<MyButton>(20);
             String[] colors = {"#63b526", "#009AE3", "#f584d4", "#ff7800",
-                    "#f74448", "#c3903f", "#a5de5b", "black"};
+                    "#f74448", "#c3903f", "#a5de5b"};
             int colorIndex = 0;
             Boolean hasInterval = null;
             for (Section sectionOnlyId : owner.getSections()) {
@@ -126,8 +130,8 @@ public class ProgramFragment extends Fragment{
                 for (MyButton button : buttons){
                     if(buttonMap.containsKey(button.index)){
                         MyButton button1 = buttonMap.get(button.index);
-                        button1.title.concat(" and ").concat(button.title);
-                        button1.color = "red";
+                        button1.title = button1.title.concat(" and ").concat(button.title);
+                        button1.color = "black";
                     }else{
                         buttonMap.put(button.index, button);
                     }
@@ -144,9 +148,9 @@ public class ProgramFragment extends Fragment{
                 RelativeLayout relativeLayout = null;
                 for (int i = 0; i < 78; i++) {
                     final MyButton myButton = buttonMap.containsKey(i) ? buttonMap.get(i) : defaultButton;
-                    TextView button = new TextView(getActivity());
+                    final TextView button = new TextView(getActivity());
 
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                     params.setMargins(0, 0, 0, pixels10);
@@ -162,7 +166,11 @@ public class ProgramFragment extends Fragment{
                     button.setHeight(pixels);
                     button.setGravity(Gravity.CENTER);
                     button.setId(i + 1);
-                    button.setBackgroundColor(Color.parseColor(myButton.color));
+                    if(myButton.sectionId == null || myButton.color.equals("black"))
+                        button.setBackgroundColor(Color.parseColor(myButton.color));
+                    else
+                        button.setBackgroundColor(colorGenerator.getColorForSections(myButton.sectionId));
+                    //button.setBackgroundColor(Color.parseColor(myButton.color));
                     final int index = i;
                     if(myButton.title == null){
                         button.setOnClickListener(new View.OnClickListener() {
@@ -175,12 +183,36 @@ public class ProgramFragment extends Fragment{
                         button.setText(myButton.title);
                         button.setTextSize(13);
                         button.setTextColor(Color.WHITE);
-                        button.setOnClickListener(new View.OnClickListener() {
+                        if(myButton.color.equals("black")){
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    System.out.println(myButton.title);
+                                    String[] parts = myButton.title.split(" and ");
+                                    if(button.getText().toString().startsWith(parts[0])){
+                                        button.setText(parts[1]);
+                                    }else{
+                                        button.setText(parts[0]);
+                                    }
+                                }
+                            });
+
+                        }else{
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getActivity(), SectionActivity.class);
+                                    intent.putExtra("section", myButton.sectionId);
+                                    getActivity().startActivity(intent);
+                                }
+                            });
+
+                        }
+                        button.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(), SectionActivity.class);
-                                intent.putExtra("section", myButton.sectionId);
-                                getActivity().startActivity(intent);
+                            public boolean onLongClick(View v) {
+                                freeFriendsDialog(index);
+                                return false;
                             }
                         });
                     }
@@ -188,7 +220,7 @@ public class ProgramFragment extends Fragment{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     }
-
+                    button.bringToFront();
                     relativeLayout.addView(button);
                 }
             }
@@ -200,9 +232,25 @@ public class ProgramFragment extends Fragment{
             final LinearLayout currentTimeLine =
                     (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
 
+
             final RelativeLayout.LayoutParams params =
                     new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
+            int[] days = {
+                    R.id.mondayTextView,
+                    R.id.tuesdayTextView,
+                    R.id.wednesdayTextView,
+                    R.id.thursdayTextView,
+                    R.id.fridayTextView,
+                    R.id.saturdayTextView,
+            };
+            Time time = new Time();
+            time.setToNow();
+
+            if(time.weekDay != 0){
+                TextView textView = (TextView) rootView.findViewById(days[time.weekDay-1]);
+                textView.setTextColor(Color.parseColor("#FF4081"));
+            }
             Timer timer = new Timer();
             TimerTask updateClock = new TimerTask() {
                 @Override

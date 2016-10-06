@@ -68,7 +68,7 @@ public class MySectionAdapter extends BaseAdapter implements Filterable {
                 (TextView) rowView.findViewById(R.id.section_no);
 
         final Section section = getItem(position);
-        textName.setText(section.getCourse().getCode() + " ("+ section.getCourse().getTitle() +")");
+        textName.setText(section.getCourse().getCode() + " ("+ section.getCourse().getTitle() +") (" + section.getSize() + ")");
         textInstructorName.setText(section.getInstructor().getName());
         textSectionNo.setText(section.getSectionNo().toString());
         return rowView;

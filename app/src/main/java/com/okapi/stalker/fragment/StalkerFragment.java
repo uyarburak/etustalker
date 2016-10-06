@@ -1,12 +1,15 @@
 package com.okapi.stalker.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,44 +17,45 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.LoginActivity;
+import com.okapi.stalker.activity.CourseActivity;
 import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Course;
+import com.okapi.stalker.data.storage.model.Section;
+import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
-public class StalkerFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class StalkerFragment extends Fragment {
 
     private MyStalkerAdapter myStalkerAdapter;
     private View rootView;
+    private Set<Student> students;
     public StalkerFragment() {
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        myStalkerAdapter.getFilter().filter(newText);
-        return false;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainDataBaseHandler db = new MainDataBaseHandler(getActivity());
-
+        students = new HashSet<>();
         if(getActivity() instanceof MainActivity){
-            myStalkerAdapter = new MyStalkerAdapter(getActivity(), db.getAllStudents());
+            students = db.getAllStudents();
         }else if(getActivity() instanceof SectionActivity){
-            myStalkerAdapter = new MyStalkerAdapter(getActivity(),
-                    ((SectionActivity)getActivity()).getSection().getStudents());
+            students = ((SectionActivity)getActivity()).getSection().getStudents();
+        }else if(getActivity() instanceof CourseActivity){
+            Course course = ((CourseActivity)getActivity()).getCourse();
+            for (Section section: course.getSections()){
+                students.addAll(db.getStudentsOfSection(section.getId()));
+            }
         }
+        myStalkerAdapter = new MyStalkerAdapter(getActivity(), students);
         setHasOptionsMenu(true);
     }
 
@@ -61,6 +65,7 @@ public class StalkerFragment extends Fragment implements SearchView.OnQueryTextL
 
         if(rootView == null){
             rootView = inflater.inflate(R.layout.fragment_stalker, container, false);
+
 
             ListView listView = (ListView) rootView.findViewById(R.id.listStalk);
             listView.setAdapter(myStalkerAdapter);
@@ -96,8 +101,57 @@ public class StalkerFragment extends Fragment implements SearchView.OnQueryTextL
             case R.id.action_sort_by_department:
                 myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.DEPARTMENT);
                 break;
+            case R.id.action_stats:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getContext());
+                int male , female, unisex;
+                male = female = unisex = 0;
+                for (Student student : students){
+                    switch (student.getGender()) {
+                        case 'M':
+                            male++;
+                            break;
+                        case 'F':
+                            female++;
+                            break;
+                        case 'U':
+                            unisex++;
+                            break;
+                    }
+                }
+                DecimalFormat df = new DecimalFormat("0.##");
+                float total = male + female + unisex;
+                StringBuilder sb = new StringBuilder();
+                sb.append("Male: ").append(male).append(" (").append(df.format(male/total * 100)).append("%)\n");
+                sb.append("Female: ").append(female).append(" (").append(df.format(female/total * 100)).append("%)\n");
+                sb.append("Unisex: ").append(unisex).append(" (").append(df.format(unisex/total * 100)).append("%)\n");
+                sb.append("Total: ").append(male + female + unisex);
+                alertDialogBuilder.setTitle("Stats");
+                alertDialogBuilder.setMessage(sb.toString());
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
         }
         return true;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.stalker_fragment_menu, menu);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                myStalkerAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
 
     }
 }

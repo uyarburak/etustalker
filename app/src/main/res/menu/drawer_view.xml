@@ -2,24 +2,53 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first"
-            android:icon="@drawable/ic_one"
-            android:title="First" />
+            android:id="@+id/nav_departments"
+            android:icon="@drawable/ic_action_business"
+            android:title="Departments" />
         <item
-            android:id="@+id/nav_second"
-            android:icon="@drawable/ic_one"
-            android:title="Second" />
+            android:id="@+id/nav_instructors"
+            android:icon="@drawable/ic_action_users"
+            android:title="Instructors" />
+        <item
+            android:id="@+id/nav_courses"
+            android:icon="@drawable/ic_action_book"
+            android:title="Courses" />
     </group>
-    <item android:title="Sub items">
+    <item android:title="Features">
         <menu>
             <item
-                android:id="@+id/nav_third"
-                android:icon="@drawable/ic_one"
-                android:title="Sub item 1" />
+                android:id="@+id/nav_facts"
+                android:icon="@drawable/ic_action_bulb"
+                android:title="Interesting Facts" />
+
             <item
-                android:id="@+id/nav_forth"
-                android:icon="@drawable/ic_one"
+                android:id="@+id/nav_program_scheduler"
+                android:icon="@drawable/ic_action_calendar_day"
+                android:title="Program Scheduler" />
+            <item
+                android:id="@+id/nav_gpa_calculator"
+                android:icon="@drawable/ic_action_calculator"
+                android:title="GPA Calculator" />
+            <item
+                android:id="@+id/nav_bus_program"
+                android:icon="@drawable/ic_action_bus"
+                android:title="Bus Schedule" />
+        </menu>
+    </item>
+    <item android:title="App">
+        <menu>
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_action_help"
                 android:title="Help Page" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_action_mail"
+                android:title="Send Feedback" />
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_action_info"
+                android:title="About Us" />
         </menu>
     </item>
 </menu>

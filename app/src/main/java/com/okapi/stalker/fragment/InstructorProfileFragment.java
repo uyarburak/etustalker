@@ -10,11 +10,21 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.InstructorActivity;
+import com.okapi.stalker.activity.SectionActivity;
+import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Instructor;
+import com.okapi.stalker.data.storage.model.Section;
+import com.okapi.stalker.fragment.adapters.MySectionAdapter;
+
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 public class InstructorProfileFragment extends Fragment {
@@ -104,6 +114,28 @@ public class InstructorProfileFragment extends Fragment {
                 }
             }
         });
+
+        Set<Section> detailedSections = new TreeSet<Section>(new Comparator<Section>() {
+            @Override
+            public int compare(Section lhs, Section rhs) {
+                return lhs.getCourse().getCode().compareTo(rhs.getCourse().getCode());
+            }
+        });
+        MainDataBaseHandler db = new MainDataBaseHandler(getActivity());
+        for (Section sectionOnlyId : instructor.getSections()) {
+            detailedSections.add(db.getSectionWithoutStudents(sectionOnlyId.getId()));
+        }
+        ListView sectionList = (ListView) rootView.findViewById(R.id.sections_list);
+        sectionList.setAdapter(new MySectionAdapter(getActivity(), detailedSections));
+        sectionList.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> a, View v, int position, long l) {
+                        Intent intent = new Intent(getActivity(), SectionActivity.class);
+                        intent.putExtra("section", ((Section)a.getAdapter().getItem(position)).getId());
+                        getActivity().startActivity(intent);
+                    }
+                });
         return rootView;
     }
 

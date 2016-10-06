@@ -10,4 +10,17 @@ import java.util.Set;
  */
 public interface Person extends Serializable {
     public Set<Section> getSections();
+
+    public Object getId();
+
+    public String getName();
+
+    public String getMail();
+
+    public Department getDepartment();
+
+    public Character getGender();
+
+    public String getImage();
+
 }
