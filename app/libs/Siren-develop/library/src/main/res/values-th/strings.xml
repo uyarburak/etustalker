@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">เวอร์ชั่นใหม่ของ %s สามารถใช้งานได้แล้ว กรุณาอัพเดทแอพให้เป็นเวอร์ชั่น %s </string>
+    <string name="update_available">มีการอัพเดท</string>
+    <string name="update">อัพเดท</string>
+    <string name="next_time">ไว้คราวหน้า</string>
+    <string name="skip_this_version">ข้ามเวอร์ชั่นนี้</string>
+</resources>

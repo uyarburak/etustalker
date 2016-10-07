@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Une nouvelle version de %s est disponible. Veuillez passer à la version %s maintenant.</string>
+    <string name="update_available">Mise à jour disponible</string>
+    <string name="update">Mettre à jour</string>
+    <string name="next_time">La prochaine fois</string>
+    <string name="skip_this_version">Sauter cette version</string>
+</resources>

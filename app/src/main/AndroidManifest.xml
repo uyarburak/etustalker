@@ -90,6 +90,12 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.MidtermActivity"
+            android:configChanges="orientation"
+            android:label="Midterm Schedule"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

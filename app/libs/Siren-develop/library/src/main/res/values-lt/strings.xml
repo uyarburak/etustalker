@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Atsirado nauja %s versija. Prašome atsinaujinti iki %s versijos.</string>
+    <string name="update_available">Atnaujinimas</string>
+    <string name="update">Atnaujinti</string>
+    <string name="next_time">Kitą kartą</string>
+    <string name="skip_this_version">Praleisti šią versiją</string>
+</resources>

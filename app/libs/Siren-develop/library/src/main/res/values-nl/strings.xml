@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Er is een nieuwe versie van %s beschikbaar. Je kunt nu updaten naar versie %s.</string>
+    <string name="update_available">Update Beschikbaar</string>
+    <string name="update">Updaten</string>
+    <string name="next_time">Volgende keer</string>
+    <string name="skip_this_version">Sla deze versie over</string>
+</resources>

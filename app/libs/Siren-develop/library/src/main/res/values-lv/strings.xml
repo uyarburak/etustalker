@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Pieejama jauna %s versija.  Lūdzam atjaunot līdz %s versijai.</string>
+    <string name="update_available">Atjaunojums</string>
+    <string name="update">Atjaunot</string>
+    <string name="next_time">Nākošreiz</string>
+    <string name="skip_this_version">Palaist garām šo versiju</string>
+</resources>

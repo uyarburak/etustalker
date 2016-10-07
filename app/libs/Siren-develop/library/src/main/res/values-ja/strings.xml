@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">%sの新規バージョンがご利用になれます。今すぐバージョン%sに更新してください。</string>
+    <string name="update_available">更新が利用可能</string>
+    <string name="update">更新</string>
+    <string name="next_time">次回</string>
+    <string name="skip_this_version">このバージョンをスキップ</string>
+</resources>

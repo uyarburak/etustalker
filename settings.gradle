@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':siren'
+project(':siren').projectDir = new File('app/libs/Siren-develop/library')

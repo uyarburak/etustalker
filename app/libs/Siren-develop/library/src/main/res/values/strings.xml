@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="fallback_app_name" tools:ignore="MissingTranslation">application</string>
+
+    <string name="update_alert_message" tools:ignore="StringFormatCount">A new version of %1$s is available. Please update to version %2$s now.</string>
+    <string name="update_available">Update available</string>
+    <string name="update">Update</string>
+    <string name="next_time">Next time</string>
+    <string name="skip_this_version">Skip this version</string>
+</resources>

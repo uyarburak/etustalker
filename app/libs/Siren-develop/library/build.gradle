@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply from: "quality.gradle"
+
+group='com.github.eggheadgames'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 6
+        versionName "1.4.4"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        warningsAsErrors true
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.json:json:20160212'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleDependency
+    compile 'com.android.support:appcompat-v7:24.2.1'
+}

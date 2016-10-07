@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Na voljo je nova različica aplikacije %s %s.\nPosodobitev je priporočljiva.</string>
+    <string name="update_available">Posodobitev aplikacije</string>
+    <string name="update">Namesti</string>
+    <string name="next_time">Naslednjič</string>
+    <string name="skip_this_version">Ne želim</string>
+</resources>

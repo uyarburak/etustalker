@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">%s의 새로운 버전이 있습니다. 이제 %s 버전으로 업데이트 하십시오.</string>
+    <string name="update_available">업데이트 가능</string>
+    <string name="update">업데이트</string>
+    <string name="next_time">다음에</string>
+    <string name="skip_this_version">이 버전 건너뜀</string>
+</resources>

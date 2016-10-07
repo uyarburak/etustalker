@@ -12,11 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.eggheadgames.siren.ISirenListener;
+import com.eggheadgames.siren.Siren;
+import com.eggheadgames.siren.SirenAlertType;
+import com.eggheadgames.siren.SirenVersionCheckType;
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
 import com.okapi.stalker.data.MainDataBaseHandler;
@@ -26,6 +31,7 @@ import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String SIREN_JSON_URL = "http://etustalk.club/android/last_version.json";
 
     private Student student;
     private String user_student_key;
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkCurrentAppVersion();
+
         setContentView(R.layout.activity_main);
         user_student_key = getIntent().getExtras().getString("key");
 
@@ -112,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent7 = new Intent(getBaseContext(), AboutActivity.class);
                         startActivity(intent7);
                         break;
+                    case R.id.nav_midterm_schedule:
+                        Intent intent8 = new Intent(getBaseContext(), MidtermActivity.class);
+                        intent8.putExtra("studentId", student.getId());
+                        startActivity(intent8);
+                        break;
                 }
 
                 drawerLayout.closeDrawers();
@@ -173,5 +186,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void checkCurrentAppVersion() {
+        Siren siren = Siren.getInstance(getApplicationContext());
+        siren.setMajorUpdateAlertType(SirenAlertType.FORCE);
+        siren.setVersionCodeUpdateAlertType(SirenAlertType.SKIP);
+        siren.checkVersion(this, SirenVersionCheckType.THREE_DAY, SIREN_JSON_URL);
     }
 }

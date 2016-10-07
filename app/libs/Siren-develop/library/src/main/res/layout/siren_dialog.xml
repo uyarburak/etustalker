@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvSirenAlertMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        tools:text="Some text here" />
+
+    <LinearLayout
+        android:id="@+id/llSirenButtonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnSirenNextTime"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_weight="1"
+            android:text="@string/next_time"
+            android:visibility="gone"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btnSirenUpdate"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_weight="1"
+            android:text="@string/update"
+            tools:ignore="ButtonStyle" />
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnSirenSkip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:text="@string/skip_this_version"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Der findes en ny tilgængelig version af %s. Venligst opdater til version %s nu!</string>
+    <string name="update_available">Tilgængelig opdatering</string>
+    <string name="update">Opdater</string>
+    <string name="next_time">Næste gang</string>
+    <string name="skip_this_version">Spring denne version over</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Det finns en ny tillgänglig version av %s. Vänligen uppdatera till version %s nu!</string>
+    <string name="update_available">Tillgänglig uppdatering</string>
+    <string name="update">Uppdatera</string>
+    <string name="next_time">Nästa gång</string>
+    <string name="skip_this_version">Hoppa över den här versionen</string>
+</resources>

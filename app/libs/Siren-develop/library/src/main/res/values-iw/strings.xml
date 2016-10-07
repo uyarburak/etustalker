@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">גרסה חדשה של %s זמינה. אנא עדכן לגרסה %s כעת.</string>
+    <string name="update_available">עדכון זמין</string>
+    <string name="update">עדכן</string>
+    <string name="next_time">בפעם הבאה</string>
+    <string name="skip_this_version">דלג על גרסה זו</string>
+</resources>

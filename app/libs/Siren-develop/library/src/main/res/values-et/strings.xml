@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">On ilmunud uus %s versioon. Palun uuendage %s versioonini.</string>
+    <string name="update_available">Uuendus saadaval</string>
+    <string name="update">Uuenda</string>
+    <string name="next_time">Järgmisel korral</string>
+    <string name="skip_this_version">Jäta see version vahele</string>
+</resources>

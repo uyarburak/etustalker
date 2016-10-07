@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Új verziója érhető el a %s alkalmazásnak. Kérjük frissítsen a %s verzióra.</string>
+    <string name="update_available">Új frissítés érhető el</string>
+    <string name="update">Frissítés</string>
+    <string name="next_time">Később</string>
+    <string name="skip_this_version">Ennél a verziónál ne figyelmeztessen</string>
+</resources>

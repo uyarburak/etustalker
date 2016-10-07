@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">Հասանելի է %s նոր տարբերակը. Խնդրում ենք թարմացնել հավելվածը %s տարբերակի</string>
+    <string name="update_available">Թարմացումը հասանելի Է</string>
+    <string name="update">Թարմացնել</string>
+    <string name="next_time">Հաջորդ անգամ</string>
+    <string name="skip_this_version">Բաց թողնել այս տարբերակը</string>
+</resources>

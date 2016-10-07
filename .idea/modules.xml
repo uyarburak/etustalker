@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Stalker.iml" filepath="$PROJECT_DIR$/Stalker.iml" />
       <module fileurl="file://$PROJECT_DIR$/StalkerV2.iml" filepath="$PROJECT_DIR$/StalkerV2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libs/Siren-develop/library/siren.iml" filepath="$PROJECT_DIR$/app/libs/Siren-develop/library/siren.iml" />
     </modules>
   </component>
 </project>

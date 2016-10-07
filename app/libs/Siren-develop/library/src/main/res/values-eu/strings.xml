@@ -1,0 +1,7 @@
+<resources>
+    <string name="update_alert_message" formatted="false">%s-ren bertsio berria erabilgarri dago. Mesedez, eguneratu %s bertsiora.</string>
+    <string name="update_available">Eguneratzea erabilgarri</string>
+    <string name="update">Eguneratu</string>
+    <string name="next_time">Hurrengo batean</string>
+    <string name="skip_this_version">Bertsio honetatik jauzi egin</string>
+</resources>
