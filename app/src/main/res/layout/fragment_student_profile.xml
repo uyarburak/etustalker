@@ -43,7 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="Name:"
+                    android:text="@string/name"
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
                     android:padding="3dp"
@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="ID:"
+                    android:text="@string/id"
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
                     android:padding="3dp"
@@ -109,7 +109,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="Email:"
+                    android:text="@string/email"
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
                     android:padding="3dp"
@@ -135,13 +135,43 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:weightSum="4"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/year"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#7fa87f" />
+
+                <TextView
+                    android:id="@+id/student_year"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:text="ritesh.singh@betasoftsystems.com"
+                    android:textSize="18dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:padding="3dp"
+                    android:background="#80cbc4" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
                 android:orientation="horizontal"
                 >
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="Major:"
+                    android:text="@string/major"
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
                     android:padding="3dp"
@@ -172,16 +202,16 @@
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="2nd Major:"
+                    android:text="@string/minor"
                     android:textSize="16dp"
                     android:textColor="@android:color/black"
                     android:padding="3dp"
                     android:background="@color/design_fab_stroke_end_outer_color"
                     android:visibility="invisible"
-                    android:id="@+id/profile_major_2_title" />
+                    android:id="@+id/profile_minor_title" />
 
                 <TextView
-                    android:id="@+id/profile_major_2"
+                    android:id="@+id/profile_minor"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:layout_weight="3"

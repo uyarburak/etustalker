@@ -72,7 +72,7 @@ public class FriendsFragment extends Fragment {
             Student student = (Student)myFriendsAdapter.getItem(info.position);
             FriendsDataBaseHandler db = new FriendsDataBaseHandler(getActivity());
             db.deleteFriend(student.getId());
-            Toast.makeText(getContext(), student.getName() + getString(R.string.xxx_has_removed), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.xxx_has_removed, student.getName()), Toast.LENGTH_LONG).show();
         }
         else if(item.getTitle()==getString(R.string.remove_all)){
             dialogRemoveAll();
@@ -86,16 +86,16 @@ public class FriendsFragment extends Fragment {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
         // Setting Dialog Title
-        alertDialog.setTitle("Confirm Delete...");
+        alertDialog.setTitle(getString(R.string.comfirm_deletion));
 
         // Setting Dialog Message
-        alertDialog.setMessage("Are you sure you want delete all your friends?");
+        alertDialog.setMessage(getString(R.string.comfirm_delete_all));
 
         // Setting Icon to Dialog
         // alertDialog.setIcon(R.drawable.delete);
 
         // Setting Positive "Yes" Button
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 FriendsDataBaseHandler db = new FriendsDataBaseHandler(getActivity());
                 db.deleteAllFriends();
@@ -104,7 +104,7 @@ public class FriendsFragment extends Fragment {
         });
 
         // Setting Negative "NO" Button
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }

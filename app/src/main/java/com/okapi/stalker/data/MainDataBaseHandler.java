@@ -16,6 +16,7 @@ import com.okapi.stalker.data.storage.model.Course;
 import com.okapi.stalker.data.storage.model.Department;
 import com.okapi.stalker.data.storage.model.Instructor;
 import com.okapi.stalker.data.storage.model.Interval;
+import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
 
@@ -611,6 +612,36 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         return courses;
     }
 
+    public Set<Department> getAllDepartments() {
+        final Collator coll = Collator.getInstance(new Locale("tr", "TR"));
+        coll.setStrength(Collator.PRIMARY);
+        Set<Department> departments = new TreeSet<>(new Comparator<Department>() {
+            @Override
+            public int compare(Department lhs, Department rhs) {
+                return coll.compare(lhs.getName(), rhs.getName());
+            }
+        });
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_DEPARTMENTS + " ORDER BY " + DEPARTMENTS_NAME_KEY;
+
+        Log.e("DB LOG", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Department department = new Department();
+                department.setName(c.getString(c.getColumnIndex(DEPARTMENTS_NAME_KEY)));
+                department.setMainURL(c.getString(c.getColumnIndex(DEPARTMENTS_MAIN_URL_KEY)));
+                department.setFaculty(c.getString(c.getColumnIndex(DEPARTMENTS_FACULTY_NAME_KEY)));
+                departments.add(department);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return departments;
+    }
+
     /*
 * get single student
 */
@@ -630,6 +661,27 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         department.setName(id);
         department.setFaculty(c.getString(c.getColumnIndex(DEPARTMENTS_FACULTY_NAME_KEY)));
         department.setMainURL(c.getString(c.getColumnIndex(DEPARTMENTS_MAIN_URL_KEY)));
+        c.close();
+        return department;
+    }
+    public Department getDepartmentFull(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_DEPARTMENTS + " WHERE "
+                + DEPARTMENTS_NAME_KEY + " = '" + id+"'";
+
+        Log.e("DB LOG", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        Department department = new Department();
+        department.setName(id);
+        department.setFaculty(c.getString(c.getColumnIndex(DEPARTMENTS_FACULTY_NAME_KEY)));
+        department.setMainURL(c.getString(c.getColumnIndex(DEPARTMENTS_MAIN_URL_KEY)));
+        department.setInstructors(getInstructorsOfDepartment(id));
+        department.setStudents(getStudentsOfDepartment(id));
         c.close();
         return department;
     }
@@ -684,9 +736,35 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         return instructor;
     }
 
-    /*
-* get single student
-*/
+    public  Set<Instructor> getInstructorsOfDepartment(String departmentName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(departmentName.endsWith(" DK") || departmentName.endsWith(" DR") || departmentName.endsWith(" YL")){
+            departmentName = departmentName.substring(0, departmentName.length()-3);
+        }
+        String selectQuery = "SELECT  " + INSTRUCTORS_ID_KEY + ", " + INSTRUCTORS_NAME_KEY + ", " + INSTRUCTORS_IMAGE_URL_KEY +", " +INSTRUCTORS_OFFICE_KEY + "  FROM " + TABLE_INSTRUCTORS + " WHERE "
+                + INSTRUCTORS_DEPARTMENT_ID_KEY + " = '" + departmentName+"'";
+
+        Log.e("DB LOG", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        Set<Instructor> instructors = new TreeSet<Instructor>(new PersonComparator());
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Instructor instructor = new Instructor();
+                instructor.setId(c.getInt(c.getColumnIndex(INSTRUCTORS_ID_KEY)));
+                instructor.setName(c.getString(c.getColumnIndex(INSTRUCTORS_NAME_KEY)));
+                instructor.setImage(c.getString(c.getColumnIndex(INSTRUCTORS_IMAGE_URL_KEY)));
+                Department department = new Department();
+                department.setName(c.getString(c.getColumnIndex(INSTRUCTORS_OFFICE_KEY)));
+                instructor.setDepartment(department);
+                instructors.add(instructor);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return instructors;
+    }
     public  Set<Section> getSectionsOfStudent(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_ENROLLMENTS + " WHERE "
@@ -701,6 +779,34 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
             do {
                 Section section = new Section();
                 section.setId(c.getInt(c.getColumnIndex(ENROLLMENTS_SECTION_ID_KEY)));
+                sections.add(section);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return sections;
+    }
+
+    public  Set<Section> getSectionsOfCourseForProgram(String courseId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_SECTIONS + " WHERE "
+                + SECTIONS_COURSE_ID_KEY + " = '" + courseId+"' ORDER BY "+ SECTIONS_SECTION_NO_KEY;
+
+        Log.e("DB LOG", selectQuery);
+
+        Course course = getCourse(courseId);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        Set<Section> sections = new LinkedHashSet<Section>();
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Section section = new Section();
+                section.setId(c.getInt(c.getColumnIndex(SECTIONS_ID_KEY)));
+                section.setSize(c.getInt(c.getColumnIndex(SECTIONS_SIZE_KEY)));
+                section.setSectionNo(c.getInt(c.getColumnIndex(SECTIONS_SECTION_NO_KEY)));
+                section.setCourse(course);
+                section.setIntervals(getIntervalsOfSection(section.getId()));
                 sections.add(section);
             } while (c.moveToNext());
         }
@@ -787,6 +893,43 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         return sections;
     }
 
+    public  Set<Student> getStudentsOfDepartment(String departmentName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  " + STUDENT_ID_KEY + ", " + STUDENT_NAME_KEY + ", " + STUDENT_DEPARTMENT_ID_KEY + ", " + STUDENT_DEPARTMENT_2_ID_KEY + ", " + STUDENT_SEX_KEY + " FROM " + TABLE_STUDENTS + " WHERE "
+                + STUDENT_DEPARTMENT_ID_KEY + " = '" + departmentName + "' or " + STUDENT_DEPARTMENT_2_ID_KEY + " = '" + departmentName+"'";
+
+        Log.e("DB LOG", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        Set<Student> students = new TreeSet<Student>(new PersonComparator());
+        // looping through all rows and adding to list
+        try{
+            if (c.moveToFirst()) {
+                do {
+                    Student student = new Student();
+                    student.setId(c.getString(c.getColumnIndex(STUDENT_ID_KEY)));
+                    student.setName(c.getString(c.getColumnIndex(STUDENT_NAME_KEY)));
+                    Department dep = new Department();
+                    dep.setName(c.getString(c.getColumnIndex(STUDENT_DEPARTMENT_ID_KEY)));
+                    student.setDepartment(dep);
+                    String secondDepName = c.getString(c.getColumnIndex(STUDENT_DEPARTMENT_2_ID_KEY));
+                    if(secondDepName != null && secondDepName.length() > 1){
+                        Department dep2 = new Department();
+                        dep2.setName(c.getString(c.getColumnIndex(STUDENT_DEPARTMENT_2_ID_KEY)));
+                        student.setDepartment2(dep2);
+                    }
+                    String gender = c.getString(c.getColumnIndex(STUDENT_SEX_KEY));
+                    student.setGender(gender.isEmpty() ? 'U' : gender.charAt(0));
+                    students.add(student);
+                } while (c.moveToNext());
+            }
+        }finally {
+            c.close();
+        }
+
+        return students;
+    }
+
     public  Set<Student> getStudentsOfSection(Integer sectionId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_ENROLLMENTS + " WHERE "
@@ -797,7 +940,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, null);
         final Collator coll = Collator.getInstance(new Locale("tr", "TR"));
         coll.setStrength(Collator.PRIMARY);
-        Set<Student> students = new TreeSet<Student>(new StudentComparator());
+        Set<Student> students = new TreeSet<Student>(new PersonComparator());
         // looping through all rows and adding to list
         try{
             if (c.moveToFirst()) {
@@ -936,6 +1079,26 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         return course;
     }
 
+
+    public Course getCourseForProgram(String courseId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSES + " WHERE "
+                + COURSES_CODE_KEY + " = '" + courseId +"'";
+
+        Log.e("DB LOG", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+
+        Course course = new Course();
+        course.setCode(courseId);
+        course.setTitle(c.getString(c.getColumnIndex(COURSES_TITLE_KEY)));
+        course.setSections(getSectionsOfCourseForProgram(courseId));
+        c.close();
+        return course;
+    }
+
     public Section getSection(Integer sectionId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_SECTIONS + " WHERE "
@@ -961,16 +1124,16 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
     }
 }
 @SuppressWarnings("serial")
-class StudentComparator implements Comparator<Student>, Serializable {
+class PersonComparator implements Comparator<Person>, Serializable {
     private transient  Collator coll;
 
-    public StudentComparator() {
+    public PersonComparator() {
         coll = Collator.getInstance(new Locale("tr", "TR"));
         coll.setStrength(Collator.PRIMARY);
     }
 
     @Override
-    public int compare(Student lhs, Student rhs) {
+    public int compare(Person lhs, Person rhs) {
         return coll.compare(lhs.getName(), rhs.getName());
     }
 }

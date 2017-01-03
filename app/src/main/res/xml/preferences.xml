@@ -20,16 +20,6 @@
             android:dependency="checkbox_notification_allow"
             android:defaultValue="10"/>
 
-        <ListPreference
-            android:key="list_notification_alert_type"
-            android:title="@string/notification_alert_type"
-            android:summary="@string/notification_alert_type"
-            android:entries="@array/entries_list_notification_alert_type"
-            android:entryValues="@array/entryvalues_list_notification_alert_type"
-            android:dialogTitle="@string/notification_alert_type"
-            android:dependency="checkbox_notification_allow"
-            android:defaultValue="2"/>
-
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/update_preferences">

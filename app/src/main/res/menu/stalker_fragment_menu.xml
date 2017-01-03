@@ -38,7 +38,7 @@
 
     </item>
     <item android:id="@+id/action_stats"
-        android:title="Stats"
+        android:title="@string/stats"
         android:orderInCategory="2"
         app:showAsAction="never" />
 </menu>

@@ -1,7 +1,5 @@
 package com.okapi.stalker.fragment;
 
-import android.content.DialogInterface;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,19 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
+import com.okapi.stalker.R;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
-import com.okapi.stalker.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +27,8 @@ import agency.tango.materialintroscreen.SlideFragment;
  */
 public class ProgramSchedulerFragment2 extends SlideFragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     RelativeLayout relativeLayout;
-    List<SearchableSpinner> spinners;
-    ArrayList<String> courseList;
+    public List<SearchableSpinner> spinners;
+    public ArrayList<String> courseList;
     int counter;
 
     @Nullable

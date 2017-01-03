@@ -1,5 +1,6 @@
 package com.okapi.stalker.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.DepartmentActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.FriendsDataBaseHandler;
@@ -24,14 +27,15 @@ import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MySectionAdapter;
 
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 
 public class StudentProfileFragment extends Fragment {
+    private static final int NO_FRIEND = 0;
+    private static final int FRIEND = 1;
+    private int isFriend;
 
     public StudentProfileFragment() {
     }
@@ -60,18 +64,45 @@ public class StudentProfileFragment extends Fragment {
                 startActivity(browserIntent);
             }
         });
-        TextView textNo = (TextView) rootView.findViewById(R.id.profile_id);
+        final TextView textNo = (TextView) rootView.findViewById(R.id.profile_id);
         textNo.setText("" + student.getId());
+        textNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("Text Label", student.getId());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.copied_id), Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView textMail = (TextView) rootView.findViewById(R.id.profile_email);
         textMail.setText(student.getMail());
+        TextView textYear = (TextView) rootView.findViewById(R.id.student_year);
+        textYear.setText(student.getYear().toString());
         TextView textMajor = (TextView) rootView.findViewById(R.id.profile_major);
         textMajor.setText(student.getDepartment().getName());
+        textMajor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DepartmentActivity.class);
+                intent.putExtra("department", student.getDepartment().getName());
+                getActivity().startActivity(intent);
+            }
+        });
         if(student.getDepartment2() != null){
-            TextView textMajor2 = (TextView) rootView.findViewById(R.id.profile_major_2);
-            TextView textMajor2Title = (TextView) rootView.findViewById(R.id.profile_major_2_title);
-            textMajor2.setText(student.getDepartment2().getName());
-            textMajor2.setVisibility(View.VISIBLE);
-            textMajor2Title.setVisibility(View.VISIBLE);
+            TextView textMinor = (TextView) rootView.findViewById(R.id.profile_minor);
+            TextView textMinorTitle = (TextView) rootView.findViewById(R.id.profile_minor_title);
+            textMinor.setText(student.getDepartment2().getName());
+            textMinor.setVisibility(View.VISIBLE);
+            textMinorTitle.setVisibility(View.VISIBLE);
+            textMinor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DepartmentActivity.class);
+                    intent.putExtra("department", student.getDepartment2().getName());
+                    getActivity().startActivity(intent);
+                }
+            });
         }
 
         final Button button = (Button) rootView.findViewById(R.id.profile_add_friend_button);
@@ -103,25 +134,28 @@ public class StudentProfileFragment extends Fragment {
         final FriendsDataBaseHandler db = new FriendsDataBaseHandler(getActivity());
         List<String> friendsList = db.getAllFriends();
         if(friendsList.contains(student.getId())){
+            isFriend = FRIEND;
             button.setText(getString(R.string.remove_friend));
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    db.deleteFriend(student.getId());
-                    button.setEnabled(false);
-                }
-            });
         }
         else{
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    db.addFriend(student.getId());
-                    button.setEnabled(false);
-                }
-            });
+            isFriend = NO_FRIEND;
+            button.setText(getString(R.string.add_friend));
         }
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFriend == FRIEND){
+                    isFriend = NO_FRIEND;
+                    button.setText(getString(R.string.add_friend));
+                    db.deleteFriend(student.getId());
+                }else{
+                    isFriend = FRIEND;
+                    button.setText(getString(R.string.remove_friend));
+                    db.addFriend(student.getId());
+                }
+            }
+        });
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton)rootView.findViewById(R.id.fab_email);
 

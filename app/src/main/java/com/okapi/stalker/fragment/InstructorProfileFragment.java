@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.DepartmentActivity;
 import com.okapi.stalker.activity.InstructorActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
@@ -63,6 +64,14 @@ public class InstructorProfileFragment extends Fragment {
         textOffice.setText(instructor.getOffice());
         TextView textMajor = (TextView) rootView.findViewById(R.id.profile_major);
         textMajor.setText(instructor.getDepartment().getName());
+        textMajor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DepartmentActivity.class);
+                intent.putExtra("department", instructor.getDepartment().getName());
+                getActivity().startActivity(intent);
+            }
+        });
         TextView textWebsite = (TextView) rootView.findViewById(R.id.profile_website);
         textWebsite.setText(instructor.getWebsite());
         TextView textLabUrl = (TextView) rootView.findViewById(R.id.profile_lab_url);

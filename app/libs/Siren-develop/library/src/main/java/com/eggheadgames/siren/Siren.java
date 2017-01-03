@@ -84,7 +84,7 @@ public class Siren {
         // visible for testing
     }
 
-    public void checkVersion(Activity activity, SirenVersionCheckType versionCheckType, String appDescriptionUrl) {
+    public void checkVersion(Activity activity, int checkPeriod, String appDescriptionUrl) {
 
         mActivityRef = new WeakReference<>(activity);
 
@@ -93,9 +93,9 @@ public class Siren {
             return;
         }
 
-        if (versionCheckType == SirenVersionCheckType.IMMEDIATELY) {
+        if (checkPeriod == 0) {
             performVersionCheck(appDescriptionUrl);
-        } else if (versionCheckType.getValue() <= getSirenHelper().getDaysSinceLastCheck(mApplicationContext)
+        } else if (checkPeriod <= getSirenHelper().getDaysSinceLastCheck(mApplicationContext)
                 ||getSirenHelper().getLastVerificationDate(mApplicationContext) == 0) {
             performVersionCheck(appDescriptionUrl);
         }

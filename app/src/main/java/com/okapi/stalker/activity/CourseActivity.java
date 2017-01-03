@@ -15,8 +15,6 @@ import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
 import com.okapi.stalker.fragment.CourseProfileFragment;
 import com.okapi.stalker.fragment.CourseSectionsFragment;
-import com.okapi.stalker.fragment.SectionProfileFragment;
-import com.okapi.stalker.fragment.SectionProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
 
 /**
@@ -70,22 +68,9 @@ public class CourseActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(courseProfileFragment, getString(R.string.title_overview));
-        adapter.addFragment(courseSectionsFragment, "Sections");
+        adapter.addFragment(courseSectionsFragment, getString(R.string.title_sections));
         adapter.addFragment(new StalkerFragment(), getString(R.string.title_students));
         viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_section, menu);
-
-        return true;
     }
 
     @Override

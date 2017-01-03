@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/lib-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:focusable="false">
 
@@ -10,9 +10,9 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="3dp"
-        app:titleColor="@android:color/white"
-        app:titleSize="100dp"
-        app:titleText="A" />
+        app:rlv_titleColor="@android:color/white"
+        app:rlv_titleSize="100dp"
+        app:rlv_titleText="A" />
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">

@@ -4,53 +4,74 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.FriendsDataBaseHandler;
 import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Department;
 import com.okapi.stalker.data.storage.model.Interval;
 import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MySectionAdapter;
+import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 import com.okapi.stalker.util.ColorGenerator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.Collator;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 
 public class ProgramFragment extends Fragment{
     private MainDataBaseHandler db;
     private View rootView;
+    private int maxHour;
     private Person owner;
 
     public ProgramFragment() {
@@ -59,6 +80,8 @@ public class ProgramFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        maxHour = -1;
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -88,6 +111,9 @@ public class ProgramFragment extends Fragment{
                             String.format("%s (%s)", section.getCourse().getCode(), interval.getRoom()),
                             colors[colorIndex]
                     );
+                    if(interval.getHour() > maxHour){
+                        maxHour = interval.getHour();
+                    }
                     buttons.add(button);
                 }
                 if(++colorIndex == colors.length){
@@ -265,7 +291,7 @@ public class ProgramFragment extends Fragment{
                                 if(time.hour < 21){
                                     currentTimeLine.setVisibility(View.VISIBLE);
                                     int minutes = (time.hour * 60) + time.minute - 510;
-                                    System.out.println(time.second);
+
                                     params.setMargins(0, dpToPx(getActivity(), minutes), 0, 0);
                                     currentTimeLine.setLayoutParams(params);
                                 }else{
@@ -283,6 +309,10 @@ public class ProgramFragment extends Fragment{
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_program, menu);
+    }
 
     private int dpToPx(Context context, int dp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -290,7 +320,14 @@ public class ProgramFragment extends Fragment{
     }
 
     private void freeFriendsDialog(int index){
-        final HashMap<String, Student> freeGuys = new HashMap<>();
+        final Collator coll = Collator.getInstance(new Locale("tr", "TR"));
+        coll.setStrength(Collator.PRIMARY);
+        final Map<String, Student> freeGuys = new TreeMap<String, Student>(new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return coll.compare(lhs, rhs);
+            }
+        });
         FriendsDataBaseHandler dbFriends = new FriendsDataBaseHandler(getActivity());
         List<String> friends = dbFriends.getAllFriends();
         etiket:
@@ -310,7 +347,7 @@ public class ProgramFragment extends Fragment{
         //Create sequence of items
         final CharSequence[] freeGuyNames = freeGuys.keySet().toArray(new String[freeGuys.size()]);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setTitle("Free Friends");
+        dialogBuilder.setTitle(getString(R.string.free_friends));
         dialogBuilder.setItems(freeGuyNames, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Student friend = freeGuys.get(freeGuyNames[item].toString());  //Selected item in listview
@@ -327,6 +364,101 @@ public class ProgramFragment extends Fragment{
     public void setOwner(Person owner) {
         this.owner = owner;
     }
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        this.owner = (Person) args.getSerializable("owner");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_share_program:
+                if(maxHour == -1){
+                    Toast.makeText(getContext(), getString(R.string.nothing_to_send), Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                final LinearLayout currentTimeLine =
+                        (LinearLayout) rootView.findViewById(R.id.currentTimeMarkerLinearLayout);
+                int visibility = currentTimeLine.getVisibility();
+                currentTimeLine.setVisibility(View.GONE);
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout root = (RelativeLayout) inflater.inflate(R.layout.fragment_program, null); // activity_main is UI(xml) file we used in our Activity class. FrameLayout is root view of my UI(xml) file.
+                root.setDrawingCacheEnabled(true);
+                Bitmap bitmap = getBitmapFromView(getActivity().getWindow().findViewById(R.id.dayLabelsLinearLayout)); // here give id of our root layout (here its my FrameLayout's id)
+                Bitmap bitmap2 = getBitmapFromView(getActivity().getWindow().findViewById(R.id.dividerView)); // here give id of our root layout (here its my FrameLayout's id)
+                Bitmap bitmap3 = getBitmapFromView(getActivity().getWindow().findViewById(R.id.calendarScrollView), dpToPx(getActivity(), 60*(maxHour+1))); // here give id of our root layout (here its my FrameLayout's id)
+                Bitmap combined = combineImages(bitmap, bitmap2);
+                combined = combineImages(combined, bitmap3);
+                currentTimeLine.setVisibility(visibility);
+                // save bitmap to cache directory
+                try {
+
+                    File cachePath = new File(getActivity().getCacheDir(), "images");
+                    cachePath.mkdirs(); // don't forget to make the directory
+                    FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+                    combined.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    stream.close();
+
+                    File newFile = new File(cachePath, "image.png");
+                    Uri contentUri = FileProvider.getUriForFile(getActivity(), "com.okapi.stalker", newFile);
+
+                    if (contentUri != null) {
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
+                        shareIntent.setDataAndType(contentUri, getContext().getContentResolver().getType(contentUri));
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_an_app)));
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        return true;
+    }
+
+
+    private Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width = c.getWidth();
+        int height = c.getHeight() + s.getHeight();
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+
+        comboImage.drawBitmap(c, 0f, 0f, null);
+        comboImage.drawBitmap(s, 0f, c.getHeight(), null);
+
+        return cs;
+    }
+
+
+
+    private Bitmap getBitmapFromView(View view) {
+        return getBitmapFromView(view, view.getHeight());
+    }
+    private Bitmap getBitmapFromView(View view, int height) {
+
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
 }
 class MyButton{
     Integer index;

@@ -42,12 +42,14 @@ public class InstructorsListAdapter extends BaseAdapter implements Filterable {
     private Activity activity;
 
     public InstructorsListAdapter(Activity activity) {
-        MainDataBaseHandler db = new MainDataBaseHandler(activity);
+        this(activity, new MainDataBaseHandler(activity).getAllInstructors());
+    }
+    public InstructorsListAdapter(Activity activity, Set<Instructor> instructors) {
         this.activity = activity;
         mInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
-        allInstructors = db.getAllInstructors();
+        allInstructors = instructors;
         arrayListFilter = new ArrayList<>();
         arrayListFilter.addAll(allInstructors);
         orderBy = OrderBy.NAME;

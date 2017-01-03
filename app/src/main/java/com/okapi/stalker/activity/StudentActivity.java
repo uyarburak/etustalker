@@ -1,5 +1,6 @@
 package com.okapi.stalker.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -85,6 +86,16 @@ public class StudentActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
+            case R.id.action_show_midterms_of_student:
+                Intent intent = new Intent(getBaseContext(), MidtermActivity.class);
+                intent.putExtra("studentId", student.getId());
+                startActivity(intent);
+                return true;
+            case R.id.action_show_finals_of_student:
+                Intent intent2 = new Intent(getBaseContext(), FinalsActivity.class);
+                intent2.putExtra("studentId", student.getId());
+                startActivity(intent2);
+                return true;
             case R.id.action_settings:
                 return true;
             case android.R.id.home:

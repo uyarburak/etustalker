@@ -25,6 +25,11 @@
     <color name="custom_slide_background">#3F51B5</color>
     <color name="custom_slide_buttons">#1A237E</color>
 
+
+    <color name="table_header_text">#303F9F</color>
+    <color name="table_data_row_even">#11C5CAE9</color>
+    <color name="table_data_row_odd">#33C5CAE9</color>
+
     <!--Splash Screen-->
     <item name="splash_background" type="color">@color/colorPrimary</item>
 </resources>

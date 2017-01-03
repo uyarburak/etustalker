@@ -1,10 +1,19 @@
 package com.okapi.stalker.activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +33,11 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +49,8 @@ import de.halfbit.pinnedsection.PinnedSectionListView;
  */
 public class MidtermActivity extends AppCompatActivity {
 
+    public static int status;
+
     private String studentId;
     Map<String, Integer> studentsCourses;
 
@@ -46,17 +61,29 @@ public class MidtermActivity extends AppCompatActivity {
         setContentView(R.layout.activity_midterms);
         studentId = getIntent().getExtras().getString("studentId");
 
+        setTitle(getString(R.string.midterms_title));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
+
         parseMidterms(studentId);
 
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_midterm, menu);
+        return true;
+    }
     private void parseMidterms(String studentId) {
         MainDataBaseHandler db = new MainDataBaseHandler(this);
         for (Section section: db.getSectionsOfStudent(studentId)){
             section = db.getSectionWithoutStudents(section.getId());
             studentsCourses.put(section.getCourse().getCode(), section.getSectionNo());
         }
-        new MidtermParse().execute();
+        new MidtermParse(this).execute();
     }
 
     private void parseDone(List<Midterm> midterms){
@@ -71,30 +98,128 @@ public class MidtermActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_show_all_midterms:
+                Intent intent = new Intent(getBaseContext(), WebBrowserActivity.class);
+                intent.putExtra("url", "http://kayit.etu.edu.tr/ara_sinav_programi.php");
+                intent.putExtra("title", getString(R.string.midterms_title) + " (ETU-BIS)");
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
-    private class MidtermParse extends AsyncTask<Void, Void, Void> {
+    private class MidtermParse extends AsyncTask<String, Void, Integer> {
+        public static final int NO_CONNECTION = 1;
+
+        private ProgressDialog dialog;
+        private Activity activity;
+        private SharedPreferences sharedPreferences;
+        private String html;
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Integer aVoid) {
             super.onPostExecute(aVoid);
-            parseDone(midterms);
+            if(!midterms.isEmpty()){
+                parseDone(midterms);
+                dialog.dismiss();
+                return;
+            }
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            AlertDialog alertDialog = new AlertDialog.Builder(MidtermActivity.this).create();
+            if(aVoid == NO_CONNECTION){
+                alertDialog.setTitle(getString(R.string.alert));
+                if(sharedPreferences.contains("time")){
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                    Date date = new Date(sharedPreferences.getLong("time", 0));
+                    alertDialog.setMessage(getString(R.string.connection_error, format.format(date).toString()));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    new MidtermParse(activity, sharedPreferences.getString("html", "")).execute();
+                                }
+                            });
+                }else{
+
+                    alertDialog.setMessage(getString(R.string.connection_error_no_cache));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    activity.finish();
+                                }
+                            });
+                }
+            }else{
+                alertDialog.setTitle(getString(R.string.alert));
+                alertDialog.setMessage(getString(R.string.cannot_find_midterm));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.not_now),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.go_etu_bis),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent intent = new Intent(activity, WebBrowserActivity.class);
+                                intent.putExtra("url", "http://kayit.etu.edu.tr/ara_sinav_programi.php");
+                                intent.putExtra("title", getString(R.string.midterms_title) + " (ETU-BIS)");
+                                startActivity(intent);
+                            }
+                        });
+            }
+
+            alertDialog.show();
+        }
+
+        public MidtermParse(Activity activity) {
+            super();
+            this.activity = activity;
+            dialog = new ProgressDialog(activity);
+            midterms = new ArrayList<>();
+            sharedPreferences = getSharedPreferences("midterms_cache", MODE_PRIVATE);
+        }
+        public MidtermParse(Activity activity, String html) {
+            this(activity);
+            this.html = html;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage(getString(R.string.executing));
+            dialog.show();
+        }
+
+        private void updateCache(String html){
+            SharedPreferences.Editor mPrefsEditor = sharedPreferences.edit();
+            mPrefsEditor.putString("html", html);
+            mPrefsEditor.putLong("time", System.currentTimeMillis());
+            mPrefsEditor.commit();
         }
 
         List<Midterm> midterms;
         @Override
-        protected Void doInBackground(Void... params) {
-            midterms = new ArrayList<>();
-            Document doc = null;
-            try {
-                doc  = Jsoup.connect("http://kayit.etu.edu.tr/ara_sinav_programi.php").get();
-            } catch (IOException e) {
-                e.printStackTrace();
+        protected Integer doInBackground(String... params) {
+            Document doc;
+            if(html == null){
+                try {
+                    doc  = Jsoup.connect("http://kayit.etu.edu.tr/ara_sinav_programi.php").get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return NO_CONNECTION;
+                }
+                doc = new Cleaner(Whitelist.relaxed()).clean(doc);
+                updateCache(doc.toString());
+            }else{
+                doc = Jsoup.parse(html);
             }
-            doc = new Cleaner(Whitelist.relaxed()).clean(doc);
 
+            if(doc == null) return NO_CONNECTION;
             Element table = doc.select("table").get(0); //select the first table.
             Elements rows = table.select("tr");
 
@@ -169,12 +294,14 @@ class Midterm{
 class MidtermAdapter extends ArrayAdapter<Midterm> implements PinnedSectionListView.PinnedSectionListAdapter {
     List<Midterm> midterms;
     ColorGenerator cg;
+    DateFormat sourceFormat;
 
     public MidtermAdapter(Context context, int resource, int textViewResourceId, List<Midterm> midterms) {
         super(context, resource, textViewResourceId);
         this.midterms = midterms;
 
         cg = ColorGenerator.MATERIAL;
+        sourceFormat = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     @Override
@@ -194,10 +321,21 @@ class MidtermAdapter extends ArrayAdapter<Midterm> implements PinnedSectionListV
         Midterm item = getItem(position);
         if (isItemViewTypePinned(item.pinned)) {
             //view.setOnClickListener(PinnedSectionListActivity.this);
-            view.setBackgroundColor(cg.getColor(item));
-            view.setText(item.courseCode + " - " + item.sectionNo + " - " + item.courseTitle);
+            view.setBackgroundColor(cg.getColor(item.courseTitle));
+            view.setText(item.courseCode + " - " + item.courseTitle);
         }else{
             view.setText(item.date + " (" + item.day + ") - " + item.hour + " - @" + item.room);
+            Date date = null;
+            try {
+                date = sourceFormat.parse(item.date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(date != null && date.compareTo(new Date(System.currentTimeMillis() - 86400000)) == -1){
+                view.setBackgroundColor(Color.LTGRAY);
+            }else{
+                view.setBackgroundColor(Color.WHITE);
+            }
         }
         return view;
     }

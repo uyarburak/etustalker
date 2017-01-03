@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/screenshot_program"
     android:padding="0dp" >
     <ImageView
         android:layout_width="wrap_content"
@@ -404,7 +405,8 @@
                         android:layout_marginTop="600dp"
                         android:gravity="center"
                         android:text="18:30"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:id="@+id/text1830" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -414,7 +416,8 @@
                         android:layout_marginTop="660dp"
                         android:gravity="center"
                         android:text="19:30"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:id="@+id/text1930" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -424,7 +427,8 @@
                         android:layout_marginTop="720dp"
                         android:gravity="center"
                         android:text="20:30"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:id="@+id/text2030" />
 
                     <FrameLayout
                         android:layout_width="match_parent"

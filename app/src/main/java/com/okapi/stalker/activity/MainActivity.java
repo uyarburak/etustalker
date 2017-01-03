@@ -1,24 +1,34 @@
 package com.okapi.stalker.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.eggheadgames.siren.ISirenListener;
 import com.eggheadgames.siren.Siren;
 import com.eggheadgames.siren.SirenAlertType;
 import com.eggheadgames.siren.SirenVersionCheckType;
@@ -30,8 +40,13 @@ import com.okapi.stalker.fragment.FriendsFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
-    private static final String SIREN_JSON_URL = "http://etustalk.club/android/last_version.json";
+    public static final String SIREN_JSON_URL = "http://etustalk.club/android/last_version.json";
 
     private Student student;
     private String user_student_key;
@@ -43,11 +58,17 @@ public class MainActivity extends AppCompatActivity {
     private StalkerFragment stalkerFragment;
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkCurrentAppVersion();
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_with_navigation);
         user_student_key = getIntent().getExtras().getString("key");
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -88,13 +109,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_help:
                         Intent intent = new Intent(getBaseContext(), WebBrowserActivity.class);
                         intent.putExtra("url", "http://etustalk.club/help");
-                        intent.putExtra("title", "Help Page");
+                        intent.putExtra("title", getString(R.string.title_activity_help));
                         startActivity(intent);
                         break;
                     case R.id.nav_bus_program:
                         Intent intent2 = new Intent(getBaseContext(), WebBrowserActivity.class);
                         intent2.putExtra("url", "https://www.etu.edu.tr/tr/ulasim");
-                        intent2.putExtra("title", "Bus Schedule");
+                        intent2.putExtra("title", getString(R.string.title_activity_bus));
                         startActivity(intent2);
                         break;
                     case R.id.nav_gpa_calculator:
@@ -115,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_program_scheduler:
                         Intent intent6 = new Intent(getBaseContext(), ProgramSchedulerActivity.class);
                         startActivity(intent6);
+                        //Toast.makeText(getBaseContext(), getString(R.string.not_ready_yet), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_about_us:
                         Intent intent7 = new Intent(getBaseContext(), AboutActivity.class);
@@ -124,6 +146,29 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent8 = new Intent(getBaseContext(), MidtermActivity.class);
                         intent8.putExtra("studentId", student.getId());
                         startActivity(intent8);
+                        break;
+                    case R.id.nav_departments:
+                        Intent intent9 = new Intent(getBaseContext(), ListActivity.class);
+                        intent9.putExtra("listType", ListActivity.DEPARTMENT_LIST);
+                        startActivity(intent9);
+                        break;
+                    case R.id.nav_facts:
+                        Toast.makeText(getBaseContext(), getString(R.string.not_ready_yet), Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.nav_free_rooms:
+                        Intent intent11 = new Intent(getBaseContext(), FreeRoomsActivity.class);
+                        startActivity(intent11);
+                        break;
+                    case R.id.nav_final_schedule:
+                        Intent intent13 = new Intent(getBaseContext(), FinalsActivity.class);
+                        intent13.putExtra("studentId", student.getId());
+                        startActivity(intent13);
+                        break;
+                    case R.id.nav_feedback:
+                        Intent intent10 = new Intent(getBaseContext(), WebBrowserActivity.class);
+                        intent10.putExtra("url", "http://etustalk.club/feedback");
+                        intent10.putExtra("title", getString(R.string.title_activity_feedback));
+                        startActivity(intent10);
                         break;
                 }
 
@@ -137,7 +182,9 @@ public class MainActivity extends AppCompatActivity {
         MainDataBaseHandler db = new MainDataBaseHandler(this);
         student = db.getStudent(user_student_key);
         programFragment = new ProgramFragment();
-        programFragment.setOwner(student);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("owner", student);
+        programFragment.setArguments(bundle);
         stalkerFragment = new StalkerFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(programFragment, getString(R.string.title_program));
@@ -187,10 +234,14 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
     private void checkCurrentAppVersion() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int checkPeriod = Integer.parseInt(sharedPreferences.getString("list_auto_update_check_cycle", "1"));
         Siren siren = Siren.getInstance(getApplicationContext());
         siren.setMajorUpdateAlertType(SirenAlertType.FORCE);
         siren.setVersionCodeUpdateAlertType(SirenAlertType.SKIP);
-        siren.checkVersion(this, SirenVersionCheckType.THREE_DAY, SIREN_JSON_URL);
+        siren.checkVersion(this, checkPeriod, SIREN_JSON_URL);
     }
 }

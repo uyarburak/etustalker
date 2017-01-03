@@ -4,23 +4,16 @@ package com.okapi.stalker.fragment;
  * Created by burak on 10/4/2016.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.InstructorActivity;
-import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
-import com.okapi.stalker.data.storage.model.Interval;
 import com.okapi.stalker.data.storage.model.Section;
-
-import java.util.Iterator;
 
 public class CourseProfileFragment
         extends Fragment {

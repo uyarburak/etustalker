@@ -15,7 +15,7 @@ import agency.tango.materialintroscreen.SlideFragment;
  * Created by burak on 9/30/2016.
  */
 public class ProgramSchedulerFragment1 extends SlideFragment {
-    NumberPicker numberPicker;
+    public NumberPicker numberPicker;
 
     @Nullable
     @Override

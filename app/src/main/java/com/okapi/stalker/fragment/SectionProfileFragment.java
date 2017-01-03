@@ -13,7 +13,6 @@ import com.okapi.stalker.R;
 import com.okapi.stalker.activity.CourseActivity;
 import com.okapi.stalker.activity.InstructorActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
-import com.okapi.stalker.data.storage.model.Course;
 import com.okapi.stalker.data.storage.model.Interval;
 import com.okapi.stalker.data.storage.model.Section;
 

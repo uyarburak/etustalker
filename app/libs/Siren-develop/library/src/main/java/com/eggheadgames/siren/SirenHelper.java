@@ -117,7 +117,7 @@ class SirenHelper {
         }
         final String appPackageName = getPackageName(activity);
         try {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://etustalk.club/download_latest.php")));
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
         } catch (android.content.ActivityNotFoundException e) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }

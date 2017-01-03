@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.data.FriendsDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Student;
 
@@ -29,7 +30,9 @@ import java.util.TreeSet;
 public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
     public enum OrderBy{NONE, NAME, ID, SEX, DEPARTMENT};
+    public enum SearchingType{NAME, ID};
     private OrderBy orderBy;
+    private SearchingType searchingType;
 
     private String lastSearch;
     private LayoutInflater mInflater;
@@ -37,6 +40,7 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
     private Set<Student> allStudents;
     private List<Student> arrayListFilter;
     private HashSet<String> discoveredStudents;
+    private HashSet<String> friends;
 
     public MyStalkerAdapter(Activity activity, Set<Student> students) {
         mInflater = (LayoutInflater) activity.getSystemService(
@@ -46,8 +50,11 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         discoveredStudents = new HashSet<>();
         allStudents = students;
         orderBy = OrderBy.NONE;
+        searchingType = SearchingType.NAME;
         sort(OrderBy.NAME);
         System.out.println("zaaaaa: " + arrayListFilter.size());
+        FriendsDataBaseHandler fdb = new FriendsDataBaseHandler(activity);
+        friends = new HashSet<>(fdb.getAllFriends());
 
     }
 
@@ -82,11 +89,16 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
 
         final Student student = getItem(position);
         textName.setText(student.getName());
-        if(student.getDepartment2() != null){
-            textMajor.setText(student.getDepartment().getName() + " - " + student.getDepartment2().getName());
+        if(searchingType == SearchingType.NAME){
+            if(student.getDepartment2() != null){
+                textMajor.setText(student.getDepartment().getName() + " - " + student.getDepartment2().getName());
+            }else{
+                textMajor.setText(student.getDepartment().getName());
+            }
         }else{
-            textMajor.setText(student.getDepartment().getName());
+            textMajor.setText(student.getId());
         }
+
         switch (student.getGender()){
             case 'M':
                 imageView.setImageResource(R.drawable.ic_gender_male);
@@ -98,8 +110,11 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
                 imageView.setImageResource(R.drawable.ic_help);
                 break;
         }
+
         if(discoveredStudents.contains(student.getId()))
             textName.setTextColor(Color.RED);
+        else if(friends.contains(student.getId()))
+            textName.setTextColor(Color.BLUE);
         return rowView;
     }
 
@@ -141,25 +156,44 @@ public class MyStalkerAdapter extends BaseAdapter implements Filterable {
         List<Student> tmp = new ArrayList<Student>();
         if (lastSearch == null || lastSearch.isEmpty()) {
             tmp.addAll(allStudents);
+            searchingType = SearchingType.NAME;
         }else{
-            for (Student student: allStudents){
-                if(student.getName().toUpperCase().contains(lastSearch.toUpperCase(new Locale("tr", "TR")))){
-                    tmp.add(student);
+            if (lastSearch.matches("\\d+")){
+                for (Student student: allStudents){
+                    if(student.getId().startsWith(lastSearch)){
+                        tmp.add(student);
+                    }
                 }
+                searchingType = SearchingType.ID;
+            }else{
+                String word = getRidOfTR(lastSearch.toUpperCase(new Locale("tr", "TR")));
+                for (Student student: allStudents){
+                    if(getRidOfTR(student.getName()).contains(word)){
+                        tmp.add(student);
+                    }
+                }
+                searchingType = SearchingType.NAME;
             }
+
         }
         return tmp;
+    }
+
+    private String getRidOfTR(String word){
+        return word.replace('Ğ', 'G').replace('Ü', 'U').replace('Ş', 'S').replace('İ', 'I').replace('Ö', 'O').replace('Ç', 'C');
     }
 
     public void sort(OrderBy order){
         AbstractComparator.carpan = orderBy == order ? -1 : 1;
         Set<Student> sortedSet;
+        searchingType = SearchingType.NAME;
         switch (order){
             case NAME:
                 sortedSet = new TreeSet<Student>(new NameComparator());
                 break;
             case ID:
                 sortedSet = new TreeSet<Student>(new IdComparator());
+                searchingType = SearchingType.ID;
                 break;
             case SEX:
                 sortedSet = new TreeSet<Student>(new SexComparator());

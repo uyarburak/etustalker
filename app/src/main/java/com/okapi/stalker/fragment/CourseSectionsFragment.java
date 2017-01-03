@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,14 +17,10 @@ import com.okapi.stalker.R;
 import com.okapi.stalker.activity.CourseActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.data.storage.model.Section;
-import com.okapi.stalker.fragment.adapters.CourseListAdapter;
 import com.okapi.stalker.fragment.adapters.MySectionAdapter;
 
 /**
  * Created by burak on 10/4/2016.
- */
-/**
- * Created by burak on 9/27/2016.
  */
 public class CourseSectionsFragment extends Fragment {
 

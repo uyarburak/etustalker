@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Stalker</string>
-    <string name="title_activity_main">Stalker</string>
+    <string name="app_name" translatable="false">Stalker</string>
+    <string name="title_activity_main" translatable="false">Stalker</string>
     <string name="title_activity_preferences">Preferences</string>
 
     <string name="action_sort">Sort by</string>
@@ -14,11 +14,41 @@
 
     <string name="title_profile">PROFILE</string>
     <string name="title_program">PROGRAM</string>
-    <string name="title_stalker">STALKER</string>
+    <string name="title_stalker" translatable="false">STALKER</string>
     <string name="title_friends">FRIENDS</string>
     <string name="title_overview">OVERVIEW</string>
     <string name="title_students">STUDENTS</string>
+    <string name="title_sections">SECTIONS</string>
+    <string name="title_instructors">INSTRUCTORS</string>
 
+    <string name="title_activity_instructors">INSTRUCTORS</string>
+    <string name="title_activity_departments">DEPARTMENTS</string>
+    <string name="title_activity_courses">COURSES</string>
+
+    <string name="title_activity_help">Help Page</string>
+    <string name="title_activity_feedback">Send Feedback</string>
+    <string name="title_activity_bus">Bus Schedule</string>
+
+
+    <string name="not_ready_yet">This function is not ready yet</string>
+
+
+    <!-- Drawer Strings -->
+    <string name="drawer_departments">Departments</string>
+    <string name="drawer_instructors">Instructors</string>
+    <string name="drawer_courses">Courses</string>
+    <string name="drawer_features">Features</string>
+    <string name="drawer_interesting_facts">Interesting Facts</string>
+    <string name="drawer_program_scheduler">Program Scheduler</string>
+    <string name="drawer_gpa">GPA Calculator</string>
+    <string name="drawer_bus">Bus Schedule</string>
+    <string name="drawer_midterm">Midterm Schedule</string>
+    <string name="drawer_free_rooms">Free Rooms</string>
+    <string name="drawer_final">Final Schedule</string>
+    <string name="drawer_app">App</string>
+    <string name="drawer_help">Help Page</string>
+    <string name="drawer_feedback">Send Feedback</string>
+    <string name="drawer_about">About Us</string>
 
     <!-- Strings related to login -->
     <string name="prompt_password">ID</string>
@@ -39,16 +69,28 @@
     <!-- Strings related to friends -->
     <string name="add_friend">Add Friend</string>
     <string name="remove_friend">Remove Friend</string>
-    <string name="xxx_has_removed"> has removed.</string>
+    <string name="xxx_has_removed">%1$s has removed.</string>
     <string name="all_friends_removed">All your friends removed.</string>
     <string name="remove_all">Remove all</string>
     <string name="send_mail">Send mail</string>
+
+    <string name="comfirm_deletion">Confirm Deletion...</string>
+    <string name="comfirm_delete_all">Are you sure you want delete all your friends?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 
 
     <string name="no_mail_found">No mail found...</string>
 
 
     <!-- Preferences Strings -->
+    <string name="preferences">Preferences</string>
+    <string name="more_than_60_minutes">It cannot be more than 60 minutes</string>
+    <string name="less_than_0_minute">It cannot be less than 0 minute</string>
+    <string name="minutes">%1$s minutes</string>
+    <string name="days">%1$s day</string>
+    <string name="at_every_opening">at every opening</string>
+
     <string name="notification_preferences">Notifications</string>
     <string name="notification_allow">Allow the notifications</string>
     <string name="notification_x_minute">Send notification x minutes before the class</string>
@@ -57,21 +99,83 @@
     <string name="update_preferences">Updates</string>
     <string name="auto_update_check_allow">Allow auto update checking</string>
     <string name="auto_update_check_cycle">Update checking time cyle</string>
-    <string name="title_activity_web_browser">WebBrowserActivity</string>
+    <string name="title_activity_web_browser" translatable="false">WebBrowserActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- AboutActivity Strings -->
+    <string name="about">About</string>
+    <string name="about_current_db">Current DB version: </string>
 
-    <string-array name="feedback_types">
-        <item>Bug Report</item>
-        <item>Question</item>
-        <item>Thanks</item>
-    </string-array>
+    <!-- GPA Strings -->
+    <string name="gpa">Your GPA</string>
+    <string name="calculate_gpa">Calculate GPA</string>
+
+    <!-- Program Strings -->
+    <string name="free_friends">Free Friends</string>
+    <string name="choose_an_app">Choose an app</string>
+    <string name="nothing_to_send">There is nothing to send.</string>g>
+    <string name="share_as_image">Share as Image</string>
+
+    <!-- Student Profile Strings -->
+    <string name="copied_id">Copied student id to Clipboard!</string>
+    <string name="show_midterms">Show Midterms</string>
+    <string name="show_finals">Show Finals</string>
+
+    <!-- Stats Strıngs -->
+    <string name="stats">Stats</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="unisex">Unisex</string>
+    <string name="total">Total</string>
+    <string name="with_photo">With Photo</string>
+
+    <!-- MidtermActivity Strings -->
+    <string name="midterms_title">Midterm Schedule</string>
+    <string name="midterms_show_all">SHOW ALL</string>
+    <string name="cannot_find_midterm">I can\'t find any midterm for you. But check the ETU-BIS for more realiable info.</string>
+
+    <!-- FinalActivity Strings -->
+    <string name="final_title">Final Schedule </string>
+    <string name="final_manual">GO MANUAL</string>
+    <string name="alert">Alert</string>
+    <string name="ok">OK</string>
+    <string name="connection_error">Can\'t connect to the server.\nDo you want to see cache from: %1$s ?</string>
+    <string name="connection_error_no_cache">Can\'t connect to the server.</string>
+    <string name="cannot_find_final">I can\'t find any final for you. But check the ETU-BIS for more realiable info.</string>
+    <string name="not_now">NOT NOW</string>
+    <string name="go_etu_bis">GO etu-bis</string>
+    <string name="executing">Executing...</string>
+
+    <!-- FreeRooms Strings -->
+    <string name="free_rooms_title">Free Rooms</string>
+    <string name="click_to_see">Click to see</string>
+
+    <!-- SplashActivity Strings -->
+    <string name="recreating_db">Recreating databases. It should take between 5 and 40 seconds</string>
+    <string name="checking_for_update">Checking for update...</string>
+
+    <!-- Layouts Strings -->
+    <string name="code">Code:</string>
+    <string name="title">Title:</string>
+    <string name="section">Section:</string>
+    <string name="total_size">Total Size:</string>
+    <string name="lecturer">Lecturer:</string>
+    <string name="size">Size:</string>
+    <string name="AKA">AKA:</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="office">Office:</string>
+    <string name="major">Major:</string>
+    <string name="website" translatable="false">Website:</string>
+    <string name="tel">TEL:</string>
+    <string name="image">Image:</string>
+    <string name="id">ID:</string>
+    <string name="year">Year:</string>
+    <string name="minor">Minor:</string>
+    <string name="faculty">Faculty:</string>
+    <string name="course">Course:</string>
 
 
-
-
-    <string-array name="grades">
+    <string-array name="grades" translatable="false">
         <item>AA</item>
         <item>BA</item>
         <item>BB</item>
@@ -92,31 +196,48 @@
     </string-array>
 
 
-    <string name="aboutLibraries_description_showIcon">true</string>
-    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
+    <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
     <string name="aboutLibraries_description_text">
-        <![CDATA[{gmi-favorite} This app will help you to stalk your friends.<br /><b>Maybe even your crash :P</b>]]>
+        <![CDATA[This app will help you to stalk your friends.<br /><b>And of course help with following the school related stuff</b>]]>
     </string>
 
     <!-- Just remove those entries if you don't want to use a special button with a text within your about this app view :D -->
-    <string name="aboutLibraries_description_special1_name">Thanks To</string>
-    <string name="aboutLibraries_description_special1_text">
-        <![CDATA[This is a small sample which can be set in the about my app description file.<br /><br /><b>You can style this with html markup :D</b>]]>
+    <string name="aboutLibraries_description_special1_name">Contributors</string>
+    <string name="aboutLibraries_description_special1_text" translatable="false">
+        <![CDATA[<b>Burak UYAR</b> : Main Developer<br />
+        <b>Fatih Erdem KIZILKAYA</b> : Server-side<br />
+        <b>Kerim SIPER</b> : Owner of GPA Calculator idea<br />
+        <b>Yusuf Cagri OGUT</b> : Owner of Program Scheduler idea<br />
+        <b>Cagdas TERZI</b> : Tester<br />]]>
     </string>
     <string name="aboutLibraries_description_special2_name">DB Version</string>
-    <string name="aboutLibraries_description_special2_text">
-        <![CDATA[This is a small <i>sample</i> which can be set in the about my app description file.<br /><br /><b>You can style this with html markup :D</b>]]>
-    </string>
     <string name="aboutLibraries_description_special3_name">Changelog</string>
-    <string name="aboutLibraries_description_special3_text">
+    <string name="aboutLibraries_description_special3_text" translatable="false">
         <![CDATA[
-        <i>Version 1.1.0</i><br />
-        - Something nice ;)<br />
-        - Something awesome<br />
+        <i>Version 1.0.5-RELEASE</i><br />
+        - Class reminder has added.<br />
+        - You can share your programs as image now!<br />
+        - Now you can see finals and midterms of any student.<br />
+        - Final schedule page added.<br />
+        <i>Version 1.0.2-RELEASE</i><br />
+        - Notifications are improved.<br />
+        - Course reminder notification has added.<br />
+        - Preferences page gets functionality.<br />
+        <i>Version 1.0.1-RELEASE</i><br />
+        - Midterm schedule bug fixed.<br />
+        - Push notification is a thing now.<br />
         <br />
-        <i>Version 1.0.0</i><br />
-        - Something new ;)<br />
-        - Oo text :D]]>
+        <i>Version 1.0.0-RELEASE</i><br />
+        - Program Scheduler has added<br />
+        - Department page has added<br />
+        - Midterm Schedule added<br />
+        <br />
+        <i>Version 1.0-BETA</i><br />
+        - GPA Calculator has added<br />
+        <br />
+        <i>Version 1.0-ALPHA</i><br />
+        - Hello world]]>
     </string>
 
 </resources>

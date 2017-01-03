@@ -1,6 +1,5 @@
 package com.okapi.stalker.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,21 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.okapi.stalker.R;
-import com.okapi.stalker.activity.GPAActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Section;
-import com.okapi.stalker.data.storage.model.Student;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by burak on 9/27/2016.
@@ -64,7 +57,7 @@ public class GPAFragment extends Fragment {
                         getContext());
 
                 // set title
-                alertDialogBuilder.setTitle("Your GPA");
+                alertDialogBuilder.setTitle(getString(R.string.gpa));
 
                 // set dialog message
                 alertDialogBuilder
@@ -80,7 +73,6 @@ public class GPAFragment extends Fragment {
         return rootView;
     }
     private float spinnerToGrade(int pos){
-        System.out.println("oleyyy: " + pos);
         switch (pos){
             case 0:
                 return 4f;

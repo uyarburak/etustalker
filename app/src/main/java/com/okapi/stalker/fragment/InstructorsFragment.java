@@ -16,22 +16,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.DepartmentActivity;
 import com.okapi.stalker.activity.InstructorActivity;
-import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.data.storage.model.Department;
 import com.okapi.stalker.data.storage.model.Instructor;
 import com.okapi.stalker.data.storage.model.Person;
-import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.InstructorsListAdapter;
-import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
  * Created by burak on 9/27/2016.
  */
 public class InstructorsFragment extends Fragment {
-
     private InstructorsListAdapter myAdapter;
     private View rootView;
     public InstructorsFragment() {
@@ -40,7 +37,13 @@ public class InstructorsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myAdapter = new InstructorsListAdapter(getActivity());
+        if(getActivity() instanceof DepartmentActivity){
+            Department department = ((DepartmentActivity)getActivity()).getDepartment();
+            myAdapter = new InstructorsListAdapter(getActivity(), department.getInstructors());
+        }else{
+            myAdapter = new InstructorsListAdapter(getActivity());
+        }
+
         setHasOptionsMenu(true);
     }
 
@@ -106,13 +109,13 @@ public class InstructorsFragment extends Fragment {
                 DecimalFormat df = new DecimalFormat("0.##");
                 float total = male + female + unisex;
                 StringBuilder sb = new StringBuilder();
-                sb.append("Male: ").append(male).append(" (").append(df.format(male/total * 100)).append("%)\n");
-                sb.append("Female: ").append(female).append(" (").append(df.format(female/total * 100)).append("%)\n");
-                sb.append("Unisex: ").append(unisex).append(" (").append(df.format(unisex/total * 100)).append("%)\n");
-                sb.append("Total: ").append(male + female + unisex).append("\n");
+                sb.append(getString(R.string.male) + ": ").append(male).append(" (").append(df.format(male/total * 100)).append("%)\n");
+                sb.append(getString(R.string.female)+ ": ").append(female).append(" (").append(df.format(female/total * 100)).append("%)\n");
+                sb.append(getString(R.string.unisex)+ ": ").append(unisex).append(" (").append(df.format(unisex/total * 100)).append("%)\n");
+                sb.append(getString(R.string.total)+ ": ").append(male + female + unisex).append("\n");
 
-                sb.append("With Photo: ").append(withPhoto).append(" (").append(df.format(withPhoto/total * 100)).append("%)\n");;
-                alertDialogBuilder.setTitle("Stats");
+                sb.append(getString(R.string.with_photo)+ ": ").append(withPhoto).append(" (").append(df.format(withPhoto/total * 100)).append("%)\n");;
+                alertDialogBuilder.setTitle(getString(R.string.stats));
                 alertDialogBuilder.setMessage(sb.toString());
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
@@ -125,7 +128,7 @@ public class InstructorsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.stalker_fragment_menu, menu);
+        inflater.inflate(R.menu.instructor_list_menu, menu);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

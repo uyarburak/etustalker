@@ -2,7 +2,6 @@ package com.okapi.stalker.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -10,11 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.okapi.stalker.R;
-import com.okapi.stalker.data.FriendsDataBaseHandler;
 import com.okapi.stalker.data.MainDataBaseHandler;
+import com.okapi.stalker.fcm.DeleteTokenService;
+import com.okapi.stalker.service.CourseNotificationService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,6 +40,7 @@ public class SplashActivity extends Activity {
                 Settings.Secure.ANDROID_ID);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         new LoadDatabase().execute();
+        //startService(new Intent(this, DeleteTokenService.class));
     }
     /**
      * Background Async Task to Load all product by making HTTP Request
@@ -54,8 +54,9 @@ public class SplashActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(SplashActivity.this);
-            pDialog.setMessage("Checking for update...");
+            pDialog.setMessage(getString(R.string.checking_for_update));
             pDialog.setMax(100);
+            pDialog.setProgress(0);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -101,6 +102,7 @@ public class SplashActivity extends Activity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong("last_update_check", System.currentTimeMillis());
             if(needToUpdate){
+                publishProgress();
                 String url2 = "http://etustalk.club/android/all_database.php?device_id="+android_id;;
                 StringBuilder stringBuilder = new StringBuilder();
                 URL allDb = null;
@@ -123,13 +125,21 @@ public class SplashActivity extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                publishProgress();
                 MainDataBaseHandler db = new MainDataBaseHandler(getBaseContext());
                 db.thatseEnoughBitch(stringBuilder.toString());
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 editor.putInt(DB_VERSION_TAG, lastDBVersion != null ? lastDBVersion : -1);
+                startService(new Intent(getBaseContext(), CourseNotificationService.class));
             }
             editor.commit();
             return null;
+        }
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            pDialog.setMessage(getString(R.string.recreating_db));
+            pDialog.setProgress(pDialog.getProgress()+20);
         }
         private boolean shouldItCheck(){
             Integer checkCycle = Integer.parseInt(sharedPreferences.getString("list_auto_update_check_cycle", "1"));

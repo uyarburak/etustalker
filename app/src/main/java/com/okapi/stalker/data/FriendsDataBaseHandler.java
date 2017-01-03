@@ -87,6 +87,8 @@ public class FriendsDataBaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+        db.close();
         // return friends list
         return friendsList;
     }

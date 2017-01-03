@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#2b73e1"
-            android:text="Sign in"
+            android:text="@string/action_sign_in"
             android:textSize="16dp"
             android:textColor="#fff"
             android:gravity="center"

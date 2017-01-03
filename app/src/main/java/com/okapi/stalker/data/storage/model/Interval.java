@@ -54,10 +54,17 @@ public class Interval implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null || !(obj instanceof Interval))
-			return false;
-		Interval other = (Interval) obj;
-		return other.day.equals(this.day) && other.hour.equals(this.hour) && other.room.equals(this.room) && other.section.getCourse().getCode().equals(this.getSection().getCourse().getCode());
+		if(obj instanceof Interval){
+			Interval other = (Interval) obj;
+			return other.day == day && other.hour == hour;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		//1861
+		return day*6 + hour;
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import com.okapi.stalker.R;
 public class ListActivity extends AppCompatActivity {
     public static final int INSTRUCTOR_LIST = 0;
     public static final int COURSE_LIST = 1;
-
+    public static final int DEPARTMENT_LIST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +23,16 @@ public class ListActivity extends AppCompatActivity {
         switch (getIntent().getExtras().getInt("listType")){
             case INSTRUCTOR_LIST:
                 setContentView(R.layout.activity_instructor_list);
-                setTitle("Instructors");
+                setTitle(getString(R.string.title_activity_instructors));
                 break;
             case COURSE_LIST:
                 setContentView(R.layout.activity_course_list);
-                setTitle("Courses");
+                setTitle(getString(R.string.title_activity_courses));
                 break;
-
-
+            case DEPARTMENT_LIST:
+                setContentView(R.layout.activity_department_list);
+                setTitle(getString(R.string.title_activity_departments));
+                break;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

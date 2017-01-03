@@ -1,7 +1,6 @@
 package com.okapi.stalker.fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -18,11 +17,13 @@ import android.widget.ListView;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.CourseActivity;
+import com.okapi.stalker.activity.DepartmentActivity;
 import com.okapi.stalker.activity.MainActivity;
 import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
+import com.okapi.stalker.data.storage.model.Department;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
@@ -54,6 +55,9 @@ public class StalkerFragment extends Fragment {
             for (Section section: course.getSections()){
                 students.addAll(db.getStudentsOfSection(section.getId()));
             }
+        }else if(getActivity() instanceof DepartmentActivity){
+            Department department = ((DepartmentActivity)getActivity()).getDepartment();
+            students = department.getStudents();
         }
         myStalkerAdapter = new MyStalkerAdapter(getActivity(), students);
         setHasOptionsMenu(true);
@@ -122,11 +126,11 @@ public class StalkerFragment extends Fragment {
                 DecimalFormat df = new DecimalFormat("0.##");
                 float total = male + female + unisex;
                 StringBuilder sb = new StringBuilder();
-                sb.append("Male: ").append(male).append(" (").append(df.format(male/total * 100)).append("%)\n");
-                sb.append("Female: ").append(female).append(" (").append(df.format(female/total * 100)).append("%)\n");
-                sb.append("Unisex: ").append(unisex).append(" (").append(df.format(unisex/total * 100)).append("%)\n");
-                sb.append("Total: ").append(male + female + unisex);
-                alertDialogBuilder.setTitle("Stats");
+                sb.append(getString(R.string.male) + ": ").append(male).append(" (").append(df.format(male/total * 100)).append("%)\n");
+                sb.append(getString(R.string.female)+ ": ").append(female).append(" (").append(df.format(female/total * 100)).append("%)\n");
+                sb.append(getString(R.string.unisex)+ ": ").append(unisex).append(" (").append(df.format(unisex/total * 100)).append("%)\n");
+                sb.append(getString(R.string.total)+ ": ").append(male + female + unisex).append("\n");
+                alertDialogBuilder.setTitle(getString(R.string.stats));
                 alertDialogBuilder.setMessage(sb.toString());
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
