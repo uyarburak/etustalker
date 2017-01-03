@@ -15,7 +15,17 @@
         android:layout_marginRight="@dimen/abc_action_bar_content_inset_material"
         android:layout_centerVertical="true"
         android:visibility="gone" />
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_course_image"
+        android:background="@drawable/no_course"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/abc_action_bar_content_inset_material"
+        android:layout_marginRight="@dimen/abc_action_bar_content_inset_material"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

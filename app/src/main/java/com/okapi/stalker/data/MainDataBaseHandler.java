@@ -424,6 +424,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
     /*
  * get single student
  */
+
     public Student getStudent(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_STUDENTS + " WHERE "
@@ -453,6 +454,8 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
             String gender = c.getString(c.getColumnIndex(STUDENT_SEX_KEY));
             student.setGender(gender.isEmpty() ? 'U' : gender.charAt(0));
             student.setImage(c.getString(c.getColumnIndex(STUDENT_IMAGE_URL_KEY)));
+        }catch(Exception e){
+            System.out.println("zaa");
         }finally {
             c.close();
         }

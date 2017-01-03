@@ -8,15 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.activity.ProgramSchedulerActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -25,39 +29,39 @@ import agency.tango.materialintroscreen.SlideFragment;
 /**
  * Created by burak on 9/30/2016.
  */
-public class ProgramSchedulerFragment2 extends SlideFragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
-    RelativeLayout relativeLayout;
-    public List<SearchableSpinner> spinners;
+public class ProgramSchedulerFragment2 extends SlideFragment {
+    public ListView listView;
     public ArrayList<String> courseList;
-    int counter;
+    ArrayList<String> courseList2;
+    int id;
 
+    public SlideFragment setId(int val){
+        this.id = val;
+        return this;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_scheduler_2, container, false);
-        counter = 0;
-        spinners = new ArrayList<SearchableSpinner>();
-        relativeLayout = (RelativeLayout) view.findViewById(R.id.relaaa);
+
+        TextView descriptionView = (TextView) view.findViewById(R.id.textView7);
+        if(id == 0){
+            descriptionView.setText(getString(R.string.program_scheduler_have_to));
+        }else{
+            descriptionView.setText(getString(R.string.program_scheduler_not_have_to));
+        }
         MainDataBaseHandler db = new MainDataBaseHandler(getActivity());
         Set<Course> courses = db.getAllCourses();
-        courseList = new ArrayList<>(courses.size()+1);
-        courseList.add("Choose a course");
+        courseList = new ArrayList<>(courses.size());
+        courseList2 = new ArrayList<>(courses.size());
         for (Course course: courses){
-            courseList.add(course.getCode().concat(" - ").concat(course.getTitle()));
+            courseList.add(course.getCode());
+            courseList2.add(course.getCode().concat(" - ").concat(course.getTitle()));
         }
-        onClick(null);
-        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.removeLast);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(counter > 1) {
-                    relativeLayout.removeView(relativeLayout.findViewById(counter--));
-                    spinners.remove(spinners.size()-1);
-                }
-            }
-        });
-        FloatingActionButton button2 = (FloatingActionButton) view.findViewById(R.id.addCourse);
-        button2.setOnClickListener(this);
+        listView = (ListView) view.findViewById(R.id.multiselect_list);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setAdapter(new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_multiple_choice, courseList2));
         return view;
     }
 
@@ -73,44 +77,15 @@ public class ProgramSchedulerFragment2 extends SlideFragment implements AdapterV
 
     @Override
     public boolean canMoveFurther() {
-        for(Spinner spinner: spinners){
-            if(spinner.getSelectedItemPosition() == 0)
-                return false;
+        if(id==1){ //secmelileri sectigin yer ise
+            ProgramSchedulerActivity activity = (ProgramSchedulerActivity)getActivity();
+            return activity.fragment2.listView.getCheckedItemCount() > 0 || listView.getCheckedItemCount() > 0;
         }
         return true;
     }
 
     @Override
     public String cantMoveFurtherErrorMessage() {
-        return "Dont leave any empty course";
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(parent.getId() + " ? " + counter);
-        if(position != 0 && parent.getId() == counter)
-            onClick(null);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        SearchableSpinner spinner = new SearchableSpinner(getContext());
-        spinner.setTitle("Choose a course");
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, courseList);
-        spinner.setAdapter(spinnerArrayAdapter);
-        final RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, counter);
-        spinner.setLayoutParams(params);
-        spinner.setId(++counter);
-        spinner.setOnItemSelectedListener(this);
-        relativeLayout.addView(spinner);
-        spinners.add(spinner);
+        return getString(R.string.program_scheduler_choose_at_least);
     }
 }

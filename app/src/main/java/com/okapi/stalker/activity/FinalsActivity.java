@@ -129,7 +129,7 @@ public class FinalsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
             AlertDialog alertDialog = new AlertDialog.Builder(FinalsActivity.this).create();
-            if(aVoid == NO_CONNECTION){
+            if(aVoid != null && aVoid == NO_CONNECTION){
                 alertDialog.setTitle(getString(R.string.alert));
                 if(sharedPreferences.contains(studentId+"time")){
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

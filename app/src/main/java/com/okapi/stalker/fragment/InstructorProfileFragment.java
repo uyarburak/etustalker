@@ -96,15 +96,6 @@ public class InstructorProfileFragment extends Fragment {
                 }
             });
         }
-        if(!instructor.getLab().isEmpty()){
-            textLabUrl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(instructor.getLab()));
-                    startActivity(browserIntent);
-                }
-            });
-        }
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton)rootView.findViewById(R.id.fab_email);
 

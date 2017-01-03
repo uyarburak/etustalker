@@ -37,7 +37,7 @@ public class ProgramTableActivity extends AppCompatActivity {
 
         SortableTableView<String[]> tableView = (SortableTableView<String[]>) findViewById(R.id.tableView);
 
-        final SimpleTableHeaderAdapter simpleTableHeaderAdapter = new SimpleTableHeaderAdapter(this, "Ders Sayisi", "Cakisma Sayisi", "08:30 ders sayisi", "okul gunu sayisi");
+        final SimpleTableHeaderAdapter simpleTableHeaderAdapter = new SimpleTableHeaderAdapter(this, getString(R.string.table_column_course_number), getString(R.string.table_column_conflict), getString(R.string.table_column_morning), getString(R.string.table_column_day));
         simpleTableHeaderAdapter.setTextColor(ContextCompat.getColor(this, R.color.table_header_text));
         tableView.setHeaderSortStateViewProvider(SortStateViewProviders.brightArrows());
 

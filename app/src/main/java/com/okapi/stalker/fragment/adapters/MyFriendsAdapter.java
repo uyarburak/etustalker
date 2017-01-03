@@ -75,6 +75,8 @@ public class MyFriendsAdapter extends BaseAdapter {
 
         final Student student = getItem(position);
         textName.setText(student.getName());
+        if(student.getDepartment() == null)
+            return rowView;
         if(student.getDepartment2() != null){
             textMajor.setText(student.getDepartment().getName() + " - " + student.getDepartment2().getName());
         }else{

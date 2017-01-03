@@ -46,7 +46,7 @@
     <string name="drawer_instructors">Hocalar</string>
     <string name="drawer_interesting_facts">İlginç Bilgiler</string>
     <string name="drawer_midterm">Ara Sınav Programı</string>
-    <string name="drawer_program_scheduler">Program Yapıcı</string>
+    <string name="drawer_program_scheduler">Program Oluşturucu</string>
     <string name="email">Eposta:</string>
     <string name="error_field_required">Bu bölge gerekli</string>
     <string name="error_incorrect_password">ID bulunamadı</string>
@@ -120,7 +120,7 @@
     <string name="unisex">Unisex</string>
     <string name="update_preferences">Güncellemeler</string>
     <string name="wednesday">Çar</string>
-    <string name="welcome_message">Stalker uygulamasına hpşgeldiniz. Öğrenci numaranızı girerek Stalk\'lamaya başlayabilirsiniz.</string>
+    <string name="welcome_message">Stalker uygulamasına hoşgeldiniz. Öğrenci numaranızı girerek Stalk\'lamaya başlayabilirsiniz.</string>
     <string name="with_photo">Fotoğraflı:</string>
     <string name="xxx_has_removed">%1$s kaldırıldı.</string>
     <string name="year">Sene:</string>
@@ -140,4 +140,16 @@
     </string-array>
     <string name="size">Mevcut:</string>
     <string name="yes">EVET</string>
+    <string name="program_scheduler_have_to">Almak zorunda olduğunuz dersleri seçiniz.</string>
+    <string name="program_scheduler_no_way">Bu programı yapmak mümkün değil!</string>
+    <string name="program_scheduler_not_have_to">Alsam iyi olur dediğiniz dersler.</string>
+    <string name="program_scheduler_ready">Hazırız</string>
+    <string name="program_scheduler_reminder">Eğer tüm dersleri doğru seçtiğinizden eminseniz sağ alttaki butona basın.</string>
+    <string name="program_scheduler_scheduled">İsteklerinize uygun %1$d farklı program oluşturdum!</string>
+    <string name="table_column_conflict">Çakışma Sayısı</string>
+    <string name="table_column_course_number">Ders Sayısı</string>
+    <string name="table_column_day">Okul Günü</string>
+    <string name="table_column_morning">8:30 Dersi Sayısı</string>
+    <string name="max_conflict">Maksimum Çakışma Sayısını Seçin</string>
+    <string name="program_scheduler_choose_at_least">Lütfen en az 1 ders seçiniz.</string>
 </resources>

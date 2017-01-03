@@ -128,7 +128,7 @@ public class MidtermActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
             AlertDialog alertDialog = new AlertDialog.Builder(MidtermActivity.this).create();
-            if(aVoid == NO_CONNECTION){
+            if(aVoid != null && aVoid == NO_CONNECTION){
                 alertDialog.setTitle(getString(R.string.alert));
                 if(sharedPreferences.contains("time")){
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

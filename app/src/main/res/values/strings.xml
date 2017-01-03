@@ -174,6 +174,19 @@
     <string name="faculty">Faculty:</string>
     <string name="course">Course:</string>
 
+    <!-- Program Scheduler Strings -->
+    <string name="program_scheduler_ready">Ready to go</string>
+    <string name="program_scheduler_reminder">If you sure that you choose right courses go press the tick button</string>
+    <string name="program_scheduler_have_to">Choose the courses that you HAVE TO take</string>
+    <string name="program_scheduler_not_have_to">Courses that you don\'t have to take</string>
+    <string name="program_scheduler_no_way">No way to schedule that program!</string>
+    <string name="program_scheduler_scheduled">Scheduled %1$d different program!</string>
+    <string name="program_scheduler_choose_at_least">Choose at least 1 course please</string>
+    <string name="max_conflict">Choose a Max Conflict Number</string>
+    <string name="table_column_course_number"># Course</string>
+    <string name="table_column_morning"># 8:30 Class</string>
+    <string name="table_column_day"># School Day</string>
+    <string name="table_column_conflict"># Conflict</string>
 
     <string-array name="grades" translatable="false">
         <item>AA</item>
@@ -215,6 +228,10 @@
     <string name="aboutLibraries_description_special3_name">Changelog</string>
     <string name="aboutLibraries_description_special3_text" translatable="false">
         <![CDATA[
+        <i>Version 1.0.6-RELEASE</i><br />
+        - Program scheduler finally finished<br />
+        - Turkısh translatıon done<br />
+        - We now, in Play Store!<br />
         <i>Version 1.0.5-RELEASE</i><br />
         - Class reminder has added.<br />
         - You can share your programs as image now!<br />

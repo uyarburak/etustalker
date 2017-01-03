@@ -156,8 +156,14 @@ public class SplashActivity extends Activity {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             Intent intent;
             if (sharedPreferences.contains("id")) {
-                intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("key", sharedPreferences.getString("id", ""));
+                MainDataBaseHandler db = new MainDataBaseHandler(getBaseContext());
+                String id = sharedPreferences.getString("id", "");
+                if(db.getStudent(id).getName() != null){
+                    intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra("key", sharedPreferences.getString("id", ""));
+                }else{
+                    intent = new Intent(getBaseContext(), LoginActivity.class);
+                }
             }else{
                 intent = new Intent(getBaseContext(), LoginActivity.class);
             }

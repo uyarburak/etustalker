@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -137,6 +138,11 @@ public class ProgramFragment extends Fragment{
                 rootView.findViewById(R.id.blockView).setVisibility(View.VISIBLE);
                 rootView.findViewById(R.id.blockView).bringToFront();
                 ListView sectionList = (ListView) rootView.findViewById(R.id.noIntervalSectionList);
+
+                ImageView imageView = (ImageView) rootView.findViewById(R.id.no_course_image);
+                imageView.setVisibility(View.VISIBLE);
+                imageView.bringToFront();
+
                 sectionList.setVisibility(View.VISIBLE);
                 sectionList.bringToFront();
                 sectionList.setAdapter(new MySectionAdapter(getActivity(), detailedSections));

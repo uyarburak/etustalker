@@ -49,9 +49,11 @@ public class FriendsFragment extends Fragment {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> a, View v, int position, long l) {
-                        Intent intent = new Intent(getActivity(), StudentActivity.class);
-                        intent.putExtra("student", (Serializable) a.getAdapter().getItem(position));
-                        getActivity().startActivity(intent);
+                        if(((Student)a.getAdapter().getItem(position)).getDepartment() != null){
+                            Intent intent = new Intent(getActivity(), StudentActivity.class);
+                            intent.putExtra("student", (Serializable) a.getAdapter().getItem(position));
+                            getActivity().startActivity(intent);
+                        }
                     }
                 });
         return rootView;

@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:paddingBottom="164dp"
+    android:paddingBottom="64dp"
     android:weightSum="1">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,47 +17,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"
         android:textAlignment="center" />
-
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView2"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/textView7"
-        android:layout_margin="@dimen/abc_action_bar_content_inset_material">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView6" android:fillViewport="true"
+        android:layout_below="@+id/textView7">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/relaaa"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" >
-
-        </RelativeLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/multiselect_list"
+                android:layout_marginTop="5dp"
+                android:fastScrollEnabled="true" />
+        </LinearLayout>
     </ScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-"
-        android:id="@+id/removeLast"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/scrollView2"
-        android:layout_alignStart="@+id/scrollView2"
-        app:backgroundTint="@color/custom_slide_buttons"
-        android:src="@android:drawable/ic_delete"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+"
-        android:id="@+id/addCourse"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/scrollView2"
-        android:layout_alignEnd="@+id/scrollView2"
-        app:backgroundTint="@color/custom_slide_buttons"
-        android:src="@android:drawable/ic_input_add"/>
 
 </RelativeLayout>

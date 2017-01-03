@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.FloatRange;
 import android.support.annotation.Nullable;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ import agency.tango.materialintroscreen.animations.IViewTranslation;
 public class ProgramSchedulerActivity extends MaterialIntroActivity {
     int maxConflict;
     ProgramSchedulerFragment1 fragment1;
-    ProgramSchedulerFragment2 fragment2;
+    public ProgramSchedulerFragment2 fragment2;
     ProgramSchedulerFragment2 fragment3;
 
     @Override
@@ -52,13 +53,13 @@ public class ProgramSchedulerActivity extends MaterialIntroActivity {
                 });
 
         addSlide(fragment1 = new ProgramSchedulerFragment1());
-        addSlide(fragment2 = new ProgramSchedulerFragment2());
-        addSlide(fragment3 = new ProgramSchedulerFragment2());
+        addSlide((fragment2 = new ProgramSchedulerFragment2()).setId(0));
+        addSlide((fragment3 = new ProgramSchedulerFragment2()).setId(1));
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.third_slide_background)
                         .buttonsColor(R.color.third_slide_buttons)
-                        .title("We provide best tools")
-                        .description("ever")
+                        .title(getString(R.string.program_scheduler_ready))
+                        .description(getString(R.string.program_scheduler_reminder))
                         .build());
     }
     Map<List<Section>, Integer> sectionsss = new HashMap<List<Section>, Integer>();
@@ -67,24 +68,28 @@ public class ProgramSchedulerActivity extends MaterialIntroActivity {
         super.onFinish();
         maxConflict = fragment1.numberPicker.getValue();
         Set<String> list1 = new HashSet<>();
-        for(SearchableSpinner spinner: fragment2.spinners){
-            int position = spinner.getSelectedItemPosition();
-            String s = fragment2.courseList.get(position);
-            s = s.substring(0, s.indexOf(" - "));
-            list1.add(s);
+        SparseBooleanArray checked = fragment2.listView.getCheckedItemPositions();
+        for (int i = 0; i < checked.size(); i++) {
+            // Item position in adapter
+            int position = checked.keyAt(i);
+            // Add sport if it is checked i.e.) == TRUE!
+            if (checked.valueAt(i))
+                list1.add(fragment2.courseList.get(position));
         }
         Set<String> list2 = new HashSet<>();
-        for(SearchableSpinner spinner: fragment3.spinners){
-            int position = spinner.getSelectedItemPosition();
-            String s = fragment3.courseList.get(position);
-            s = s.substring(0, s.indexOf(" - "));
-            list2.add(s);
+        checked = fragment3.listView.getCheckedItemPositions();
+        for (int i = 0; i < checked.size(); i++) {
+            // Item position in adapter
+            int position = checked.keyAt(i);
+            // Add sport if it is checked i.e.) == TRUE!
+            if (checked.valueAt(i))
+                list2.add(fragment3.courseList.get(position));
         }
+        list2.removeAll(list1);
         MainDataBaseHandler db = new MainDataBaseHandler(this);
 
         sectionsss.clear();
         List<Course> courses = new ArrayList<Course>();
-        List<String> htmlProgramList = new ArrayList<String>();
 
         for (String courseId : list1) {
             Course course = db.getCourseForProgram(courseId);
@@ -94,7 +99,7 @@ public class ProgramSchedulerActivity extends MaterialIntroActivity {
         recursive(courses, 0, new ArrayList<Section>());
 
         if(sectionsss.isEmpty()){
-            Toast.makeText(this, "No way to make that program!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.program_scheduler_no_way), Toast.LENGTH_SHORT).show();
 
         }else{
             courses.clear();;
@@ -107,7 +112,7 @@ public class ProgramSchedulerActivity extends MaterialIntroActivity {
                 recursive2(courses, 0, sections);
             }
 
-            Toast.makeText(this, "Isteklerinize uygun " + sectionsss.size() + " adet program yapilabilir.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.program_scheduler_scheduled, sectionsss.size()), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ProgramTableActivity.class);
             intent.putExtra("sections", (Serializable) sectionsss);
             startActivity(intent);
