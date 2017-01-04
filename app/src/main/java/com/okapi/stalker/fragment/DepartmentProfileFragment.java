@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import com.okapi.stalker.R;
@@ -37,13 +38,15 @@ public class DepartmentProfileFragment extends Fragment {
 
         TextView webLink = (TextView) rootView.findViewById(R.id.dep_web);
         webLink.setText(department.getMainURL());
-        webLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(department.getMainURL()));
-                startActivity(browserIntent);
-            }
-        });
+        if(department.getMainURL() != null && URLUtil.isValidUrl(department.getMainURL())){
+            webLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(department.getMainURL()));
+                    startActivity(browserIntent);
+                }
+            });
+        }
 
         TextView totalSize = (TextView) rootView.findViewById(R.id.total_size_of_dep);
         totalSize.setText(Integer.toString(department.getStudents().size()));
