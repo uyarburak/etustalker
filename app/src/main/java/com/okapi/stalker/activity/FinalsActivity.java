@@ -62,7 +62,7 @@ public class FinalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_midterms);
         studentId = getIntent().getExtras().getString("studentId");
 
-        setTitle(getString(R.string.final_title) + studentId);
+        setTitle(getString(R.string.final_title) + " " + studentId);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();

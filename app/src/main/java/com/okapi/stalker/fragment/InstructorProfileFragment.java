@@ -64,14 +64,16 @@ public class InstructorProfileFragment extends Fragment {
         textOffice.setText(instructor.getOffice());
         TextView textMajor = (TextView) rootView.findViewById(R.id.profile_major);
         textMajor.setText(instructor.getDepartment().getName());
-        textMajor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DepartmentActivity.class);
-                intent.putExtra("department", instructor.getDepartment().getName());
-                getActivity().startActivity(intent);
-            }
-        });
+        if(instructor.getDepartment().getName() != null && !instructor.getDepartment().getName().isEmpty()){
+            textMajor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DepartmentActivity.class);
+                    intent.putExtra("department", instructor.getDepartment().getName());
+                    getActivity().startActivity(intent);
+                }
+            });
+        }
         TextView textWebsite = (TextView) rootView.findViewById(R.id.profile_website);
         textWebsite.setText(instructor.getWebsite());
         TextView textLabUrl = (TextView) rootView.findViewById(R.id.profile_lab_url);
