@@ -113,8 +113,21 @@ public class ProgramSchedulerActivity extends MaterialIntroActivity {
             }
 
             Toast.makeText(this, getString(R.string.program_scheduler_scheduled, sectionsss.size()), Toast.LENGTH_SHORT).show();
+
+            Map<List<Integer>, Integer> sectionsssIds = new HashMap<List<Integer>, Integer>();
+            for(Map.Entry<List<Section>, Integer> entry: sectionsss.entrySet()){
+                List<Section> list = entry.getKey();
+                Integer value = entry.getValue();
+
+                List<Integer> idList = new ArrayList<Integer>(list.size());
+                for(Section section: list){
+                    idList.add(section.getId());
+                }
+                sectionsssIds.put(idList, value);
+            }
+
             Intent intent = new Intent(this, ProgramTableActivity.class);
-            intent.putExtra("sections", (Serializable) sectionsss);
+            intent.putExtra("sections", (Serializable) sectionsssIds);
             startActivity(intent);
         }
     }

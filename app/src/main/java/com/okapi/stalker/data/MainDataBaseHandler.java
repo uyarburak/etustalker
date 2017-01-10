@@ -487,6 +487,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
             String gender = c.getString(c.getColumnIndex(STUDENT_SEX_KEY));
             student.setGender(gender.isEmpty() ? 'U' : gender.charAt(0));
             student.setImage(c.getString(c.getColumnIndex(STUDENT_IMAGE_URL_KEY)));
+            student.setYear(c.getInt(c.getColumnIndex(STUDENT_YEAR_KEY)));
         }finally {
             c.close();
         }
@@ -535,6 +536,8 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
                 String gender = c.getString(c.getColumnIndex(STUDENT_SEX_KEY));
                 student.setGender(gender.isEmpty() ? 'U' : gender.charAt(0));
                 student.setImage(c.getString(c.getColumnIndex(STUDENT_IMAGE_URL_KEY)));
+                student.setYear(c.getInt(c.getColumnIndex(STUDENT_YEAR_KEY)));
+                student.setActive(c.getInt(c.getColumnIndex(STUDENT_ACTIVE_KEY)) == 1);
                 students.add(student);
             } while (c.moveToNext());
         }
@@ -898,7 +901,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
 
     public  Set<Student> getStudentsOfDepartment(String departmentName) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT  " + STUDENT_ID_KEY + ", " + STUDENT_NAME_KEY + ", " + STUDENT_DEPARTMENT_ID_KEY + ", " + STUDENT_DEPARTMENT_2_ID_KEY + ", " + STUDENT_SEX_KEY + " FROM " + TABLE_STUDENTS + " WHERE "
+        String selectQuery = "SELECT  " + STUDENT_ID_KEY + ", " + STUDENT_NAME_KEY + ", " + STUDENT_DEPARTMENT_ID_KEY + ", " + STUDENT_DEPARTMENT_2_ID_KEY + ", " + STUDENT_SEX_KEY + ", " + STUDENT_YEAR_KEY + ", " + STUDENT_ACTIVE_KEY+ " FROM " + TABLE_STUDENTS + " WHERE "
                 + STUDENT_DEPARTMENT_ID_KEY + " = '" + departmentName + "' or " + STUDENT_DEPARTMENT_2_ID_KEY + " = '" + departmentName+"'";
 
         Log.e("DB LOG", selectQuery);
@@ -923,6 +926,8 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
                     }
                     String gender = c.getString(c.getColumnIndex(STUDENT_SEX_KEY));
                     student.setGender(gender.isEmpty() ? 'U' : gender.charAt(0));
+                    student.setYear(c.getInt(c.getColumnIndex(STUDENT_YEAR_KEY)));
+                    student.setActive(c.getInt(c.getColumnIndex(STUDENT_ACTIVE_KEY)) == 1);
                     students.add(student);
                 } while (c.moveToNext());
             }

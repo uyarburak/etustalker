@@ -14,6 +14,10 @@ import android.widget.TextView;
 import com.okapi.stalker.R;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Instructor;
+import com.okapi.stalker.fragment.comparators.AbstractComparator;
+import com.okapi.stalker.fragment.comparators.DepartmentComparator;
+import com.okapi.stalker.fragment.comparators.NameComparator;
+import com.okapi.stalker.fragment.comparators.SexComparator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -143,13 +147,18 @@ public class InstructorsListAdapter extends BaseAdapter implements Filterable {
         if (lastSearch == null || lastSearch.isEmpty()) {
             tmp.addAll(allInstructors);
         }else{
+            String word = getRidOfTR(lastSearch.toUpperCase(new Locale("tr", "TR")));
             for (Instructor instructor: allInstructors){
-                if(instructor.getName().toUpperCase().contains(lastSearch.toUpperCase(new Locale("tr", "TR")))){
+                if(getRidOfTR(instructor.getName().toUpperCase()).contains(word)){
                     tmp.add(instructor);
                 }
             }
         }
         return tmp;
+    }
+
+    private String getRidOfTR(String word){
+        return word.replace('Ğ', 'G').replace('Ü', 'U').replace('Ş', 'S').replace('İ', 'I').replace('Ö', 'O').replace('Ç', 'C');
     }
 
     public void sort(OrderBy order){

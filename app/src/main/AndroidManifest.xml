@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.okapi.stalker" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.okapi.stalker">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-sdk tools:overrideLibrary="com.yalantis.filter" /> //minSDK 18 oldugu icin zorlamamiz gerek
 
     <application
         android:allowBackup="true"

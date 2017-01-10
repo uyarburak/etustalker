@@ -1,10 +1,14 @@
 package com.okapi.stalker.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,8 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Filterable;
 
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.CourseActivity;
@@ -24,20 +27,55 @@ import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Course;
 import com.okapi.stalker.data.storage.model.Department;
+import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
-import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
+import com.okapi.stalker.data.storage.model.Tag;
+import com.okapi.stalker.fragment.adapters.StalkerRecylerAdapter;
+import com.okapi.stalker.fragment.comparators.AbstractComparator;
+import com.okapi.stalker.fragment.comparators.DepartmentComparator;
+import com.okapi.stalker.fragment.comparators.IdComparator;
+import com.okapi.stalker.fragment.comparators.NameComparator;
+import com.okapi.stalker.fragment.comparators.SexComparator;
+import com.okapi.stalker.util.ColorGenerator;
+import com.okapi.stalker.util.RecyclerItemClickListener;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+import com.yalantis.filter.adapter.FilterAdapter;
+import com.yalantis.filter.listener.FilterListener;
+import com.yalantis.filter.widget.Filter;
+import com.yalantis.filter.widget.FilterItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
-public class StalkerFragment extends Fragment {
+public class StalkerFragment extends Fragment implements FilterListener<Tag>, Filterable {
+    public enum OrderBy{NONE, NAME, ID, SEX, DEPARTMENT};
+    public enum SearchingType{NAME, ID};
+    private OrderBy orderBy;
 
-    private MyStalkerAdapter myStalkerAdapter;
+    Filter<Tag> mFilter;
+    Map<String, Tag> tags;
+    private StalkerRecylerAdapter mAdapter;
     private View rootView;
     private Set<Student> students;
+    private List<Student> studentList;
+    ColorGenerator generator;
+    private String lastSearch;
+
+    FastScrollRecyclerView recyclerView;
     public StalkerFragment() {
     }
 
@@ -59,7 +97,15 @@ public class StalkerFragment extends Fragment {
             Department department = ((DepartmentActivity)getActivity()).getDepartment();
             students = department.getStudents();
         }
-        myStalkerAdapter = new MyStalkerAdapter(getActivity(), students);
+
+        studentList = Arrays.asList(students.toArray(new Student[0]));
+        resetTags(studentList);
+
+
+        //myStalkerAdapter = new MyStalkerAdapter(getActivity(), students);
+        mAdapter = new StalkerRecylerAdapter(getContext(), studentList);
+        orderBy = OrderBy.NONE;
+        sort(OrderBy.NAME);
         setHasOptionsMenu(true);
     }
 
@@ -68,24 +114,46 @@ public class StalkerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         if(rootView == null){
-            rootView = inflater.inflate(R.layout.fragment_stalker, container, false);
+            rootView = inflater.inflate(R.layout.fragment_stalker_recy, container, false);
 
 
-            ListView listView = (ListView) rootView.findViewById(R.id.listStalk);
-            listView.setAdapter(myStalkerAdapter);
-            listView.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> a, View v, int position, long l) {
+            mFilter = (Filter<Tag>) rootView.findViewById(R.id.filter);
+            mFilter.setAdapter(new Adapter(getTags()));
+            mFilter.setListener(this);
+
+            //the text to show when there's no selected items
+            mFilter.setNoSelectedItemText(getString(R.string.filter_choose));
+            mFilter.build();
+
+            recyclerView = (FastScrollRecyclerView) rootView.findViewById(R.id.recy_stalker_list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            StalkerRecylerAdapter adapter = (StalkerRecylerAdapter)recyclerView.getAdapter();
+                            adapter.setDiscovered(position);
                             Intent intent = new Intent(getActivity(), StudentActivity.class);
-                            intent.putExtra("student", (Serializable) a.getAdapter().getItem(position));
+                            intent.putExtra("student", (Serializable) adapter.getQuestions().get(position));
                             getActivity().startActivity(intent);
-                            myStalkerAdapter.changeColor(position, v);
                         }
-                    });
 
+                        @Override public void onLongItemClick(View view, int position) {
+                            // do whatever
+                        }
+                    })
+            );
         }
         return rootView;
+    }
+
+    private List<Tag> getTags() {
+        List<Tag> mTags = new ArrayList<>();
+        mTags.add(new Tag(getString(R.string.filter_everyone)));
+        for(Tag tag: tags.values()){
+            mTags.add(tag);
+        }
+        return mTags;
     }
 
     @Override
@@ -94,16 +162,16 @@ public class StalkerFragment extends Fragment {
         int id = item.getItemId();
         switch (id){
             case R.id.action_sort_by_name:
-                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.NAME);
+                sort(OrderBy.NAME);
                 break;
             case R.id.action_sort_by_id:
-                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.ID);
+                sort(OrderBy.ID);
                 break;
             case R.id.action_sort_by_sex:
-                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.SEX);
+                sort(OrderBy.SEX);
                 break;
             case R.id.action_sort_by_department:
-                myStalkerAdapter.sort(MyStalkerAdapter.OrderBy.DEPARTMENT);
+                sort(OrderBy.DEPARTMENT);
                 break;
             case R.id.action_stats:
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -139,6 +207,36 @@ public class StalkerFragment extends Fragment {
 
     }
 
+
+
+    public void sort(OrderBy order){
+        AbstractComparator.carpan = orderBy == order ? -1 : 1;
+        Set<Student> sortedSet;
+        mAdapter.searchingType = SearchingType.NAME;
+        switch (order){
+            case NAME:
+                sortedSet = new TreeSet<Student>(new NameComparator());
+                break;
+            case ID:
+                sortedSet = new TreeSet<Student>(new IdComparator());
+                mAdapter.searchingType = SearchingType.ID;
+                break;
+            case SEX:
+                sortedSet = new TreeSet<Student>(new SexComparator());
+                break;
+            case DEPARTMENT:
+                sortedSet = new TreeSet<Student>(new DepartmentComparator());
+                break;
+            default:
+                sortedSet = new TreeSet<Student>(new NameComparator());
+        }
+        sortedSet.addAll(students);
+        students = sortedSet;
+        studentList = filter();
+        mAdapter.setQuestions(studentList);
+        orderBy = order;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.stalker_fragment_menu, menu);
@@ -151,11 +249,290 @@ public class StalkerFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                myStalkerAdapter.getFilter().filter(newText);
+                StalkerFragment.this.getFilter().filter(newText);
                 return false;
             }
         });
 
 
     }
+
+    private void calculateDiff(final List<Student> oldList, final List<Student> newList) {
+        DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
+            }
+        }).dispatchUpdatesTo(mAdapter);
+    }
+
+
+    @Override
+    public void onNothingSelected() {
+        if (recyclerView != null) {
+            mAdapter.setQuestions(studentList);
+        }
+    }
+
+    private List<Student> findByTags(List<Tag> tags) {
+        List<Student> newList = new ArrayList<>();
+        List<Tag> typless = new ArrayList<>();
+        List<Tag> gender = new ArrayList<>();
+        List<Tag> year = new ArrayList<>();
+        List<Tag> enterYear = new ArrayList<>();
+        List<Tag> department = new ArrayList<>();
+        List<Tag> active = new ArrayList<>();
+        for (Tag tag : tags) {
+            switch (tag.getTagType()){
+                case GENDER:
+                    gender.add(tag);
+                    break;
+                case YEAR:
+                    year.add(tag);
+                    break;
+                case ENTER_YEAR:
+                    enterYear.add(tag);
+                    break;
+                case DEPARTMENT:
+                    department.add(tag);
+                    break;
+                case ACTIVITY:
+                    active.add(tag);
+                    break;
+                default:
+                    typless.add(tag);
+                    break;
+            }
+        }
+
+        for (Student student : studentList) {
+            if(hasTagAny(gender, student) && hasTagAny(year, student) && hasTagAny(enterYear, student) && hasTagAny(department, student) && hasTagAny(active, student))
+                newList.add(student);
+        }
+
+        return newList;
+    }
+    private boolean hasTagAny(List<Tag> tags, Student student){
+        if(tags.isEmpty()) return true;
+        for (Tag tag : tags) {
+            if (student.hasTag(tag.getText())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onFiltersSelected(@NotNull ArrayList<Tag> filters) {
+        List<Student> newQuestions = findByTags(filters);
+        List<Student> oldQuestions = mAdapter.getQuestions();
+        mAdapter.setQuestions(newQuestions);
+        calculateDiff(oldQuestions, newQuestions);
+    }
+
+    @Override
+    public void onFilterSelected(Tag item) {
+        if (item.getText().equals(getString(R.string.filter_everyone))) {
+            mFilter.deselectAll();
+            mFilter.collapse();
+        }
+    }
+
+
+    @Override
+    public void onFilterDeselected(Tag tag) {
+
+    }
+
+    @Override
+    public android.widget.Filter getFilter() {
+
+        android.widget.Filter filter = new android.widget.Filter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                studentList = (List<Student>) results.values;
+                mAdapter.setQuestions(studentList);
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                lastSearch = constraint.toString().trim();
+                List<Student> filteredArrayNames = StalkerFragment.this.filter();
+                results.count = filteredArrayNames.size();
+                results.values = filteredArrayNames;
+
+                return results;
+            }
+        };
+
+        return filter;
+    }
+
+    private void resetTags(List<Student> students){
+        Tag maleTag = new Tag(getString(R.string.filter_male), Color.RED, Tag.TagType.GENDER);
+        Tag femaleTag = new Tag(getString(R.string.filter_female), Color.BLUE, Tag.TagType.GENDER);
+        Tag unisexTag = new Tag(getString(R.string.filter_unisex), Color.GREEN, Tag.TagType.GENDER);
+        tags = new LinkedHashMap<String, Tag>();
+        tags.put(maleTag.getText(), maleTag);
+        tags.put(femaleTag.getText(), femaleTag);
+        tags.put(unisexTag.getText(), unisexTag);
+        generator = ColorGenerator.MATERIAL;
+        if(getActivity() instanceof MainActivity || getActivity() instanceof DepartmentActivity){
+            Tag active = new Tag(getString(R.string.filter_active), Color.GREEN, Tag.TagType.ACTIVITY);
+            Tag inactive = new Tag(getString(R.string.filter_inactive), Color.GRAY, Tag.TagType.ACTIVITY);
+            tags.put(active.getText(), active);
+            tags.put(inactive.getText(), inactive);
+            for(Student student: students) {
+                if(student.getActive()) {
+                    student.addTag(active);
+                }else{
+                    student.addTag(inactive);
+                }
+            }
+        }
+        String yearPrefix = getString(R.string.filter_year) + ": ";
+        for(Student student: students) {
+            switch (student.getGender()) {
+                case 'M':
+                    student.addTag(maleTag);
+                    break;
+                case 'F':
+                    student.addTag(femaleTag);
+                    break;
+                default:
+                    student.addTag(unisexTag);
+                    break;
+            }
+            String enterYear = "20" + student.getId().charAt(0) + student.getId().charAt(1);
+            if (tags.containsKey(enterYear)) {
+                student.addTag(tags.get(enterYear));
+            } else {
+                Tag tag = new Tag(enterYear, Tag.TagType.ENTER_YEAR);
+                tags.put(enterYear, tag);
+                student.addTag(tag);
+            }
+            String year = yearPrefix + student.getYear();
+            if(tags.containsKey(year)){
+                student.addTag(tags.get(year));
+            }else{
+                Tag tag = new Tag(year, Tag.TagType.YEAR);
+                tags.put(year, tag);
+                student.addTag(tag);
+            }
+
+            String department = student.getDepartment().getName();
+            String department2 = student.getDepartment2() == null?"":student.getDepartment2().getName();
+            if(tags.containsKey(department)){
+                student.addTag(tags.get(department));
+            }else{
+                Tag tag = new Tag(department, Tag.TagType.DEPARTMENT);
+                tags.put(department, tag);
+                student.addTag(tag);
+            }
+            if(tags.containsKey(department2)){
+                student.addTag(tags.get(department2));
+            }else{
+                Tag tag = new Tag(department2, Tag.TagType.DEPARTMENT);
+                tags.put(department2, tag);
+                student.addTag(tag);
+            }
+        }
+        Set<Tag> treeTags = new TreeSet(new Comparator<Tag>() {
+
+            @Override
+            public int compare(Tag lhs, Tag rhs) {
+                Integer l = lhs.getTagType().ordinal();
+                Integer r = rhs.getTagType().ordinal();
+                int compare = l.compareTo(r);
+                if(compare == 0){
+                    compare = lhs.getText().compareTo(rhs.getText());
+                }
+                return compare;
+            }
+        });
+        treeTags.addAll(tags.values());
+        tags.clear();
+        for(Tag tag: treeTags){
+            if(!tag.getText().isEmpty())
+                tags.put(tag.getText(), tag);
+        }
+    }
+
+    private List<Student> filter() {
+        List<Student> tmp = new ArrayList<Student>();
+        if (lastSearch == null || lastSearch.isEmpty()) {
+            tmp.addAll(students);
+            mAdapter.searchingType = SearchingType.NAME;
+        }else{
+            if (lastSearch.matches("\\d+")){
+                for (Student student: students){
+                    if(student.getId().startsWith(lastSearch)){
+                        tmp.add(student);
+                    }
+                }
+                mAdapter.searchingType = SearchingType.ID;
+            }else{
+                String word = getRidOfTR(lastSearch.toUpperCase(new Locale("tr", "TR"))).replaceAll("\\s+","");
+                for (Student student: students){
+                    if(getRidOfTR(student.getName().replaceAll("\\s+","")).contains(word)){
+                        tmp.add(student);
+                    }
+                }
+                mAdapter.searchingType = SearchingType.NAME;
+            }
+
+        }
+        return tmp;
+    }
+    private String getRidOfTR(String word){
+        return word.replace('Ğ', 'G').replace('Ü', 'U').replace('Ş', 'S').replace('İ', 'I').replace('Ö', 'O').replace('Ç', 'C');
+    }
+
+    class Adapter extends FilterAdapter<Tag> {
+
+        Adapter(@NotNull List<? extends Tag> items) {
+            super(items);
+        }
+
+        public void setItems(@NotNull List<? extends Tag> newItems){
+            List<Tag> myItems = getItems();
+            myItems.clear();
+            myItems.addAll(newItems);
+        }
+
+        @NotNull
+        @Override
+        public FilterItem createView(int position, Tag item) {
+            FilterItem filterItem = new FilterItem(getActivity());
+
+            filterItem.setStrokeColor(Color.parseColor("#827f93"));
+            filterItem.setTextColor(Color.parseColor("#827f93"));
+            filterItem.setCheckedTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
+            filterItem.setColor(ContextCompat.getColor(getActivity(), android.R.color.white));
+            filterItem.setCheckedColor(generator.getColor(position));
+            filterItem.setText(item.getText());
+            filterItem.deselect();
+
+            return filterItem;
+        }
+    }
+
 }

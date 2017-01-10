@@ -56,13 +56,12 @@
 
 
     <LinearLayout
-        android:layout_above="@+id/acc"
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
 
-        >
+        android:layout_above="@+id/create">
 
 
 
@@ -114,24 +113,11 @@
     </LinearLayout>
 
 
-
-
-    <customfonts.MyTextView
-        android:id="@+id/acc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Dun't have account?"
-        android:layout_above="@+id/create"
-        android:gravity="center"
-        android:lines="1"
-
-        />
-
     <TextView
         android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create one now"
+        android:text=""
         android:textColor="#2b73e1"
         android:layout_alignParentBottom="true"
         android:gravity="center"

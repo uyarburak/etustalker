@@ -7,8 +7,8 @@ android {
         applicationId "com.okapi.stalker"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 12
-        versionName "1.1.2"
+        versionCode 15
+        versionName "1.1.5"
     }
     buildTypes {
         release {
@@ -24,7 +24,6 @@ repositories {
     jcenter()
     maven { url "https://jitpack.io" }
 }
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -48,5 +47,7 @@ dependencies {
     //Add this line
     compile 'com.google.firebase:firebase-messaging:9.6.0'
     compile 'de.codecrafters.tableview:tableview:2.4.1'
+    compile 'com.github.yalantis:searchfilter:v1.0.1'
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.11'
 }
 apply plugin: 'com.google.gms.google-services'

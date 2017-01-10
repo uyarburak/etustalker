@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +22,7 @@ import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.service.CourseNotificationService;
 
+import customfonts.MyEditText;
 import customfonts.MyTextView;
 
 /**
@@ -33,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private UserLoginTask mAuthTask = null;
     // UI references.
-    private EditText mIDView;
+    private MyEditText mIDView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -43,11 +46,28 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.signin);
 
-        mIDView = (EditText) findViewById(R.id.email);
+        mIDView = (MyEditText) findViewById(R.id.email);
+        mIDView.setImeActionLabel("Custom text", KeyEvent.KEYCODE_ENTER);
+        mIDView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() > 7 && s.toString().charAt(s.toString().length()-1) == '\n')
+                    attemptLogin();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         mIDView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.signin1 || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -79,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         mIDView.setError(null);
 
         // Store values at the time of the login attempt.
-        String id = mIDView.getText().toString();
+        String id = mIDView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
@@ -124,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {;
             MainDataBaseHandler db = new MainDataBaseHandler(getBaseContext());
             Student user = db.getStudent(mID);
-            if (user == null) {
+            if (user.getName() == null) {
                 return false;
             }
             key = user.getId();

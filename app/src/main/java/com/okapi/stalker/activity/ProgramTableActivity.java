@@ -6,12 +6,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.okapi.stalker.R;
+import com.okapi.stalker.data.MainDataBaseHandler;
 import com.okapi.stalker.data.storage.model.Interval;
 import com.okapi.stalker.data.storage.model.Section;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,29 @@ public class ProgramTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_table);
-        Map<List<Section>, Integer> sectionss = (Map<List<Section>, Integer>) getIntent().getSerializableExtra("sections");
+        MainDataBaseHandler db = new MainDataBaseHandler(this);
+
+        Map<List<Integer>, Integer> sectionsssIds = (Map<List<Integer>, Integer>) getIntent().getSerializableExtra("sections");
+        Map<List<Section>, Integer> sectionss = new HashMap<List<Section>, Integer>();
+        Map<Integer, Section> map = new HashMap<Integer, Section>();
+        for(Map.Entry<List<Integer>, Integer> entry: sectionsssIds.entrySet()){
+            List<Integer> list = entry.getKey();
+            Integer value = entry.getValue();
+
+            List<Section> listSection = new ArrayList<Section>(list.size());
+            for(Integer sectionId: list){
+                Section sec;
+                if(map.containsKey(sectionId)){
+                    sec = map.get(sectionId);
+                }else{
+                    sec = db.getSectionWithoutStudents(sectionId);
+                    map.put(sectionId, sec);
+                }
+                listSection.add(sec);
+
+            }
+            sectionss.put(listSection, value);
+        }
 
         SortableTableView<String[]> tableView = (SortableTableView<String[]>) findViewById(R.id.tableView);
 

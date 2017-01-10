@@ -1,6 +1,8 @@
 package com.okapi.stalker.data.storage.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("serial")
@@ -14,6 +16,8 @@ public class Student implements Person{
 	private Character gender;
 	private String image;
 	private Boolean active;
+
+	private List<Tag> tags;
 //	private Set<Friend> friends;
 
 	private Set<Section> sections;
@@ -21,6 +25,7 @@ public class Student implements Person{
 	public Student() {
 //		friends = new HashSet<Friend>();
 		sections = new HashSet<Section>();
+		tags = new ArrayList<Tag>();
 	}
 	public String getId() {
 		return id;
@@ -141,8 +146,28 @@ public class Student implements Person{
 		return String.format("Student Name: %s\nMail: %s\nDepartment: %s\nYear: %s\nSex: %c\nImage: %s\nActive: %s",
 				this.name, this.mail, this.department, this.year, this.gender, this.image, this.active);
 	}
-	
-	
-	
+
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public boolean addTag(Tag tag) {
+		return tags.add(tag);
+	}
+
+	public boolean hasTag(String string) {
+		for (Tag tag : tags) {
+			if (tag.getText().equals(string)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 	
 }

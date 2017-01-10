@@ -13,9 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.SearchView;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -27,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,13 +36,11 @@ import com.okapi.stalker.activity.SectionActivity;
 import com.okapi.stalker.activity.StudentActivity;
 import com.okapi.stalker.data.FriendsDataBaseHandler;
 import com.okapi.stalker.data.MainDataBaseHandler;
-import com.okapi.stalker.data.storage.model.Department;
 import com.okapi.stalker.data.storage.model.Interval;
 import com.okapi.stalker.data.storage.model.Person;
 import com.okapi.stalker.data.storage.model.Section;
 import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.adapters.MySectionAdapter;
-import com.okapi.stalker.fragment.adapters.MyStalkerAdapter;
 import com.okapi.stalker.util.ColorGenerator;
 
 import java.io.File;
@@ -55,7 +49,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.Collator;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -138,24 +131,25 @@ public class ProgramFragment extends Fragment{
                 rootView.findViewById(R.id.blockView).setVisibility(View.VISIBLE);
                 rootView.findViewById(R.id.blockView).bringToFront();
                 ListView sectionList = (ListView) rootView.findViewById(R.id.noIntervalSectionList);
-
-                ImageView imageView = (ImageView) rootView.findViewById(R.id.no_course_image);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.bringToFront();
-
-                sectionList.setVisibility(View.VISIBLE);
-                sectionList.bringToFront();
-                sectionList.setAdapter(new MySectionAdapter(getActivity(), detailedSections));
-                sectionList.setOnItemClickListener(
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> a, View v, int position, long l) {
-                                Intent intent = new Intent(getActivity(), SectionActivity.class);
-                                intent.putExtra("section", ((Section)a.getAdapter().getItem(position)).getId());
-                                getActivity().startActivity(intent);
-                            }
-                        });
-                rootView.findViewById(R.id.noIntervalSectionList).bringToFront();
+                if(owner.getSections().isEmpty()){
+                    ImageView imageView = (ImageView) rootView.findViewById(R.id.no_course_image);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.bringToFront();
+                }else{
+                    sectionList.setVisibility(View.VISIBLE);
+                    sectionList.bringToFront();
+                    sectionList.setAdapter(new MySectionAdapter(getActivity(), detailedSections));
+                    sectionList.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> a, View v, int position, long l) {
+                                    Intent intent = new Intent(getActivity(), SectionActivity.class);
+                                    intent.putExtra("section", ((Section)a.getAdapter().getItem(position)).getId());
+                                    getActivity().startActivity(intent);
+                                }
+                            });
+                    rootView.findViewById(R.id.noIntervalSectionList).bringToFront();
+                }
 
             }else{
                 Map<Integer, MyButton> buttonMap =  new HashMap<Integer, MyButton>();
@@ -164,6 +158,7 @@ public class ProgramFragment extends Fragment{
                         MyButton button1 = buttonMap.get(button.index);
                         button1.title = button1.title.concat(" and ").concat(button.title);
                         button1.color = "black";
+                        button1.section2 = button.sectionId;
                     }else{
                         buttonMap.put(button.index, button);
                     }
@@ -216,11 +211,11 @@ public class ProgramFragment extends Fragment{
                         button.setTextSize(13);
                         button.setTextColor(Color.WHITE);
                         if(myButton.color.equals("black")){
+                            final String[] parts = myButton.title.split(" and ");
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     System.out.println(myButton.title);
-                                    String[] parts = myButton.title.split(" and ");
                                     if(button.getText().toString().startsWith(parts[0])){
                                         button.setText(parts[1]);
                                     }else{
@@ -228,7 +223,13 @@ public class ProgramFragment extends Fragment{
                                     }
                                 }
                             });
-
+                            button.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(View v) {
+                                    sezinBug(parts, new int[]{myButton.sectionId, myButton.section2});
+                                    return false;
+                                }
+                            });
                         }else{
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -238,15 +239,14 @@ public class ProgramFragment extends Fragment{
                                     getActivity().startActivity(intent);
                                 }
                             });
-
+                            button.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(View v) {
+                                    freeFriendsDialog(index);
+                                    return false;
+                                }
+                            });
                         }
-                        button.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v) {
-                                freeFriendsDialog(index);
-                                return false;
-                            }
-                        });
                     }
                     //button.setId(i + 1);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -323,6 +323,22 @@ public class ProgramFragment extends Fragment{
     private int dpToPx(Context context, int dp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
+    }
+
+    private void sezinBug(String[] courses, final int[] courseIds){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("CHOOSE");
+        dialogBuilder.setItems(courses, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Intent intent = new Intent(getActivity(), SectionActivity.class);
+                intent.putExtra("section", courseIds[item]);
+                getActivity().startActivity(intent);
+            }
+        });
+        //Create alert dialog object via builder
+        AlertDialog alertDialogObject = dialogBuilder.create();
+        //Show the dialog
+        alertDialogObject.show();
     }
 
     private void freeFriendsDialog(int index){
@@ -471,6 +487,7 @@ class MyButton{
     Integer sectionId;
     String title;
     String color;
+    Integer section2;
 
     public MyButton() {
         super();

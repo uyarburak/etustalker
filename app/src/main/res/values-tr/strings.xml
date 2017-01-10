@@ -152,4 +152,12 @@
     <string name="table_column_morning">8:30 Dersi Sayısı</string>
     <string name="max_conflict">Maksimum Çakışma Sayısını Seçin</string>
     <string name="program_scheduler_choose_at_least">Lütfen en az 1 ders seçiniz.</string>
+    <string name="filter_active">Aktif</string>
+    <string name="filter_everyone">Herkes</string>
+    <string name="filter_female">Kadın</string>
+    <string name="filter_inactive">İnaktif</string>
+    <string name="filter_male">Erkek</string>
+    <string name="filter_unisex">Unisex</string>
+    <string name="filter_year">Sınıf</string>
+    <string name="filter_choose">Filtreler</string>
 </resources>

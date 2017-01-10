@@ -188,6 +188,17 @@
     <string name="table_column_day"># School Day</string>
     <string name="table_column_conflict"># Conflict</string>
 
+    <string name="filter_everyone">Everyone</string>
+    <string name="filter_active">Active</string>
+    <string name="filter_inactive">Inactive</string>
+    <string name="filter_male">Male</string>
+    <string name="filter_female">Female</string>
+    <string name="filter_unisex">Unisex</string>
+    <string name="filter_year">Year</string>
+    <string name="filter_choose">Choose filter</string>
+
+
+
     <string-array name="grades" translatable="false">
         <item>AA</item>
         <item>BA</item>
@@ -222,15 +233,22 @@
         <b>Fatih Erdem KIZILKAYA</b> : Server-side<br />
         <b>Kerim SIPER</b> : Owner of GPA Calculator idea<br />
         <b>Yusuf Cagri OGUT</b> : Owner of Program Scheduler idea<br />
-        <b>Cagdas TERZI</b> : Tester<br />]]>
+        <b>Cagdas TERZI</b> : Tester<br />
+        <b>Yunus IRHAN</b> : Halkla Iliskiler Muduru :D<br />]]>
     </string>
     <string name="aboutLibraries_description_special2_name">DB Version</string>
     <string name="aboutLibraries_description_special3_name">Changelog</string>
     <string name="aboutLibraries_description_special3_text" translatable="false">
         <![CDATA[
+        <i>Version 1.1.5-RELEASE</i><br />
+        - Several bugs fixed<br />
+        - Program scheduler fixed<br />
+        <i>Version 1.1.3-RELEASE</i><br />
+        - Advanced search filtering has added<br />
+        - Several bugs fixed<br />
         <i>Version 1.0.6-RELEASE</i><br />
         - Program scheduler finally finished<br />
-        - Turkısh translatıon done<br />
+        - Turkish translatıon done<br />
         - We now, in Play Store!<br />
         <i>Version 1.0.5-RELEASE</i><br />
         - Class reminder has added.<br />
