@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/year"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="From: "/>
+            <TextView
+                android:id="@+id/bus_from"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="From"
+                android:layout_column="2" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/year"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="To: "/>
+
+            <TextView
+                android:id="@+id/bus_to"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="To"
+                android:layout_column="2"  />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/year"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="Time: "/>
+
+            <TextView
+                android:id="@+id/bus_time"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:layout_column="2"
+                android:textColor="@android:color/holo_red_light" />
+        </TableRow>
+    </TableLayout>
+
+
+</RelativeLayout>

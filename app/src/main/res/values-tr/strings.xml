@@ -160,4 +160,5 @@
     <string name="filter_unisex">Unisex</string>
     <string name="filter_year">Sınıf</string>
     <string name="filter_choose">Filtreler</string>
+    <string name="title_activity_bus_old">Servis Saatleri (HTML)</string>
 </resources>

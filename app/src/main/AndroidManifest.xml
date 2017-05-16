@@ -133,6 +133,16 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.DummyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.BusScheduleActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--
     Defining Services

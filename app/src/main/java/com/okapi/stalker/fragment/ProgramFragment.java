@@ -113,7 +113,7 @@ public class ProgramFragment extends Fragment{
                 if(++colorIndex == colors.length){
                     colorIndex = 0;
                 }
-                if(intervals.isEmpty() && owner instanceof Student && section.getCourse().getCode().matches("OEG.+00")){
+                if(intervals.isEmpty() && owner instanceof Student && section.getCourse().getCode().matches("OEG.+00") && owner.getSections().size() == 1){
                     rootView.findViewById(R.id.blockView).setVisibility(View.VISIBLE);
                     rootView.findViewById(R.id.blockView).bringToFront();
                     rootView.findViewById(R.id.internImage).setVisibility(View.VISIBLE);

@@ -3,11 +3,14 @@ package com.okapi.stalker.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -22,6 +25,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import agency.tango.materialintroscreen.SlideFragment;
@@ -34,9 +38,11 @@ public class ProgramSchedulerFragment2 extends SlideFragment {
     public ArrayList<String> courseList;
     ArrayList<String> courseList2;
     int id;
+    int lastIndex;
 
     public SlideFragment setId(int val){
         this.id = val;
+        lastIndex = 0;
         return this;
     }
     @Nullable
@@ -62,9 +68,38 @@ public class ProgramSchedulerFragment2 extends SlideFragment {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_multiple_choice, courseList2));
+        EditText searchText = (EditText) view.findViewById(R.id.program_course_search);
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int i = 0;
+                String searchKey = clearTurkishChars(s.toString().toUpperCase(new Locale("tr", "TR")));
+                for(String courseName : courseList){
+                    if(clearTurkishChars(courseName).startsWith(searchKey)){
+                        listView.setSelection(i);
+                        lastIndex = i;
+                        return;
+                    }
+                    i++;
+                }
+                listView.setSelection(lastIndex);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
-
+    private String clearTurkishChars(String word){
+        return word.replace('Ğ', 'G').replace('Ü', 'U').replace('Ş', 'S').replace('İ', 'I').replace('Ö', 'O').replace('Ç', 'C').replaceAll("\\s+", "");
+    }
     @Override
     public int backgroundColor() {
         return R.color.custom_slide_background;

@@ -406,6 +406,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_SECTIONS_TABLE);
         db.execSQL(CREATE_INTERVALS_TABLE);
         db.execSQL(CREATE_ENROLLMENTS_TABLE);
+        db.execSQL("CREATE INDEX student_name_index ON "+TABLE_STUDENTS+"("+STUDENT_NAME_KEY+");");
     }
 
     @Override
@@ -498,22 +499,9 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
 * get single student
 */
     public Set<Student> getAllStudents() {
-        final Collator coll = Collator.getInstance(new Locale("tr", "TR"));
-        coll.setStrength(Collator.PRIMARY);
-        Set<Student> students = new TreeSet<>(new Comparator<Student>() {
-            @Override
-            public int compare(Student lhs, Student rhs) {
-                int comp = coll.compare(lhs.getName(), rhs.getName());
-                if(comp != 0)
-                    return comp;
-                comp = coll.compare(lhs.getDepartment().getName(), rhs.getDepartment().getName());
-                if (comp != 0)
-                    return comp;
-                return coll.compare(lhs.getId(), rhs.getId());
-            }
-        });
+        Set<Student> students = new HashSet<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT  * FROM " + TABLE_STUDENTS + " ORDER BY " + STUDENT_NAME_KEY;
+        String selectQuery = "SELECT  * FROM " + TABLE_STUDENTS;
 
         Log.e("DB LOG", selectQuery);
 

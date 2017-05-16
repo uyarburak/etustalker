@@ -274,5 +274,6 @@
         <i>Version 1.0-ALPHA</i><br />
         - Hello world]]>
     </string>
+    <string name="title_activity_bus_old">Old Bus Schedule</string>
 
 </resources>

@@ -1,37 +1,25 @@
 package com.okapi.stalker.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eggheadgames.siren.Siren;
 import com.eggheadgames.siren.SirenAlertType;
-import com.eggheadgames.siren.SirenVersionCheckType;
 import com.okapi.stalker.R;
 import com.okapi.stalker.activity.adapter.ViewPagerAdapter;
 import com.okapi.stalker.data.MainDataBaseHandler;
@@ -39,11 +27,6 @@ import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.fragment.FriendsFragment;
 import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SIREN_JSON_URL = "http://etustalk.club/android/last_version.json";
@@ -113,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.nav_bus_program:
+                        Intent intent14 = new Intent(getBaseContext(), DummyActivity.class);
+                        startActivity(intent14);
+                        break;
+                    case R.id.nav_bus_program_old:
                         Intent intent2 = new Intent(getBaseContext(), WebBrowserActivity.class);
                         intent2.putExtra("url", "https://www.etu.edu.tr/tr/ulasim");
                         intent2.putExtra("title", getString(R.string.title_activity_bus));

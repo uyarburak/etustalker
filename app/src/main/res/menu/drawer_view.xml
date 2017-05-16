@@ -33,6 +33,12 @@
                 android:id="@+id/nav_bus_program"
                 android:icon="@drawable/ic_action_bus"
                 android:title="@string/drawer_bus" />
+
+            <item
+                android:id="@+id/nav_bus_program_old"
+                android:icon="@drawable/ic_action_bus"
+                android:title="@string/title_activity_bus_old" />
+
             <item
                 android:id="@+id/nav_midterm_schedule"
                 android:icon="@drawable/ic_action_coffee"
