@@ -240,6 +240,9 @@
     <string name="aboutLibraries_description_special3_name">Changelog</string>
     <string name="aboutLibraries_description_special3_text" translatable="false">
         <![CDATA[
+        <i>Version 1.1.9-RELEASE</i><br />
+        - Bus Schedule improved<br />
+        - Academic Calendar added<br />
         <i>Version 1.1.5-RELEASE</i><br />
         - Several bugs fixed<br />
         - Program scheduler fixed<br />

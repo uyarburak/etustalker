@@ -2,9 +2,14 @@ package com.okapi.stalker.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.okapi.stalker.R;
 
@@ -37,10 +42,21 @@ public class DummyActivity extends Activity {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Intent intent = new Intent(getBaseContext(), BusScheduleActivity.class);
-            intent.putExtra("html", aVoid);
-            startActivity(intent);
-            finish();
+            if(aVoid == null || aVoid.isEmpty()){
+                Toast.makeText(DummyActivity.this, getString(R.string.connection_error_no_cache), Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        DummyActivity.this.finish();
+                    }
+                }, 2000);
+            }else{
+                Intent intent = new Intent(getBaseContext(), BusScheduleActivity.class);
+                intent.putExtra("html", aVoid);
+                startActivity(intent);
+                finish();
+            }
         }
 
         @Override
@@ -56,12 +72,12 @@ public class DummyActivity extends Activity {
             try {
                 doc  = Jsoup.connect("https://www.etu.edu.tr/tr/ulasim")
                         .get();
+                doc = new Cleaner(Whitelist.relaxed()).clean(doc);
+                return doc.toString();
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-            doc = new Cleaner(Whitelist.relaxed()).clean(doc);
-            return doc.toString();
         }
     }
 }
