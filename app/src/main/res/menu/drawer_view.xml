@@ -37,7 +37,7 @@
             <item
                 android:id="@+id/nav_bus_program_old"
                 android:icon="@drawable/ic_action_bus"
-                android:title="@string/title_activity_bus_old" />
+                android:title="@string/title_activity_bus_ol" />
 
             <item
                 android:id="@+id/nav_midterm_schedule"
@@ -51,6 +51,10 @@
                 android:id="@+id/nav_final_schedule"
                 android:icon="@drawable/ic_action_coffee2go"
                 android:title="@string/drawer_final" />
+            <item
+                android:id="@+id/nav_academic_calendar"
+                android:icon="@drawable/ic_action_calendar_month"
+                android:title="@string/academic_calendar" />
         </menu>
     </item>
     <item android:title="@string/drawer_app">

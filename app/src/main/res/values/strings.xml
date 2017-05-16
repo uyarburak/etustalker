@@ -274,6 +274,10 @@
         <i>Version 1.0-ALPHA</i><br />
         - Hello world]]>
     </string>
-    <string name="title_activity_bus_old">Old Bus Schedule</string>
+    <string name="title_activity_bus_ol">Old Bus Schedule</string>
+    <string name="academic_calendar">Academic Calendar</string>
+    <string name="bus_district_bus">District Busses</string>
+    <string name="bus_ring">Rings</string>
+    <string name="bus_saturday">Saturday</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -84,10 +87,16 @@ public class BusScheduleActivity extends AppCompatActivity {
         args.putInt("index", 2);
         fragment2.setArguments(args);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(fragment0, "Semt Servisleri");
-        adapter.addFragment(fragment1, "Ringler");
-        adapter.addFragment(fragment2, "Cumartesi");
+        adapter.addFragment(fragment0, getString(R.string.bus_district_bus));
+        adapter.addFragment(fragment1, getString(R.string.bus_ring));
+        adapter.addFragment(fragment2, getString(R.string.bus_saturday));
         viewPager.setAdapter(adapter);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(System.currentTimeMillis()));
+        if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+            viewPager.setCurrentItem(2);
+        }
     }
 
     @Override
@@ -134,11 +143,28 @@ public class BusScheduleActivity extends AppCompatActivity {
             final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.bus_schedule_recycler);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
             RecyclerView.Adapter adapter = null;
-            if (this.index > 0)
-                adapter = new BusScheduleAdapter(parse(this.index));
+            if (this.index > 0) {
+                List<BusSchedule> busses = parse(this.index);
+                adapter = new BusScheduleAdapter(busses);
+
+                // Saati yaklasan servise scroll etsin
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date(System.currentTimeMillis()));
+                int minutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+                int i = 0;
+                for(BusSchedule bus: busses){
+                    String[] parts = bus.getTime().split(":");
+                    int busMinutes = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+                    if(busMinutes >= minutes)
+                        break;
+                    i++;
+                }
+                if(i <= busses.size())
+                    recyclerView.scrollToPosition(i);
+
+            }
             else {
                 adapter = new DistrictServiceAdapter(parse2());
-
                 recyclerView.addOnItemTouchListener(
                         new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                             @Override

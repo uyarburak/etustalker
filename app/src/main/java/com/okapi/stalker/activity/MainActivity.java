@@ -157,6 +157,12 @@ public class MainActivity extends AppCompatActivity {
                         intent10.putExtra("title", getString(R.string.title_activity_feedback));
                         startActivity(intent10);
                         break;
+                    case R.id.nav_academic_calendar:
+                        Intent intent15 = new Intent(getBaseContext(), WebBrowserActivity.class);
+                        intent15.putExtra("url", "https://www.etu.edu.tr/tr/akademik-takvim");
+                        intent15.putExtra("title", getString(R.string.academic_calendar));
+                        startActivity(intent15);
+                        break;
                 }
 
                 drawerLayout.closeDrawers();
