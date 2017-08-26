@@ -7,8 +7,8 @@ android {
         applicationId "com.okapi.stalker"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 19
-        versionName "1.1.9"
+        versionCode 20
+        versionName "1.1.91"
     }
     buildTypes {
         release {
@@ -49,5 +49,8 @@ dependencies {
     compile 'de.codecrafters.tableview:tableview:2.4.1'
     compile 'com.github.yalantis:searchfilter:v1.0.1'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.11'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'com.googlecode.json-simple:json-simple:1.1'
 }
 apply plugin: 'com.google.gms.google-services'

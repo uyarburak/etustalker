@@ -29,7 +29,7 @@ import com.okapi.stalker.fragment.ProgramFragment;
 import com.okapi.stalker.fragment.StalkerFragment;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String SIREN_JSON_URL = "http://etustalk.club/android/last_version.json";
+    public static final String SIREN_JSON_URL = "http://185.118.140.5/android/last_version.json";
 
     private Student student;
     private String user_student_key;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_help:
                         Intent intent = new Intent(getBaseContext(), WebBrowserActivity.class);
-                        intent.putExtra("url", "http://etustalk.club/help");
+                        intent.putExtra("url", "http://185.118.140.5/help");
                         intent.putExtra("title", getString(R.string.title_activity_help));
                         startActivity(intent);
                         break;
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_feedback:
                         Intent intent10 = new Intent(getBaseContext(), WebBrowserActivity.class);
-                        intent10.putExtra("url", "http://etustalk.club/feedback");
+                        intent10.putExtra("url", "http://185.118.140.5/feedback");
                         intent10.putExtra("title", getString(R.string.title_activity_feedback));
                         startActivity(intent10);
                         break;

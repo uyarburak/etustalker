@@ -52,7 +52,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // sending fcm token to server
         String android_id = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        final String url = "http://etustalk.club/android/register_fcm.php?device_id="+android_id+"&token="+token;
+        final String url = "http://185.118.140.5/android/register_fcm.php?device_id="+android_id+"&token="+token;
         try {
             new URL(url).openStream();
         } catch (IOException e) {

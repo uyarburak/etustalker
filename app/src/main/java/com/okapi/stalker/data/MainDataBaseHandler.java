@@ -159,6 +159,7 @@ public class MainDataBaseHandler extends SQLiteOpenHelper {
                     ih.prepareForInsert();
 
                     ih.bind(studentIdIndex, fields[0]);
+                    System.out.println(fields[0]);
                     ih.bind(studentNameIndex, fields[1]);
                     ih.bind(studentMailIndex, fields[2].concat("@etu.edu.tr"));
                     ih.bind(studentYearIndex, Integer.parseInt(fields[3]));

@@ -18,6 +18,7 @@ import com.okapi.stalker.data.storage.model.Student;
 import com.okapi.stalker.data.storage.model.Tag;
 import com.okapi.stalker.fragment.StalkerFragment;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
 import java.util.List;
@@ -75,16 +76,24 @@ public class StalkerRecylerAdapter extends RecyclerView.Adapter<StalkerRecylerAd
             holder.textMajor.setText(student.getId());
         }
 
-        switch (student.getGender()){
-            case 'M':
-                holder.imageView.setImageResource(R.drawable.ic_gender_male);
-                break;
-            case 'F':
-                holder.imageView.setImageResource(R.drawable.ic_gender_female);
-                break;
-            default:
-                holder.imageView.setImageResource(R.drawable.ic_help);
-                break;
+        if(student.getImage().isEmpty()){
+            switch (student.getGender()){
+                case 'M':
+                    holder.imageView.setImageResource(R.drawable.ic_gender_male);
+                    break;
+                case 'F':
+                    holder.imageView.setImageResource(R.drawable.ic_gender_female);
+                    break;
+                default:
+                    holder.imageView.setImageResource(R.drawable.ic_help);
+                    break;
+            }
+        }else{
+            Picasso.with(mContext)
+                    .load(student.getImage())
+                    .resize(50, 50)
+                    .centerCrop()
+                    .into(holder.imageView);
         }
 
         if(discoveredStudents.contains(student.getId()))

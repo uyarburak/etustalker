@@ -68,7 +68,7 @@ public class SplashActivity extends Activity {
         protected String doInBackground(String... args) {
 
             Integer db_version = sharedPreferences.getInt(DB_VERSION_TAG, 1);
-            final String url = "http://etustalk.club/android/db_version.php?device_id="+android_id;
+            final String url = "http://185.118.140.5/android/db_version.php?device_id="+android_id;
             StringBuilder stringBuilder1 = new StringBuilder();
             URL db_Version = null;
             try {
@@ -103,7 +103,7 @@ public class SplashActivity extends Activity {
             editor.putLong("last_update_check", System.currentTimeMillis());
             if(needToUpdate){
                 publishProgress();
-                String url2 = "http://etustalk.club/android/all_database.php?device_id="+android_id;;
+                String url2 = "http://185.118.140.5/android/all_database.php?device_id="+android_id;;
                 StringBuilder stringBuilder = new StringBuilder();
                 URL allDb = null;
                 try {

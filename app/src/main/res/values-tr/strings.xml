@@ -165,4 +165,5 @@
     <string name="bus_ring">Ringler</string>
     <string name="bus_district_bus">Semt Servisleri</string>
     <string name="bus_saturday">Cumartesi</string>
+    <string name="show_gpa">GPA Goruntule</string>
 </resources>

@@ -282,5 +282,6 @@
     <string name="bus_district_bus">District Busses</string>
     <string name="bus_ring">Rings</string>
     <string name="bus_saturday">Saturday</string>
+    <string name="show_gpa">Show GPA</string>
 
 </resources>
